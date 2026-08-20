@@ -1,10 +1,12 @@
 const PORTAL_COURSES={url:'https://bcvtkdehflmqiyvloyiy.supabase.co/functions/v1/course-content',apikey:'sb_publishable_KgISTJ7-YKktjQXw3u0yuQ_KG6H1bFa'};
 let portalCourseData={courses:[],lessons:[],totals:{},access:'starter'};
 function pcEsc(v=''){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function ensureAccessRefresh(){const badge=document.getElementById('portalAccessBadge');if(!badge||document.getElementById('portalAccessRefresh'))return;const btn=document.createElement('button');btn.id='portalAccessRefresh';btn.type='button';btn.className='pill outline portal-access-refresh';btn.textContent='Refresh access';btn.addEventListener('click',async()=>{btn.disabled=true;btn.textContent='Checking…';await loadPortalCourses();btn.disabled=false;btn.textContent='Refresh access'});badge.insertAdjacentElement('afterend',btn)}
 async function loadPortalCourses(){
   const root=document.getElementById('portalCourseList');
   const status=document.getElementById('portalCourseStatus');
   if(!root||typeof sb==='undefined'||!sb)return;
+  ensureAccessRefresh();
   try{
     if(status)status.textContent='Loading your lessons…';
     const {data:{session}}=await sb.auth.getSession();
@@ -19,11 +21,12 @@ function renderPortalCourses(){
   const {courses=[],lessons=[],totals={},access='starter'}=portalCourseData;
   const root=document.getElementById('portalCourseList'),status=document.getElementById('portalCourseStatus'),badge=document.getElementById('portalAccessBadge');
   if(!root)return;
+  ensureAccessRefresh();
   if(badge){badge.textContent=access==='full'?'Full course access':'Starter access';badge.className=`portal-access-badge ${access==='full'?'full':''}`}
   const grouped=lessons.reduce((m,l)=>{(m[l.course_id]||(m[l.course_id]=[])).push(l);return m},{});
   root.innerHTML=courses.map(c=>{
     const list=grouped[c.id]||[],total=Number(totals[c.id]||list.length),locked=Math.max(0,total-list.length);
-    return `<section class="portal-course-group"><div class="portal-course-summary"><div><small>${pcEsc(c.track)}</small><h3>${pcEsc(c.title)}</h3><p>${pcEsc(c.description)}</p></div><span class="portal-chip">${list.length}/${total} available</span></div><div>${list.map(l=>`<div class="portal-lesson-row" data-item="lesson:${pcEsc(l.slug)}"><div><h4>${pcEsc(l.title)}</h4><p>${pcEsc(l.summary)} · ${pcEsc(l.duration_minutes)} min${l.is_preview?' · Preview':''}</p></div><div class="portal-lesson-actions"><button class="pill outline" type="button" data-open-lesson="${l.id}">Open</button><button class="pill outline" type="button" data-complete>Mark complete</button></div></div>`).join('')}</div>${locked?`<div class="lesson-lock-note">${locked} lesson${locked===1?'':'s'} in this track require full course access. An admin can grant access after enrollment is approved.</div>`:''}</section>`;
+    return `<section class="portal-course-group"><div class="portal-course-summary"><div><small>${pcEsc(c.track)}</small><h3>${pcEsc(c.title)}</h3><p>${pcEsc(c.description)}</p></div><span class="portal-chip">${list.length}/${total} available</span></div><div>${list.map(l=>`<div class="portal-lesson-row" data-item="lesson:${pcEsc(l.slug)}"><div><h4>${pcEsc(l.title)}</h4><p>${pcEsc(l.summary)} · ${pcEsc(l.duration_minutes)} min${l.is_preview?' · Preview':''}</p></div><div class="portal-lesson-actions"><button class="pill outline" type="button" data-open-lesson="${l.id}">Open</button><button class="pill outline" type="button" data-complete>Mark complete</button></div></div>`).join('')}</div>${locked?`<div class="lesson-lock-note">${locked} lesson${locked===1?'':'s'} in this track require full course access. Approved enrollments unlock automatically; you can also press Refresh access after approval.</div>`:''}</section>`;
   }).join('')||'<div class="course-live-empty">No active courses are available yet.</div>';
   if(status)status.textContent=`${lessons.length} lesson${lessons.length===1?'':'s'} available across ${courses.length} track${courses.length===1?'':'s'}.`;
   root.querySelectorAll('[data-open-lesson]').forEach(btn=>btn.addEventListener('click',()=>openPortalLesson(btn.dataset.openLesson)));
@@ -43,4 +46,5 @@ function openPortalLesson(id){
   viewer.classList.remove('hidden');viewer.scrollIntoView({behavior:'smooth',block:'start'});
 }
 document.getElementById('lessonViewerClose')?.addEventListener('click',()=>document.getElementById('lessonViewer')?.classList.add('hidden'));
+ensureAccessRefresh();
 if(typeof sb!=='undefined'&&sb){sb.auth.getSession().then(({data})=>{if(data.session)loadPortalCourses()});sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==='SIGNED_IN'||event==='INITIAL_SESSION'))loadPortalCourses()})}
