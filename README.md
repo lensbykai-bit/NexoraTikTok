@@ -1,132 +1,102 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v1.6.0**
+Current version: **v1.7.0**
 
-Production-oriented static website for Nexora Digital, deployed with GitHub Pages and connected to Supabase services.
+Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
 ## Public pages
 
 - `index.html` — Premium Home experience
 - `free-lessons.html` — Free starter lessons
-- `courses.html` — Course tracks
+- `courses.html` — Live database-backed course catalog
+- `curriculum.html` — Live public curriculum previews
 - `support-program.html` — Flagship support program
-- `curriculum.html` — Learning modules
 - `services.html` — Creator services
 - `prompt-book.html` — Live searchable prompt library
-- `results.html` — Verified-results placeholder/case-study layout
+- `results.html` — Results/case-study layout
 - `faq.html` — FAQ
-- `learn.html` — Student login and cloud-synced portal
+- `learn.html` — Student login and live learning portal
 - `enroll.html` — Enrollment form
 - `contact.html` — Contact form
-- `legal.html` — Privacy, terms and service policies
+- `legal.html` — Policies
 - `404.html` — Not found page
 
-## Home design
+## Live courses and lessons
 
-`home-v2.css` provides the premium Home presentation with creator-academy hero, learning-path sections, student-dashboard preview, prompt preview and responsive calls to action.
+Course content is stored in `public.nexora_courses` and `public.nexora_lessons`.
+
+Public visitors can read active course metadata and lessons marked as public previews. Full lesson text is returned to signed-in students through the `course-content` Edge Function after validating the existing student-auth session.
+
+Student accounts support two access levels:
+
+- `starter` — public-preview lessons only
+- `full` — all active lessons
+
+Authorized admins can change a student's course access from the main Admin Students modal.
+
+### Course Manager
+
+`admin-courses.html` is the private Course & Lesson Manager. It supports:
+
+- creating/editing/hiding/reordering/deleting course tracks
+- creating/editing/hiding/reordering/deleting lessons
+- public-preview controls
+- lesson duration
+- full lesson text
+- student action/task text
+- optional lesson video URL
+
+`course-library.js` powers the public Courses/Curriculum pages. `portal-courses.js` powers the signed-in lesson viewer.
 
 ## Live Prompt Book
 
-Prompt Book is now database-driven through `public.nexora_prompts`.
-
-Public visitors can read only active prompts. Authorized admins can create, edit, hide, reorder and delete prompt records from `admin.html`.
-
-Prompt fields include:
-
-- title
-- slug
-- category
-- full prompt text
-- image path / URL
-- active/hidden status
-- sort order
-
-`prompt-library.js` builds category filters and prompt cards from the live database. `prompt-library.css` provides the visual layer.
+Prompt Book is database-driven through `public.nexora_prompts`. Authorized admins can create, edit, hide, reorder and delete prompt entries from `admin.html`.
 
 ## Student Portal
 
-The portal provides:
+The portal provides live account-specific lessons, lesson completion, static creator tasks, a private notebook, study time/streak, creator profile fields and cloud synchronization.
 
-- course progress and task completion
-- private notebook
-- total/today study time and streak
-- cross-device cloud synchronization
-- creator profile: niche, goal, level, language and bio
-- support links
-
-`portal-sync` validates the existing student Supabase Auth session server-side before reading or writing cloud state. A local browser copy remains as an offline fallback.
-
-The v2 sync endpoint writes student-owned learning/profile fields only. Internal admin fields such as `admin_status` and `admin_note` remain controlled through the backend admin project.
+`portal-sync` validates the existing student Supabase Auth session before reading or writing learning/profile state. `course-content` separately validates the same session before returning protected lesson content. A local browser copy remains as an offline fallback for progress/profile state.
 
 ## Private Admin Control Center
 
-- `admin.html` — management dashboard
-- `admin.js` — protected admin logic
-- `admin.css` / `admin-v2.css` — responsive admin interface
+- `admin.html` — students, prompts, enrollments and contacts
+- `admin-courses.html` — course and lesson management
+- `admin.js` / `admin-courses.js` — protected admin logic
 
-Authorized admins can:
+Admin pages are excluded from the public sitemap and marked `noindex`. Database Row Level Security is the real access control.
 
-- review cloud-synced students
-- see creator niche, goal, level, language, lesson progress, study time, streak and last visit
-- set internal student status and private admin notes
-- create/edit/hide/reorder/delete Prompt Book entries
-- review enrollment requests and contact messages
-- search and filter current data
-- export records as CSV
+## Key shared assets
 
-The admin page is excluded from the public sitemap and marked `noindex`. Row Level Security protects operational data even if someone guesses the URL.
-
-## Shared assets
-
-- `styles.css` — base design system
-- `extras.css` — forms and production polish
-- `home-v2.css` — premium Home design layer
-- `portal-v2.css` — creator-profile portal design
-- `portal-cloud.css` — cloud-sync status design
-- `prompt-library.css` — live Prompt Book design
-- `admin.css` / `admin-v2.css` — Admin design
-- `app.js` — shared navigation, student auth and portal base behavior
-- `forms.js` — Supabase-backed enrollment/contact submissions
-- `portal-extra.js` — password recovery and portal enhancements
-- `portal-cloud.js` — cross-device learning/profile synchronization
-- `prompt-library.js` — database prompt loading, search, categories, modal and copy
-- `admin.js` — protected operational management
-- `assets/logo.svg` — Nexora Digital logo
-- `site.webmanifest` — web app metadata
-- `robots.txt` / `sitemap.xml` — search-engine discovery
-
-## Prompt images
-
-Prompt records may use relative repository paths such as:
-
-`images/prompts/prompt-01.jpg`
-
-or a permitted public HTTPS image URL. Missing images fall back to the designed gradient preview.
+- `styles.css`, `extras.css`, `home-v2.css`
+- `portal-v2.css`, `portal-cloud.css`, `course-library.css`
+- `prompt-library.css`, `admin.css`, `admin-v2.css`, `admin-courses.css`
+- `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
+- `course-library.js`, `prompt-library.js`, `admin.js`, `admin-courses.js`
+- `forms.js`
+- `assets/logo.svg`
+- `site.webmanifest`, `robots.txt`, `sitemap.xml`
 
 ## Deployment
 
-`.github/workflows/pages.yml` validates required files and local HTML links before deploying the repository to GitHub Pages.
+GitHub Pages is deployed from `.github/workflows/pages.yml`.
 
-Expected production URL:
+Expected URL:
 
 `https://lensbykai-bit.github.io/NexoraTikTok/`
 
-GitHub repository Pages settings must use **GitHub Actions** as the build/deployment source.
+GitHub Pages should use **GitHub Actions** as the deployment source.
 
-## Authentication
+## Authentication and secrets
 
-The student portal uses the existing student Supabase Auth project. Its authorized redirect allow-list must include:
+The student portal uses the existing student Supabase Auth project. Its redirect allow-list must include:
 
 `https://lensbykai-bit.github.io/NexoraTikTok/learn.html`
 
-The private admin page uses the Nexora backend Supabase Auth project and only users listed in `admin_users` can access protected operational data.
+The private admin pages use the Nexora backend Supabase Auth project and require membership in `admin_users`.
 
-Never place Supabase secret/service-role keys or OAuth client secrets in this repository. Browser code contains publishable keys only; elevated database access stays server-side.
-
-## Public forms
-
-Enrollment and contact requests are stored in Supabase tables with insert-only public permissions and Row Level Security. Public users cannot read/update/delete submissions. Authorized admins have protected management access.
+Never commit OAuth client secrets, service-role keys or payment secrets. Browser files contain publishable keys only; elevated access remains server-side.
 
 ## Content policy for this project
 
-The design and user-flow may be inspired by public reference sites, but Nexora uses original branding, copy, assets and implementation. Do not copy third-party proprietary source code, logos, photographs, or long-form text without permission.
+Nexora uses original branding, copy, assets and implementation. Public reference sites may inspire layout or user-flow ideas, but third-party proprietary source code, logos, photographs and long-form text should not be copied without permission.
