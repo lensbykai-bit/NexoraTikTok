@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v1.8.0**
+Current version: **v1.9.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -34,13 +34,45 @@ Student accounts support two access levels:
 
 ### Automatic enrollment approval → Full access
 
-When an enrollment request is changed to `approved`, database automation finds a matching portal student by normalized email and grants `full` course access. If approval happens before the student creates or syncs a portal record, the later portal identity update checks existing approved enrollments and grants Full access automatically.
+When an enrollment request is changed to `approved`, database automation matches the enrollment email to a portal student, records `matched_user_id` / `matched_at`, and grants `full` course access. If approval happens before the student creates or syncs a portal record, the later portal identity update checks existing approved enrollments and connects them automatically.
 
-Approval time and access-grant time are recorded for operations/auditing. Existing approved enrollments are backfilled to matching portal students during the v1.8 migration.
+Approval time, match time and course-access grant time are retained for operations/auditing.
 
-Authorized admins can still manually change a student's course access from the main Admin Students modal.
+## v1.9 enrollment operations
 
-### Course Manager
+`admin-operations.html` is the private Enrollment Operations center. It provides:
+
+- pending enrollment and unmatched approval metrics
+- normalized email-based student matching visibility
+- manual payment tracking with `not_required`, `pending`, `paid`, `waived`, and `refunded`
+- optional payment reference tracking
+- enrollment workflow status editing
+- automatic Full-access grant after approval when a matching portal account exists
+- custom student notifications
+- protected recent admin/system activity trail
+
+The payment fields are tracking fields only. They do **not** charge, collect, verify, or refund money. A real payment provider must be integrated server-side before payment can be automated.
+
+## Student notifications
+
+Student notifications are stored in `public.nexora_student_notifications` and read through the `student-notifications` Edge Function after validating the Student Portal auth session.
+
+The portal dynamically adds a Notifications tab with:
+
+- unread count
+- enrollment approval updates
+- course-access updates
+- support-status updates
+- custom admin messages
+- mark-read and mark-all-read controls
+
+Students do not receive direct database access to the notification table; reads and read-state changes go through the server-side endpoint.
+
+## Admin activity trail
+
+`public.nexora_admin_activity` records protected operational events for enrollments, contacts, prompts, courses, lessons, student-access changes and notification creation. Audit trigger functions are not directly executable by public browser roles.
+
+## Course Manager
 
 `admin-courses.html` is the private Course & Lesson Manager. It supports creating/editing/hiding/reordering/deleting course tracks and lessons, public previews, duration, full lesson text, student tasks and optional lesson video URLs.
 
@@ -52,28 +84,26 @@ Prompt Book is database-driven through `public.nexora_prompts`. Authorized admin
 
 ## Student Portal
 
-The portal provides live account-specific lessons, lesson completion, creator tasks, a private notebook, study time/streak, creator profile fields and cloud synchronization.
+The portal provides live account-specific lessons, lesson completion, creator tasks, a private notebook, study time/streak, creator profile fields, cloud synchronization and student notifications.
 
-`portal-sync` validates the student Supabase Auth session before reading or writing learning/profile state. `course-content` separately validates the same session before returning protected lesson content. A local browser copy remains as an offline fallback for progress/profile state.
+`portal-sync` validates the student Supabase Auth session before reading or writing learning/profile state. `course-content` validates the same session before returning protected lesson content. `student-notifications` validates it before returning notifications. A local browser copy remains as an offline fallback for progress/profile state.
 
 ## Private Admin Control Center
 
 - `admin.html` — students, prompts, enrollments and contacts
 - `admin-courses.html` — course and lesson management
 - `admin-analytics.html` — live operational analytics
-- `admin.js` / `admin-courses.js` / `admin-analytics.js` — protected admin logic
-
-The Analytics dashboard shows student totals, Full-access count, 7-day activity, total study time, enrollment approval funnel, open requests, content health, access distribution, language/level breakdowns and recent student activity.
+- `admin-operations.html` — enrollment, payment tracking, matching, notifications and audit activity
 
 Admin pages are excluded from the public sitemap and marked `noindex`. Database Row Level Security is the real access control.
 
 ## Key shared assets
 
 - `styles.css`, `extras.css`, `home-v2.css`
-- `portal-v2.css`, `portal-cloud.css`, `course-library.css`
-- `prompt-library.css`, `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`
-- `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
-- `course-library.js`, `prompt-library.js`, `admin.js`, `admin-courses.js`, `admin-analytics.js`
+- `portal-v2.css`, `portal-cloud.css`, `course-library.css`, `student-notifications.css`
+- `prompt-library.css`, `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`, `admin-operations.css`
+- `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`, `student-notifications.js`
+- `course-library.js`, `prompt-library.js`, `admin.js`, `admin-courses.js`, `admin-analytics.js`, `admin-operations.js`
 - `forms.js`
 - `assets/logo.svg`
 - `site.webmanifest`, `robots.txt`, `sitemap.xml`
