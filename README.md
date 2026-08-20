@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v1.3.0**
+Current version: **v1.4.0**
 
 Production-oriented static website for Nexora Digital, deployed with GitHub Pages and connected to Supabase services.
 
@@ -20,6 +20,22 @@ Production-oriented static website for Nexora Digital, deployed with GitHub Page
 - `contact.html` — Contact form
 - `legal.html` — Privacy, terms and service policies
 - `404.html` — Not found page
+
+## Private admin page
+
+- `admin.html` — Nexora request management control center
+- `admin.js` — Protected admin login, request management, filters and CSV export
+- `admin.css` — Responsive admin interface
+
+The admin page is intentionally excluded from the public sitemap and uses `noindex`. Database Row Level Security still protects the records even if someone guesses the URL.
+
+Authorized admins can:
+
+- Review enrollment requests and contact messages.
+- Search and filter requests.
+- Update workflow status.
+- Save private admin notes.
+- Export current records as CSV.
 
 ## Shared assets
 
@@ -68,15 +84,17 @@ GitHub repository Pages settings must use **GitHub Actions** as the build/deploy
 
 ## Authentication
 
-The student portal uses Supabase Auth. The authorized redirect allow-list for the auth project must include:
+The student portal uses the existing student Supabase Auth project. The authorized redirect allow-list for that auth project must include:
 
 `https://lensbykai-bit.github.io/NexoraTikTok/learn.html`
+
+The private admin page uses the Nexora backend Supabase Auth project and only users listed in `admin_users` can access protected request data.
 
 Never place Supabase secret/service-role keys or OAuth client secrets in this repository. Browser code should only contain publishable keys. Elevated database access is isolated to server-side infrastructure.
 
 ## Public forms
 
-Enrollment and contact requests are stored in Supabase tables with insert-only browser permissions and Row Level Security. Public users do not have read/update/delete access to these tables.
+Enrollment and contact requests are stored in Supabase tables with insert-only public permissions and Row Level Security. Public users do not have read/update/delete access. Authorized admins have protected select/update access for workflow management.
 
 ## Content policy for this project
 
