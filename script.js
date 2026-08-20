@@ -9,12 +9,20 @@ function loadStyleOnce(href,id){
 
 loadStyleOnce('nav-enhance.css','nexora-nav-enhance');
 
+const temporarilyClosedPages=new Set([
+  'courses.html',
+  'tools.html',
+  'resources.html',
+  'success-stories.html'
+]);
+
+const currentPage=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+if(temporarilyClosedPages.has(currentPage)){
+  location.replace(`temporarily-closed.html?page=${encodeURIComponent(currentPage)}`);
+}
+
 const publicNavItems=[
   ['index.html','Home'],
-  ['courses.html','Courses'],
-  ['tools.html','Tools'],
-  ['resources.html','Resources'],
-  ['success-stories.html','Success Stories'],
   ['pricing.html','Pricing'],
   ['about.html','About']
 ];
@@ -22,8 +30,7 @@ const publicNavItems=[
 const navLinks=document.getElementById('navLinks');
 const menuToggle=document.getElementById('menuToggle');
 if(navLinks){
-  const current=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  navLinks.innerHTML=publicNavItems.map(([href,label])=>`<a${current===href?' class="active"':''} href="${href}">${label}</a>`).join('');
+  navLinks.innerHTML=publicNavItems.map(([href,label])=>`<a${currentPage===href?' class="active"':''} href="${href}">${label}</a>`).join('');
 }
 if(menuToggle&&navLinks){
   menuToggle.addEventListener('click',()=>navLinks.classList.toggle('open'));
