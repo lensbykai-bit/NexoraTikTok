@@ -1,5 +1,11 @@
 # Nexora Digital Changelog
 
+## 1.3.4
+- Added working Show/Hide Password control on Student Log In.
+- Added the same password visibility control to Confirm Password in Create Account and password reset modes.
+- Improved accessibility with aria labels, pressed state and keyboard focus styling.
+- Kept direct Sign Up mode and the existing Supabase authentication flow unchanged.
+
 ## 1.3.3
 - Removed Dashboard and Start Your Journey from the public header.
 - Added dedicated Log In and Sign Up buttons for visitors.
