@@ -122,3 +122,72 @@
     showSignupStep();
   });
 })();
+
+/* Reliable password login after reset.
+   Replace the original login form to remove the older submit listener and prevent browsers
+   from silently reusing a stale saved password after the student changes it. */
+(function initReliableLogin(){
+  const oldForm=document.getElementById('emailLoginForm');
+  const authClient=typeof sb!=='undefined'?sb:null;
+  if(!oldForm||!authClient)return;
+
+  const form=oldForm.cloneNode(true);
+  oldForm.replaceWith(form);
+
+  const email=form.querySelector('#loginEmail');
+  const password=form.querySelector('#loginPassword');
+  const button=form.querySelector('button[type="submit"]');
+  const msg=document.getElementById('loginMessage');
+  if(!email||!password)return;
+
+  form.setAttribute('autocomplete','off');
+  password.setAttribute('autocomplete','off');
+  password.setAttribute('data-lpignore','true');
+  password.setAttribute('data-1p-ignore','true');
+
+  let userEditedPassword=false;
+  password.addEventListener('input',()=>{userEditedPassword=true});
+
+  function clearStalePassword(){
+    if(userEditedPassword||document.activeElement===password)return;
+    password.value='';
+  }
+
+  clearStalePassword();
+  setTimeout(clearStalePassword,120);
+  setTimeout(clearStalePassword,650);
+  window.addEventListener('pageshow',()=>setTimeout(clearStalePassword,50));
+
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const loginEmail=email.value.trim();
+    const loginPassword=password.value;
+    if(!loginEmail||!loginPassword)return;
+
+    if(button){button.disabled=true;button.textContent='Signing in…'}
+    if(msg)msg.textContent='';
+
+    const {error}=await authClient.auth.signInWithPassword({
+      email:loginEmail,
+      password:loginPassword
+    });
+
+    if(error){
+      if(button){button.disabled=false;button.textContent='Sign In'}
+      if(error.code==='invalid_credentials'||/invalid login credentials/i.test(error.message||'')){
+        password.value='';
+        userEditedPassword=false;
+        if(msg)msg.textContent='Incorrect email or password. Type your latest password. If you recently reset it, do not use the browser-saved password.';
+        password.focus();
+      }else if(msg){
+        msg.textContent=error.message||'Unable to sign in.';
+      }
+      return;
+    }
+
+    if(msg)msg.textContent='Signed in successfully ✓';
+    window.location.replace('./learn.html?login=1&signed=1');
+  },true);
+})();
