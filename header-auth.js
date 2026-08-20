@@ -4,8 +4,8 @@
 
   const LOGIN_URL='./learn.html?login=1';
 
-  /* The public homepage stays available to everyone.
-     Student Login is used only for authentication; successful sign-in returns to Home. */
+  /* The public Home is shown after successful authentication.
+     Signing out always returns to the dedicated Student Login screen. */
   const loginLink=document.querySelector('#navLinks a[href^="learn.html"]');
   if(!loginLink)return;
 
@@ -35,12 +35,12 @@
           loginLink.textContent='Sign out';
           return;
         }
-        window.location.replace('./index.html');
+        window.location.replace(LOGIN_URL);
       };
       loginLink.addEventListener('click',logoutHandler);
     }else{
       loginLink.textContent='Login';
-      loginLink.href='learn.html?login=1';
+      loginLink.href=LOGIN_URL;
       loginLink.setAttribute('aria-label','Login to Nexora Digital');
     }
   }
