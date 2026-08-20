@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v1.7.0**
+Current version: **v1.8.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -32,19 +32,17 @@ Student accounts support two access levels:
 - `starter` — public-preview lessons only
 - `full` — all active lessons
 
-Authorized admins can change a student's course access from the main Admin Students modal.
+### Automatic enrollment approval → Full access
+
+When an enrollment request is changed to `approved`, database automation finds a matching portal student by normalized email and grants `full` course access. If approval happens before the student creates or syncs a portal record, the later portal identity update checks existing approved enrollments and grants Full access automatically.
+
+Approval time and access-grant time are recorded for operations/auditing. Existing approved enrollments are backfilled to matching portal students during the v1.8 migration.
+
+Authorized admins can still manually change a student's course access from the main Admin Students modal.
 
 ### Course Manager
 
-`admin-courses.html` is the private Course & Lesson Manager. It supports:
-
-- creating/editing/hiding/reordering/deleting course tracks
-- creating/editing/hiding/reordering/deleting lessons
-- public-preview controls
-- lesson duration
-- full lesson text
-- student action/task text
-- optional lesson video URL
+`admin-courses.html` is the private Course & Lesson Manager. It supports creating/editing/hiding/reordering/deleting course tracks and lessons, public previews, duration, full lesson text, student tasks and optional lesson video URLs.
 
 `course-library.js` powers the public Courses/Curriculum pages. `portal-courses.js` powers the signed-in lesson viewer.
 
@@ -54,15 +52,18 @@ Prompt Book is database-driven through `public.nexora_prompts`. Authorized admin
 
 ## Student Portal
 
-The portal provides live account-specific lessons, lesson completion, static creator tasks, a private notebook, study time/streak, creator profile fields and cloud synchronization.
+The portal provides live account-specific lessons, lesson completion, creator tasks, a private notebook, study time/streak, creator profile fields and cloud synchronization.
 
-`portal-sync` validates the existing student Supabase Auth session before reading or writing learning/profile state. `course-content` separately validates the same session before returning protected lesson content. A local browser copy remains as an offline fallback for progress/profile state.
+`portal-sync` validates the student Supabase Auth session before reading or writing learning/profile state. `course-content` separately validates the same session before returning protected lesson content. A local browser copy remains as an offline fallback for progress/profile state.
 
 ## Private Admin Control Center
 
 - `admin.html` — students, prompts, enrollments and contacts
 - `admin-courses.html` — course and lesson management
-- `admin.js` / `admin-courses.js` — protected admin logic
+- `admin-analytics.html` — live operational analytics
+- `admin.js` / `admin-courses.js` / `admin-analytics.js` — protected admin logic
+
+The Analytics dashboard shows student totals, Full-access count, 7-day activity, total study time, enrollment approval funnel, open requests, content health, access distribution, language/level breakdowns and recent student activity.
 
 Admin pages are excluded from the public sitemap and marked `noindex`. Database Row Level Security is the real access control.
 
@@ -70,9 +71,9 @@ Admin pages are excluded from the public sitemap and marked `noindex`. Database 
 
 - `styles.css`, `extras.css`, `home-v2.css`
 - `portal-v2.css`, `portal-cloud.css`, `course-library.css`
-- `prompt-library.css`, `admin.css`, `admin-v2.css`, `admin-courses.css`
+- `prompt-library.css`, `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`
 - `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
-- `course-library.js`, `prompt-library.js`, `admin.js`, `admin-courses.js`
+- `course-library.js`, `prompt-library.js`, `admin.js`, `admin-courses.js`, `admin-analytics.js`
 - `forms.js`
 - `assets/logo.svg`
 - `site.webmanifest`, `robots.txt`, `sitemap.xml`
