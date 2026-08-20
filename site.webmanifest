@@ -1,1 +1,21 @@
-{"name":"Nexora Digital Creator Academy","short_name":"Nexora Digital","start_url":"./","display":"standalone","background_color":"#ffffff","theme_color":"#6c50f4","icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{
+  "id":"./",
+  "name":"Nexora Digital Creator Academy",
+  "short_name":"Nexora",
+  "description":"Creator education, AI workflows, prompt resources and a structured student learning portal.",
+  "start_url":"./index.html",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"portrait-primary",
+  "background_color":"#0b0e16",
+  "theme_color":"#6c50f4",
+  "categories":["education","productivity"],
+  "icons":[
+    {"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts":[
+    {"name":"Student Portal","short_name":"Learn","url":"./learn.html","icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"Prompt Book","short_name":"Prompts","url":"./prompt-book.html","icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml"}]},
+    {"name":"Free Lessons","short_name":"Free Lessons","url":"./free-lessons.html","icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml"}]}
+  ]
+}
