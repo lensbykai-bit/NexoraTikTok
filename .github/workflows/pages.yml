@@ -54,8 +54,8 @@ jobs:
             echo "Admin privacy regression: wildcard student-state select found"
             exit 1
           fi
-          if grep -Fq '<script src="app.js"></script>' admin.html; then
-            echo "Admin isolation regression: public app.js loaded on admin page"
+          if grep -Fq 'app.js' admin.html; then
+            echo "Admin isolation regression: public app.js loaded or referenced on admin page"
             exit 1
           fi
           if grep -RInE 'SUPABASE_SERVICE_ROLE_KEY|service_role|client_secret' --include='*.js' --include='*.html' .; then
