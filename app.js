@@ -14,6 +14,8 @@ function toast(message){let el=$('#toast');if(!el){el=document.createElement('di
   if(head&&!head.querySelector('link[href="extras.css"]')){const l=document.createElement('link');l.rel='stylesheet';l.href='extras.css';head.appendChild(l)}
   document.querySelectorAll('.copyright').forEach(el=>{el.innerHTML=el.innerHTML.replace(/©\s*\d{4}/,`© ${new Date().getFullYear()}`)})
   $$('a[href="#"]').forEach(a=>{if(a.closest('.site-footer')){a.setAttribute('aria-disabled','true');a.classList.add('disabled-link');a.addEventListener('click',e=>e.preventDefault())}});
+  /* Plain index.html is the login entry. Public-page Home links use the authenticated Home bypass. */
+  if(!document.getElementById('authPage')){$$('a[href="index.html"]').forEach(a=>a.href='index.html?home=1')}
   if(!document.body.classList.contains('no-floating-support')&&!$('.floating-support')){const a=document.createElement('a');a.href='contact.html';a.className='floating-support';a.setAttribute('aria-label','Contact Nexora support');a.innerHTML='<span>?</span> Support';document.body.appendChild(a)}
 })();
 
@@ -46,13 +48,19 @@ function closePromptModal(){promptModal?.classList.remove('open');document.body.
 /* Supabase Auth */
 let sb=null;if(window.supabase){sb=window.supabase.createClient(CONFIG.supabaseUrl,CONFIG.supabaseKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}
 let currentUserKey='guest';const authPage=$('#authPage'),portal=$('#portal'),portalName=$('#portalName'),portalEmail=$('#portalEmail');
+const forceLoginView=new URLSearchParams(location.search).has('login');
 function getProfile(user){const m=user?.user_metadata||{};return{name:m.full_name||m.name||user?.email?.split('@')[0]||'Student',email:user?.email||'',key:user?.id||user?.email||'guest'}}
 function storageKey(name){return`nexora_${currentUserKey}_${name}`}
-function showPortal(session){const user=session?.user;if(!authPage||!portal)return;if(user){const p=getProfile(user);currentUserKey=p.key;authPage.style.display='none';portal.classList.add('show');if(portalName)portalName.textContent=p.name;if(portalEmail)portalEmail.textContent=p.email;restorePortalState()}else{currentUserKey='guest';authPage.style.display='grid';portal.classList.remove('show')}}
+function showPortal(session){
+  const user=session?.user;
+  if(!authPage||!portal)return;
+  if(forceLoginView){currentUserKey='guest';authPage.style.display='grid';portal.classList.remove('show');return}
+  if(user){const p=getProfile(user);currentUserKey=p.key;authPage.style.display='none';portal.classList.add('show');if(portalName)portalName.textContent=p.name;if(portalEmail)portalEmail.textContent=p.email;restorePortalState()}else{currentUserKey='guest';authPage.style.display='grid';portal.classList.remove('show')}
+}
 async function initAuth(){if(!sb)return;const{data}=await sb.auth.getSession();showPortal(data.session);sb.auth.onAuthStateChange((_event,session)=>showPortal(session))}initAuth();
 $('#emailLoginForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!sb)return;const email=$('#loginEmail')?.value.trim(),password=$('#loginPassword')?.value||'',msg=$('#loginMessage');if(msg)msg.textContent='Signing in…';const{error}=await sb.auth.signInWithPassword({email,password});if(msg)msg.textContent=error?error.message:'Signed in successfully.'});
 $('#emailSignupForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!sb)return;const name=$('#signupName')?.value.trim(),email=$('#signupEmail')?.value.trim(),password=$('#signupPassword')?.value||'',msg=$('#signupMessage');if(msg)msg.textContent='Creating account…';const{error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});if(msg)msg.textContent=error?error.message:''});
-$('#logoutPortal')?.addEventListener('click',async()=>{if(sb)await sb.auth.signOut();location.href='learn.html'});
+$('#logoutPortal')?.addEventListener('click',async()=>{if(sb)await sb.auth.signOut();location.href='learn.html?login=1'});
 $('#showSignup')?.addEventListener('click',()=>{$('#loginBox')?.classList.add('hidden');$('#signupBox')?.classList.remove('hidden')});$('#showLogin')?.addEventListener('click',()=>{$('#signupBox')?.classList.add('hidden');$('#loginBox')?.classList.remove('hidden')});
 
 /* Portal tabs */
