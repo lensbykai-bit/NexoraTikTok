@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b0e16">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Nexora Digital — Offline</title>
+  <style>
+    *{box-sizing:border-box}html,body{min-height:100%}body{margin:0;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 18% 12%,rgba(103,81,255,.22),transparent 30%),radial-gradient(circle at 84% 14%,rgba(239,52,120,.14),transparent 28%),#0b0e16;color:#f7f8fb;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{width:min(620px,100%);padding:38px;border:1px solid rgba(255,255,255,.09);border-radius:28px;background:rgba(16,20,31,.9);box-shadow:0 30px 80px rgba(0,0,0,.28)}.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-weight:800;font-size:21px;background:linear-gradient(135deg,#5368ff,#813ef2 58%,#ef3478)}.brand b{display:block}.brand small{display:block;margin-top:4px;color:#9aa3b5;font-size:9px;letter-spacing:1.7px}.eyebrow{display:block;margin:42px 0 12px;color:#a694ff;font-size:10px;letter-spacing:2px;font-weight:800}.card h1{margin:0;font-size:clamp(38px,7vw,62px);line-height:.98;letter-spacing:-2.5px}.card p{max-width:500px;margin:20px 0 26px;color:#a5adbc;line-height:1.65;font-size:14px}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:0;border-radius:999px;padding:13px 20px;font-weight:800;font-size:12px;cursor:pointer;text-decoration:none}.primary{color:white;background:linear-gradient(100deg,#4f65ff,#7e3df3 58%,#ef3478)}.secondary{color:#f7f8fb;background:#171b27;border:1px solid rgba(255,255,255,.1)}.note{margin-top:25px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);color:#788294;font-size:11px}@media(max-width:520px){.card{padding:28px 22px;border-radius:22px}.card h1{font-size:42px}.actions{display:grid}.btn{text-align:center;width:100%}}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></div>
+    <span class="eyebrow">OFFLINE MODE</span>
+    <h1>You are offline right now.</h1>
+    <p>Your connection appears to be unavailable. Public pages you have already opened may still work from the Nexora offline cache. Student account, enrollment and protected course data require a connection.</p>
+    <div class="actions">
+      <button class="btn primary" type="button" onclick="location.reload()">Try again</button>
+      <a class="btn secondary" href="index.html">Open Home</a>
+      <a class="btn secondary" href="free-lessons.html">Free Lessons</a>
+    </div>
+    <div class="note" id="statusText">Waiting for an internet connection…</div>
+  </main>
+  <script>
+    const status=document.getElementById('statusText');
+    function render(){status.textContent=navigator.onLine?'Connection restored. Tap Try again to continue.':'Waiting for an internet connection…'}
+    addEventListener('online',render);addEventListener('offline',render);render();
+  </script>
+</body>
+</html>
