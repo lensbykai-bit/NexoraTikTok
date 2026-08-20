@@ -1,4 +1,4 @@
-const CACHE_VERSION='nexora-v3.0.0';
+const CACHE_VERSION='nexora-v3.1.0';
 const STATIC_CACHE=`${CACHE_VERSION}-static`;
 const PAGE_CACHE=`${CACHE_VERSION}-pages`;
 
@@ -23,6 +23,7 @@ const STATIC_ASSETS=[
   './styles.css',
   './extras.css',
   './reference-theme.css',
+  './money-auth.css',
   './home-v2.css',
   './course-library.css',
   './prompt-library.css',
@@ -33,33 +34,19 @@ const STATIC_ASSETS=[
   './prompt-library.js',
   './certificate-verify.js',
   './assets/logo.svg',
+  './assets/money-hub-hero.svg',
   './site.webmanifest'
 ];
 
-const PRIVATE_PATHS=[
-  '/admin',
-  '/learn.html',
-  '/certificate.html',
-  '/enroll.html'
-];
-
-function isPrivatePath(pathname){
-  return PRIVATE_PATHS.some(part=>pathname.includes(part));
-}
-
-function isStaticAsset(request){
-  const dest=request.destination;
-  return ['style','script','image','font'].includes(dest);
-}
+const PRIVATE_PATHS=['/admin','/learn.html','/certificate.html','/enroll.html'];
+function isPrivatePath(pathname){return PRIVATE_PATHS.some(part=>pathname.includes(part))}
+function isStaticAsset(request){return ['style','script','image','font'].includes(request.destination)}
 
 self.addEventListener('install',event=>{
   event.waitUntil((async()=>{
     const staticCache=await caches.open(STATIC_CACHE);
     const pageCache=await caches.open(PAGE_CACHE);
-    await Promise.all([
-      staticCache.addAll(STATIC_ASSETS),
-      pageCache.addAll(PUBLIC_PAGES)
-    ]);
+    await Promise.all([staticCache.addAll(STATIC_ASSETS),pageCache.addAll(PUBLIC_PAGES)]);
     await self.skipWaiting();
   })());
 });
@@ -76,42 +63,26 @@ self.addEventListener('activate',event=>{
 self.addEventListener('fetch',event=>{
   const request=event.request;
   if(request.method!=='GET')return;
-
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
-
   if(request.mode==='navigate'){
     event.respondWith((async()=>{
       try{
         const response=await fetch(request);
-        if(response.ok&&!isPrivatePath(url.pathname)){
-          const cache=await caches.open(PAGE_CACHE);
-          cache.put(request,response.clone());
-        }
+        if(response.ok&&!isPrivatePath(url.pathname)){const cache=await caches.open(PAGE_CACHE);cache.put(request,response.clone())}
         return response;
       }catch{
-        if(!isPrivatePath(url.pathname)){
-          const cached=await caches.match(request,{ignoreSearch:true});
-          if(cached)return cached;
-        }
+        if(!isPrivatePath(url.pathname)){const cached=await caches.match(request,{ignoreSearch:true});if(cached)return cached}
         return (await caches.match('./offline.html'))||Response.error();
       }
     })());
     return;
   }
-
   if(isPrivatePath(url.pathname))return;
-
   if(isStaticAsset(request)){
     event.respondWith((async()=>{
       const cached=await caches.match(request);
-      const freshPromise=fetch(request).then(async response=>{
-        if(response.ok){
-          const cache=await caches.open(STATIC_CACHE);
-          cache.put(request,response.clone());
-        }
-        return response;
-      }).catch(()=>null);
+      const freshPromise=fetch(request).then(async response=>{if(response.ok){const cache=await caches.open(STATIC_CACHE);cache.put(request,response.clone())}return response}).catch(()=>null);
       return cached||(await freshPromise)||Response.error();
     })());
   }
