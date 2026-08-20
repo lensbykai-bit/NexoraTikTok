@@ -1,5 +1,20 @@
 # NexoraTikTok Changelog
 
+## v1.9.0 — 2026-08-20
+
+- Added `admin-operations.html` as a private enrollment operations center.
+- Added enrollment-to-student matching fields so approved requests can be tied to a specific portal account.
+- Added manual payment workflow fields: `payment_status` and `payment_reference`. These track payment state only and do not process money.
+- Strengthened approval automation so approved enrollments match by normalized email, grant Full course access, and record match timestamps.
+- Added automatic matching for students who create or sync their portal account after an earlier enrollment approval.
+- Added `nexora_student_notifications` with protected admin controls and a server-side student notification endpoint.
+- Added an in-portal Notifications tab with unread counts, mark-read controls, course-access updates and support updates.
+- Added custom student notification sending from the private Operations center.
+- Added `nexora_admin_activity` and protected database audit triggers for enrollments, contacts, prompts, courses, lessons, admin student-access changes and notification creation.
+- Added Operations metrics for pending enrollments, unmatched approvals, Full-access students, unread notifications and 24-hour activity.
+- Hardened notification/audit sequence and function permissions and kept elevated access server-side.
+- Expanded GitHub Pages validation and JavaScript syntax checks for all v1.9 assets.
+
 ## v1.8.0 — 2026-08-20
 
 - Added automatic Full Course Access when an enrollment is marked `approved`.
