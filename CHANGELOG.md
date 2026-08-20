@@ -1,5 +1,12 @@
 # Nexora Digital Changelog
 
+## 1.3.3
+- Removed Dashboard and Start Your Journey from the public header.
+- Added dedicated Log In and Sign Up buttons for visitors.
+- Added direct signup mode with `login.html?mode=signup`.
+- Kept the private student dashboard accessible only after authentication instead of advertising it in public navigation.
+- Replaced public journey calls-to-action with account creation and login actions.
+
 ## 1.3.2
 - Temporarily removed Courses, Tools, Resources and Success Stories from the public navbar.
 - Direct visits to those four pages now open a temporary closed notice instead of the full page.
