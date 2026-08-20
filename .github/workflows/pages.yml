@@ -42,6 +42,28 @@ jobs:
           done
           echo "JavaScript syntax OK"
 
+      - name: Privacy and secret guard
+        shell: bash
+        run: |
+          set -e
+          if grep -Fq "Student note preview" admin.js; then
+            echo "Admin privacy regression: private student notebook preview found"
+            exit 1
+          fi
+          if grep -Fq "nexora_portal_state').select('*')" admin.js; then
+            echo "Admin privacy regression: wildcard student-state select found"
+            exit 1
+          fi
+          if grep -Fq '<script src="app.js"></script>' admin.html; then
+            echo "Admin isolation regression: public app.js loaded on admin page"
+            exit 1
+          fi
+          if grep -RInE 'SUPABASE_SERVICE_ROLE_KEY|service_role|client_secret' --include='*.js' --include='*.html' .; then
+            echo "Potential server secret reference found in browser assets"
+            exit 1
+          fi
+          echo "Privacy and secret guards OK"
+
       - name: Check local HTML links
         shell: bash
         run: |
