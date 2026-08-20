@@ -1,15 +1,18 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
+Current version: **v1.3.0**
+
 Production-oriented static website for Nexora Digital, deployed with GitHub Pages and connected to Supabase services.
 
 ## Public pages
 
 - `index.html` — Home
+- `free-lessons.html` — Free starter lessons
 - `courses.html` — Course tracks
 - `support-program.html` — Flagship support program
 - `curriculum.html` — Learning modules
 - `services.html` — Creator services
-- `prompt-book.html` — Prompt library
+- `prompt-book.html` — Searchable prompt library
 - `results.html` — Verified-results placeholder/case-study layout
 - `faq.html` — FAQ
 - `learn.html` — Student login and portal
@@ -22,12 +25,36 @@ Production-oriented static website for Nexora Digital, deployed with GitHub Page
 
 - `styles.css` — Base design system
 - `extras.css` — Forms, portal and production polish
-- `app.js` — Shared navigation, prompt library, auth and portal behavior
+- `app.js` — Shared navigation, auth and portal behavior
 - `forms.js` — Supabase-backed enrollment/contact submissions
 - `portal-extra.js` — Password recovery and portal enhancements
+- `portal-cloud.js` — Cross-device portal state synchronization
+- `portal-cloud.css` — Cloud-sync status design
+- `prompt-library.js` — Prompt search, filters and automatic image previews
 - `assets/logo.svg` — Nexora Digital logo
 - `site.webmanifest` — Web app metadata
 - `robots.txt` / `sitemap.xml` — Search-engine discovery
+
+## Student portal cloud sync
+
+The student portal keeps a local browser copy for resilience and also syncs lesson completion, notes, study time and streak information to the Nexora backend when the signed-in account is online.
+
+The cloud endpoint validates the existing student Supabase Auth session server-side before reading or writing portal state. The portal-state database table is not directly readable or writable by browser roles.
+
+## Prompt images
+
+Upload prompt preview images to `images/prompts/` using the filenames documented in `images/prompts/README.md`.
+
+The first six automatic slots are:
+
+- `prompt-01.jpg`
+- `prompt-02.jpg`
+- `prompt-03.jpg`
+- `prompt-04.jpg`
+- `prompt-05.jpg`
+- `prompt-06.jpg`
+
+Missing images automatically fall back to the designed gradient placeholder.
 
 ## Deployment
 
@@ -45,7 +72,7 @@ The student portal uses Supabase Auth. The authorized redirect allow-list for th
 
 `https://lensbykai-bit.github.io/NexoraTikTok/learn.html`
 
-Never place Supabase secret/service-role keys or OAuth client secrets in this repository. Browser code should only contain publishable keys and must rely on Row Level Security.
+Never place Supabase secret/service-role keys or OAuth client secrets in this repository. Browser code should only contain publishable keys. Elevated database access is isolated to server-side infrastructure.
 
 ## Public forms
 
