@@ -1,5 +1,18 @@
 # NexoraTikTok Changelog
 
+## v2.3.0 — 2026-08-20
+
+- Hardened the main Admin student view so it no longer selects or displays the private Student Portal notebook field.
+- Replaced wildcard student-state reads in `admin.js` with an explicit admin-safe field list.
+- Kept private admin notes separate from student-authored notebook content and retained student CSV export without notebook text.
+- Added GitHub Pages privacy guards that fail deployment if the student notebook preview returns, if wildcard student-state reads are reintroduced, or if the public `app.js` runtime is added back to `admin.html`.
+- Added a browser-asset secret guard for obvious service-role/client-secret references before deployment.
+- Rebuilt Prompt Book media handling for image-later workflows with numbered image slots, lazy-loaded previews, broken-image fallback states and a matching modal placeholder.
+- Added Prompt Book `Show more`, clear-search and retry controls so larger prompt libraries remain fast and clean.
+- Added better prompt category accessibility with `aria-pressed`, keyboard-open behavior and live loading/error states.
+- Added reduced-motion support, stronger focus-visible states, better mobile touch targets and a defensive floating-support hide rule for private pages.
+- Kept the Prompt Book database/image URL architecture unchanged so user-supplied images can be attached later without restructuring content.
+
 ## v2.2.0 — 2026-08-20
 
 - Added public certificate verification by secure certificate code at `verify-certificate.html`.
@@ -87,7 +100,7 @@
 - Added the `nexora_prompts` database table with public active-prompt reads and protected admin CRUD policies.
 - Seeded 12 original starter prompts across emotional story, AI short film, 3D animation, cute animals, cinematic, miniature, product reveal, food, fantasy, restoration, luxury interior and nature-growth categories.
 - Added automatic Prompt Book categories, search, live result count, image paths and database-driven modal content.
-- Added a private Prompt Manager to Nexora Admin with create, edit, visibility, sort order, image path and delete controls.
+- Added a private Prompt Manager to Nexora Admin with create, edit, hide, reorder and delete prompt entries.
 - Upgraded Student Portal with a Creator Profile tab for niche, creator goal, level, preferred language and bio.
 - Upgraded the `portal-sync` Edge Function to v2 so creator-profile fields sync securely with the signed-in student account.
 - Added creator profile information to the Admin Students view while keeping admin-only status and notes separate from student writes.
