@@ -1,5 +1,15 @@
 # NexoraTikTok Changelog
 
+## v2.6.0 — 2026-08-20
+
+- Added direct image upload controls to every row in `admin-prompt-intake.html` so admins no longer need to paste an image path manually.
+- Added live image preview, filename/size feedback, remove-image controls and responsive upload UI.
+- Added a public `prompt-images` Supabase Storage bucket with an 8 MB file-size limit and JPG/PNG/WEBP/GIF restrictions.
+- Added database-backed Storage policies so only authenticated Nexora admins can upload, update or delete Prompt Book images while published images remain publicly readable.
+- Added automatic image upload during batch save; uploaded public URLs are written directly to `nexora_prompts.image_url`.
+- Added cleanup behavior so images uploaded during a failed batch save are removed instead of being left orphaned.
+- Kept image upload optional so a numbered placeholder still works when an image will be supplied later.
+
 ## v2.5.0 — 2026-08-20
 
 - Added `admin-prompt-intake.html` as a private batch workspace for preparing many Prompt Book entries before final images are available.
