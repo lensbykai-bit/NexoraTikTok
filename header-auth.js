@@ -4,14 +4,8 @@
 
   const LOGIN_URL='./learn.html?login=1';
 
-  /* Opening the public root should enter through the student login screen.
-     Signed-in users will automatically see their portal on learn.html. */
-  const current=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  if(current==='index.html'||current===''){
-    window.location.replace(LOGIN_URL);
-    return;
-  }
-
+  /* The public homepage stays available to everyone.
+     Student Login is used only for authentication; successful sign-in returns to Home. */
   const loginLink=document.querySelector('#navLinks a[href^="learn.html"]');
   if(!loginLink)return;
 
@@ -41,7 +35,7 @@
           loginLink.textContent='Sign out';
           return;
         }
-        window.location.replace(LOGIN_URL);
+        window.location.replace('./index.html');
       };
       loginLink.addEventListener('click',logoutHandler);
     }else{
