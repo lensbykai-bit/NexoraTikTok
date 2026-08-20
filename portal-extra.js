@@ -171,8 +171,7 @@ document.getElementById('resetPasswordForm')?.addEventListener('submit',async e=
   if(error){if(msg)msg.textContent=error.message;return}
   if(msg)msg.textContent='Password updated ✓ Redirecting to homepage…';
   passwordResetMode=false;
-  await sb.auth.signOut();
-  location.replace('index.html');
+  window.location.replace('./index.html?password=updated');
 });
 
 if(sb){
