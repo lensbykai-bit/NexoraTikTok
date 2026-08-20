@@ -1,5 +1,30 @@
-const menuToggle=document.getElementById('menuToggle');
+function loadStyleOnce(href,id){
+  if(document.getElementById(id))return;
+  const link=document.createElement('link');
+  link.id=id;
+  link.rel='stylesheet';
+  link.href=href;
+  document.head.appendChild(link);
+}
+
+loadStyleOnce('nav-enhance.css','nexora-nav-enhance');
+
+const publicNavItems=[
+  ['index.html','Home'],
+  ['courses.html','Courses'],
+  ['tools.html','Tools'],
+  ['resources.html','Resources'],
+  ['success-stories.html','Success Stories'],
+  ['pricing.html','Pricing'],
+  ['about.html','About']
+];
+
 const navLinks=document.getElementById('navLinks');
+const menuToggle=document.getElementById('menuToggle');
+if(navLinks){
+  const current=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  navLinks.innerHTML=publicNavItems.map(([href,label])=>`<a${current===href?' class="active"':''} href="${href}">${label}</a>`).join('');
+}
 if(menuToggle&&navLinks){
   menuToggle.addEventListener('click',()=>navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
