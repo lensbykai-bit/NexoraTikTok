@@ -1,5 +1,11 @@
 # NexoraTikTok Changelog
 
+## v2.6.1 — 2026-08-20
+
+- Removed the Prompt Book category chip toolbar (`ALL`, `AI PROMPT`, `CINEMATIC`, etc.).
+- Removed the visible `Live library · X prompts available` status line from the Prompt Book.
+- Simplified Prompt Book filtering to search-only while keeping prompt cards, images, pagination and modal/copy behavior intact.
+
 ## v2.6.0 — 2026-08-20
 
 - Added direct image upload controls to every row in `admin-prompt-intake.html` so admins no longer need to paste an image path manually.
