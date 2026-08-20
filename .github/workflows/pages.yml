@@ -28,10 +28,19 @@ jobs:
         shell: bash
         run: |
           set -e
-          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html admin.html 404.html styles.css extras.css home-v2.css admin.css app.js forms.js portal-extra.js portal-cloud.js portal-cloud.css prompt-library.js admin.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
+          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html admin.html 404.html styles.css extras.css home-v2.css portal-cloud.css portal-v2.css prompt-library.css admin.css admin-v2.css app.js forms.js portal-extra.js portal-cloud.js prompt-library.js admin.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
             test -f "$f" || { echo "Missing required file: $f"; exit 1; }
           done
           echo "Required files OK"
+
+      - name: Check JavaScript syntax
+        shell: bash
+        run: |
+          set -e
+          for f in app.js forms.js portal-extra.js portal-cloud.js prompt-library.js admin.js; do
+            node --check "$f"
+          done
+          echo "JavaScript syntax OK"
 
       - name: Check local HTML links
         shell: bash
