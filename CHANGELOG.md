@@ -1,5 +1,16 @@
 # NexoraTikTok Changelog
 
+## v2.4.0 — 2026-08-20
+
+- Added an installable Progressive Web App foundation with an upgraded `site.webmanifest`, app identity, shortcuts and standalone display settings.
+- Added `sw.js` with versioned public-page/static-asset caching and automatic cleanup of older Nexora caches.
+- Added a branded `offline.html` fallback with connection recovery, Home and Free Lessons actions.
+- Added network-first navigation behavior for public pages and stale-while-revalidate behavior for safe same-origin static assets.
+- Explicitly excluded Admin, Student Portal, private certificate and enrollment routes from offline caching so sensitive/account-specific pages are not stored by the service worker.
+- Added service-worker registration and online/offline feedback to the shared public/student runtime.
+- Added deployment guards that fail if private routes are removed from service-worker exclusions or accidentally appear in the PWA precache.
+- Expanded JavaScript syntax validation and required-file validation to cover the service worker and offline page.
+
 ## v2.3.0 — 2026-08-20
 
 - Hardened the main Admin student view so it no longer selects or displays the private Student Portal notebook field.
