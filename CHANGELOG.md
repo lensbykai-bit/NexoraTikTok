@@ -1,5 +1,11 @@
 # Nexora Digital Changelog
 
+## 1.3.1
+- Unified the public navbar across Home, Courses, Tools, Resources, Success Stories, Pricing and About.
+- Added automatic active-page highlighting based on the current page.
+- Improved menu spacing, hover states and pink active underline styling.
+- Kept the same navigation behavior on desktop and mobile.
+
 ## 1.3.0
 - Split the main navigation into dedicated pages for Courses, Tools, Resources, Success Stories, Pricing and About.
 - Kept Home on the main homepage and added active navigation states to each new page.
