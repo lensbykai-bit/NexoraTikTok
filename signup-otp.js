@@ -1,4 +1,4 @@
-/* Nexora DIGI signup verification: email + password -> 6-digit email OTP -> set password -> verified account. */
+/* Nexora DIGI signup verification: email + password -> 8-digit email OTP -> set password -> verified account. */
 (function initSignupOtp(){
   const form=document.getElementById('emailSignupForm');
   const signupBox=document.getElementById('signupBox');
@@ -17,10 +17,10 @@
   verifyStep.innerHTML=`
     <span class="section-kicker">VERIFY EMAIL</span>
     <h2>Enter verification code</h2>
-    <p class="portal-status" style="margin-top:0">We sent a 6-digit code to <strong id="signupVerifyEmail"></strong>.</p>
+    <p class="portal-status" style="margin-top:0">We sent an 8-digit code to <strong id="signupVerifyEmail"></strong>.</p>
     <form class="auth-form" id="signupVerifyForm">
       <label>Verification code
-        <input id="signupVerifyCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit code" required>
+        <input id="signupVerifyCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{8}" placeholder="8-digit code" required>
       </label>
       <button class="auth-btn" type="submit">Verify account</button>
     </form>
@@ -81,8 +81,8 @@
     const code=(document.getElementById('signupVerifyCode')?.value||'').trim();
     const verifyMsg=document.getElementById('signupVerifyMessage');
 
-    if(!/^\d{6}$/.test(code)){
-      if(verifyMsg)verifyMsg.textContent='Enter the 6-digit verification code.';
+    if(!/^\d{8}$/.test(code)){
+      if(verifyMsg)verifyMsg.textContent='Enter the 8-digit verification code.';
       return;
     }
     if(!signupEmail||!signupPassword)return;
