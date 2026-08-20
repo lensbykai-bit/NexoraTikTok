@@ -61,3 +61,12 @@ function updateLessonCount(){
 }
 updateLessonCount();
 document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>setTimeout(updateLessonCount,0)));
+
+/* Load account cloud-sync layer after the base portal is ready. */
+if(!document.querySelector('script[data-nexora-cloud]')){
+  const cloud=document.createElement('script');
+  cloud.src='portal-cloud.js';
+  cloud.defer=true;
+  cloud.dataset.nexoraCloud='1';
+  document.body.appendChild(cloud);
+}
