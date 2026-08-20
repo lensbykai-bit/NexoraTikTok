@@ -131,11 +131,9 @@ async function saveProfile(e){
 
 async function requestAccess(){
   const btn=$('requestAccessBtn'); btn.disabled=true; btn.textContent='Sending…';
-  const {data,error}=await sb.from('enrollments').insert({user_id:state.session.user.id,plan:'full',status:'pending'}).select().single();
-  if(error){
-    if(error.code==='23505'){const res=await sb.from('enrollments').select('*').eq('user_id',state.session.user.id).maybeSingle(); state.enrollment=res.data||state.enrollment;}
-    else alert(error.message);
-  }else state.enrollment=data;
+  const {data,error}=await sb.rpc('request_full_access');
+  if(error){alert(error.message);btn.disabled=false;btn.textContent='Request Full Access';return;}
+  state.enrollment=Array.isArray(data)?data[0]:data;
   btn.disabled=false; btn.textContent='Request Full Access'; renderAll();
 }
 
