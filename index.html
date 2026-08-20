@@ -3,109 +3,111 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Nexora Digital creator academy for TikTok, AI content, creator workflows, prompts and student learning tools.">
+  <meta name="theme-color" content="#160d14">
+  <meta name="description" content="Nexora Digital creator academy for courses, creator systems, prompt resources and digital growth.">
   <title>Nexora Digital — Creator Academy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="extras.css">
-  <link rel="stylesheet" href="reference-theme.css?v=2.8.1">
+  <link rel="stylesheet" href="reference-theme.css?v=2.9.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    /* Opening the main Nexora link always starts at Student Login.
-       Authenticated students reach Home through the explicit ?home=1 route after sign-in. */
-    (()=>{
-      const params=new URLSearchParams(window.location.search);
-      if(!params.has('home')) window.location.replace('./learn.html?login=1');
-    })();
+    (()=>{const params=new URLSearchParams(location.search);if(!params.has('home')) location.replace('./learn.html?login=1')})();
   </script>
 </head>
-<body class="reference-theme">
+<body class="reference-theme pink-empire">
 <header class="site-header">
   <div class="container nav">
-    <a class="brand" href="index.html?home=1"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></a>
+    <a class="brand" href="index.html?home=1">
+      <span class="brand-logo">N</span>
+      <span><b>Nexora Digital</b><small>DIGITAL CREATOR ACADEMY</small></span>
+    </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
     <nav class="nav-links" id="navLinks">
+      <a class="active" href="index.html?home=1">Home</a>
       <a href="courses.html">Courses</a>
-      <a href="support-program.html">Support Program</a>
-      <a href="curriculum.html">Curriculum</a>
-      <a href="services.html">Services</a>
-      <a href="prompt-book.html">Prompt Book</a>
-      <a href="faq.html">FAQ</a>
+      <a href="support-program.html">Community</a>
+      <a href="prompt-book.html">Resources</a>
+      <a href="faq.html">About</a>
+      <a href="enroll.html">Pricing</a>
       <a href="learn.html?login=1">Login</a>
     </nav>
-    <a class="pill dark" href="enroll.html">Enroll now</a>
+    <a class="pill join-pill" href="enroll.html">Join Nexora</a>
   </div>
 </header>
 
 <main>
-  <section class="ref-hero">
-    <div class="container ref-hero-grid">
-      <div>
-        <div class="ref-eyebrow">CAMBODIA · CREATOR ACADEMY · 2026</div>
-        <h1>Build creator skills into a <span>real system.</span></h1>
-        <p>Nexora Digital brings TikTok strategy, AI-assisted content creation, prompt workflows and structured learning into one clean creator academy.</p>
-        <div class="actions">
-          <a class="pill gradient" href="enroll.html">Join Nexora →</a>
-          <a class="pill outline" href="curriculum.html">See what you'll learn</a>
+  <section class="empire-hero">
+    <div class="empire-glow glow-one"></div>
+    <div class="empire-glow glow-two"></div>
+    <div class="container empire-grid">
+      <div class="empire-copy">
+        <span class="empire-badge">✦ WELCOME TO NEXORA DIGITAL</span>
+        <h1>Create. Influence.<br><em>Build Your Empire.</em></h1>
+        <p>The all-in-one academy for digital creators, content entrepreneurs and brand builders — with structured courses, creator workflows and practical resources.</p>
+        <div class="empire-actions">
+          <a class="pill empire-primary" href="courses.html">Explore Courses <span>→</span></a>
+          <a class="pill empire-secondary" href="support-program.html">Join Our Community <span>♟</span></a>
+        </div>
+        <div class="creator-proof">
+          <div class="avatar-stack"><span>ND</span><span>AI</span><span>CC</span><span>+</span></div>
+          <div><strong>Creator-first learning</strong><small>Build skills, systems and confidence.</small></div>
         </div>
       </div>
-      <div class="ref-visual" aria-label="Nexora Digital academy visual">
-        <div class="ref-visual-card">
-          <div class="ref-n">N</div>
-          <h2>Nexora Digital</h2>
-          <small>LEARN · CREATE · GROW · MONETIZE</small>
+
+      <div class="empire-visual">
+        <div class="hero-photo" role="img" aria-label="Pink creator workspace"></div>
+        <div class="hero-stat">
+          <span class="hero-crown">♛</span>
+          <div><small>Creator Academy</small><strong>24/7</strong><span>learn at your own pace</span></div>
         </div>
       </div>
     </div>
+
+    <div class="container empire-features">
+      <article><i>✦</i><div><strong>Expert-Led Courses</strong><span>Clear learning paths and practical creator skills.</span></div></article>
+      <article><i>▷</i><div><strong>Actionable Training</strong><span>Step-by-step lessons designed to be applied.</span></div></article>
+      <article><i>◎</i><div><strong>Supportive Community</strong><span>Keep your learning and support resources together.</span></div></article>
+      <article><i>♕</i><div><strong>Build Your Brand</strong><span>Create a repeatable creator system that can grow.</span></div></article>
+    </div>
   </section>
 
-  <section class="ref-road">
+  <section class="featured-courses">
     <div class="container">
-      <div class="ref-road-title">THE NEXORA PATH</div>
-      <div class="ref-road-grid">
-        <div class="ref-road-item"><span class="ref-dot"></span><b>Learn</b><p>Understand the platform, your niche and the content fundamentals first.</p></div>
-        <div class="ref-road-item"><span class="ref-dot"></span><b>Create</b><p>Turn ideas into repeatable scripts, prompts, visuals and short-form content.</p></div>
-        <div class="ref-road-item"><span class="ref-dot"></span><b>Grow</b><p>Improve hooks, retention, consistency and decisions using your own results.</p></div>
-        <div class="ref-road-item"><span class="ref-dot"></span><b>Monetize</b><p>Build a creator system that is organized for long-term digital opportunities.</p></div>
+      <div class="featured-head">
+        <div><span>FEATURED COURSES ✦</span><h2>Learn. Create. <em>Earn.</em></h2></div>
+        <a href="courses.html">View All Courses →</a>
+      </div>
+      <div class="featured-grid">
+        <article class="featured-card">
+          <div class="course-art art-one"><span>BESTSELLER</span><b>Creator<br>Blueprint</b></div>
+          <div class="course-copy"><h3>Content Creator Blueprint</h3><p>Plan, create and grow content with a clear repeatable workflow.</p><strong class="course-meta">FOUNDATION</strong></div>
+        </article>
+        <article class="featured-card">
+          <div class="course-art art-two"><span>BRAND</span><b>Build Your<br>Identity</b></div>
+          <div class="course-copy"><h3>Brand Your Business</h3><p>Build a magnetic personal brand that feels clear and consistent.</p><strong class="course-meta">BRANDING</strong></div>
+        </article>
+        <article class="featured-card">
+          <div class="course-art art-three"><span>GROWTH</span><b>Creator<br>Strategy</b></div>
+          <div class="course-copy"><h3>Monetize Your Influence</h3><p>Understand the systems that support long-term creator growth.</p><strong class="course-meta">GROWTH</strong></div>
+        </article>
+        <article class="featured-card">
+          <div class="course-art art-four"><span>DIGITAL</span><b>Products &<br>Systems</b></div>
+          <div class="course-copy"><h3>Digital Product Mastery</h3><p>Organize resources, offers and learning content into one system.</p><strong class="course-meta">SYSTEMS</strong></div>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="ref-stats">
-    <div class="container ref-stats-grid">
-      <div class="ref-stat"><strong>3</strong><span>Connected learning tracks</span></div>
-      <div class="ref-stat"><strong>AI+</strong><span>Practical creator workflows</span></div>
-      <div class="ref-stat"><strong>Portal</strong><span>Progress, tasks and notes</span></div>
-      <div class="ref-stat"><strong>24/7</strong><span>Digital learning access</span></div>
-    </div>
-  </section>
-
-  <section class="ref-explore">
+  <section class="empire-cta">
     <div class="container">
-      <span class="ref-kicker">EXPLORE</span>
-      <h2 class="ref-section-title">Everything, in one place.</h2>
-      <p class="ref-sub">Choose the part of Nexora that matches what you want to work on next.</p>
-      <div class="ref-cards">
-        <article class="ref-card"><span class="num">01</span><h3>Courses</h3><p>Structured creator tracks covering TikTok strategy, AI content and creator systems.</p><a href="courses.html">See the tracks →</a></article>
-        <article class="ref-card"><span class="num">02</span><h3>Support Program</h3><p>A guided learning path with tasks, student access and creator support resources.</p><a href="support-program.html">See what's included →</a></article>
-        <article class="ref-card"><span class="num">03</span><h3>Curriculum</h3><p>See the learning order, free previews and how the modules connect.</p><a href="curriculum.html">See the modules →</a></article>
-        <article class="ref-card"><span class="num">04</span><h3>Services</h3><p>Focused creator setup, workflow, AI and digital-product support areas.</p><a href="services.html">See services →</a></article>
-        <article class="ref-card"><span class="num">05</span><h3>Prompt Book</h3><p>Search visual prompts, open the full text and copy it into your own workflow.</p><a href="prompt-book.html">Open the book →</a></article>
-        <article class="ref-card"><span class="num">06</span><h3>FAQ</h3><p>Clear answers about access, lessons, prompts, accounts and the program.</p><a href="faq.html">Read FAQ →</a></article>
-      </div>
-    </div>
-  </section>
-
-  <section class="ref-cta">
-    <div class="container">
-      <h2>Ready to build your creator system?</h2>
-      <p>Start with the public curriculum, browse the Prompt Book, or submit an enrollment request when you are ready for full student access.</p>
-      <div class="actions center">
-        <a class="pill light-pill" href="enroll.html">Enroll now →</a>
-        <a class="pill ghost-dark" href="free-lessons.html">Start free lessons</a>
+      <span>READY TO START?</span>
+      <h2>Turn your creator ideas into a system you can keep building.</h2>
+      <div class="empire-actions center">
+        <a class="pill empire-primary" href="enroll.html">Join Nexora →</a>
+        <a class="pill empire-secondary" href="prompt-book.html">Browse Prompt Book</a>
       </div>
     </div>
   </section>
@@ -113,15 +115,16 @@
 
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div><a class="brand" href="index.html?home=1"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></a><p>Learn. Create. Grow. Build a creator system.</p></div>
-    <div><small>LEARN</small><a href="courses.html">Courses</a><a href="support-program.html">Support Program</a><a href="curriculum.html">Curriculum</a><a href="services.html">Services</a><a href="prompt-book.html">Prompt Book</a><a href="faq.html">FAQ</a></div>
-    <div><small>STUDENTS</small><a href="learn.html?login=1">Student login</a><a href="enroll.html">Enroll now</a><a href="results.html">Results</a><a href="contact.html">Contact</a></div>
-    <div><small>LEGAL</small><a href="legal.html#privacy">Privacy</a><a href="legal.html#terms">Terms</a><a href="legal.html#refunds">Refunds</a><a href="legal.html#acceptable">Acceptable Use</a></div>
+    <div><a class="brand" href="index.html?home=1"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></a><p>Learn. Create. Grow. Build your creator system.</p></div>
+    <div><small>LEARN</small><a href="courses.html">Courses</a><a href="curriculum.html">Curriculum</a><a href="free-lessons.html">Free Lessons</a></div>
+    <div><small>RESOURCES</small><a href="prompt-book.html">Prompt Book</a><a href="support-program.html">Community</a><a href="contact.html">Support</a></div>
+    <div><small>ACCOUNT</small><a href="learn.html?login=1">Student login</a><a href="enroll.html">Join Nexora</a><a href="legal.html#privacy">Privacy</a></div>
   </div>
   <div class="container copyright">© 2026 Nexora Digital. All rights reserved.</div>
 </footer>
+
 <div class="toast" id="toast"></div>
-<script src="app.js?v=2.8.1"></script>
-<script src="header-auth.js?v=2.8.1"></script>
+<script src="app.js?v=2.9.0"></script>
+<script src="header-auth.js?v=2.9.0"></script>
 </body>
 </html>
