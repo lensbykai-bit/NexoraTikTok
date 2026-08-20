@@ -1,3 +1,13 @@
+/* Load the v3.1 Dark Pink Creator Hub login skin without changing auth behavior. */
+(function loadMoneyAuthTheme(){
+  if(document.querySelector('link[data-nexora-money-auth]'))return;
+  const link=document.createElement('link');
+  link.rel='stylesheet';
+  link.href='money-auth.css?v=3.1.0';
+  link.dataset.nexoraMoneyAuth='1';
+  document.head.appendChild(link);
+})();
+
 /* Direct site entry should land on the public homepage, not the login screen. */
 (function guardDirectLoginEntry(){
   const params=new URLSearchParams(window.location.search);
@@ -114,14 +124,8 @@ async function sendRecoveryCode(){
   if(!sb||!recoveryEmail)return false;
   if(msg)msg.textContent='Sending verification code…';
   if(verifyMsg)verifyMsg.textContent='';
-  const {error}=await sb.auth.signInWithOtp({
-    email:recoveryEmail,
-    options:{shouldCreateUser:false}
-  });
-  if(error){
-    if(msg)msg.textContent=error.message;
-    return false;
-  }
+  const {error}=await sb.auth.signInWithOtp({email:recoveryEmail,options:{shouldCreateUser:false}});
+  if(error){if(msg)msg.textContent=error.message;return false}
   if(msg)msg.textContent='Verification code sent ✓';
   document.getElementById('recoveryEmailStep')?.classList.add('hidden');
   document.getElementById('recoveryCodeStep')?.classList.remove('hidden');
@@ -131,117 +135,28 @@ async function sendRecoveryCode(){
   return true;
 }
 
-document.getElementById('recoveryCodeRequestForm')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-  recoveryEmail=document.getElementById('recoveryEmail')?.value.trim()||'';
-  if(!recoveryEmail)return;
-  await sendRecoveryCode();
-});
-
-document.getElementById('recoveryResend')?.addEventListener('click',async()=>{
-  const msg=document.getElementById('recoveryVerifyMessage');
-  if(msg)msg.textContent='Sending a new code…';
-  const ok=await sendRecoveryCode();
-  if(ok&&msg)msg.textContent='A new verification code was sent ✓';
-});
-
-document.getElementById('recoveryVerifyForm')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const code=(document.getElementById('recoveryCode')?.value||'').trim();
-  const msg=document.getElementById('recoveryVerifyMessage');
-  if(!sb||!recoveryEmail)return;
-  if(!/^\d{8}$/.test(code)){
-    if(msg)msg.textContent='Enter the 8-digit verification code.';
-    return;
-  }
-  if(msg)msg.textContent='Verifying code…';
-  passwordResetMode=true;
-  const {error}=await sb.auth.verifyOtp({email:recoveryEmail,token:code,type:'email'});
-  if(error){
-    passwordResetMode=false;
-    if(msg)msg.textContent=error.message;
-    return;
-  }
-  if(msg)msg.textContent='Code verified ✓';
-  forceResetUi();
-  setTimeout(forceResetUi,80);
-});
-
-document.getElementById('resetPasswordForm')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const password=document.getElementById('newPassword')?.value||'';
-  const confirm=document.getElementById('confirmPassword')?.value||'';
-  const msg=document.getElementById('resetPasswordMessage');
-  if(password.length<6){if(msg)msg.textContent='Use at least 6 characters.';return}
-  if(password!==confirm){if(msg)msg.textContent='Passwords do not match.';return}
-  if(!sb)return;
-  if(msg)msg.textContent='Updating password…';
-  const {error}=await sb.auth.updateUser({password});
-  if(error){if(msg)msg.textContent=error.message;return}
-  if(msg)msg.textContent='Password updated ✓ Redirecting to homepage…';
-  passwordResetMode=false;
-  window.location.replace('./index.html?password=updated');
-});
-
-if(sb){
-  sb.auth.onAuthStateChange(()=>{
-    if(passwordResetMode){
-      forceResetUi();
-      setTimeout(forceResetUi,0);
-    }
-  });
-}
+document.getElementById('recoveryCodeRequestForm')?.addEventListener('submit',async e=>{e.preventDefault();recoveryEmail=document.getElementById('recoveryEmail')?.value.trim()||'';if(!recoveryEmail)return;await sendRecoveryCode()});
+document.getElementById('recoveryResend')?.addEventListener('click',async()=>{const msg=document.getElementById('recoveryVerifyMessage');if(msg)msg.textContent='Sending a new code…';const ok=await sendRecoveryCode();if(ok&&msg)msg.textContent='A new verification code was sent ✓'});
+document.getElementById('recoveryVerifyForm')?.addEventListener('submit',async e=>{e.preventDefault();const code=(document.getElementById('recoveryCode')?.value||'').trim();const msg=document.getElementById('recoveryVerifyMessage');if(!sb||!recoveryEmail)return;if(!/^\d{8}$/.test(code)){if(msg)msg.textContent='Enter the 8-digit verification code.';return}if(msg)msg.textContent='Verifying code…';passwordResetMode=true;const {error}=await sb.auth.verifyOtp({email:recoveryEmail,token:code,type:'email'});if(error){passwordResetMode=false;if(msg)msg.textContent=error.message;return}if(msg)msg.textContent='Code verified ✓';forceResetUi();setTimeout(forceResetUi,80)});
+document.getElementById('resetPasswordForm')?.addEventListener('submit',async e=>{e.preventDefault();const password=document.getElementById('newPassword')?.value||'';const confirm=document.getElementById('confirmPassword')?.value||'';const msg=document.getElementById('resetPasswordMessage');if(password.length<6){if(msg)msg.textContent='Use at least 6 characters.';return}if(password!==confirm){if(msg)msg.textContent='Passwords do not match.';return}if(!sb)return;if(msg)msg.textContent='Updating password…';const {error}=await sb.auth.updateUser({password});if(error){if(msg)msg.textContent=error.message;return}if(msg)msg.textContent='Password updated ✓ Redirecting to homepage…';passwordResetMode=false;window.location.replace('./index.html')});
+if(sb){sb.auth.onAuthStateChange(()=>{if(passwordResetMode){forceResetUi();setTimeout(forceResetUi,0)}})}
 
 /* Add eye buttons so students can show or hide password fields. */
 (function initPasswordVisibility(){
   const style=document.createElement('style');
-  style.textContent='.password-eye-wrap{position:relative;display:block}.password-eye-wrap input{padding-right:58px!important}.password-eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:12px;background:#f4f2ff;color:#654bdf;display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1}.password-eye-btn:hover{background:#ebe6ff}.password-eye-btn:focus-visible{outline:3px solid rgba(101,75,223,.2);outline-offset:2px}';
+  style.textContent='.password-eye-wrap{position:relative;display:block}.password-eye-wrap input{padding-right:58px!important}.password-eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:12px;background:#fdf0f6;color:#d52f7c;display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1}.password-eye-btn:hover{background:#f9dfeb}.password-eye-btn:focus-visible{outline:3px solid rgba(213,47,124,.18);outline-offset:2px}';
   document.head.appendChild(style);
   ['loginPassword','newPassword','confirmPassword'].forEach(id=>{
-    const input=document.getElementById(id);
-    if(!input||input.closest('.password-eye-wrap'))return;
-    const wrap=document.createElement('span');
-    wrap.className='password-eye-wrap';
-    input.parentNode.insertBefore(wrap,input);
-    wrap.appendChild(input);
-    const button=document.createElement('button');
-    button.type='button';
-    button.className='password-eye-btn';
-    button.textContent='👁';
-    button.setAttribute('aria-label','Show password');
-    button.addEventListener('click',()=>{
-      const showing=input.type==='text';
-      input.type=showing?'password':'text';
-      button.textContent=showing?'👁':'🙈';
-      button.setAttribute('aria-label',showing?'Show password':'Hide password');
-      input.focus({preventScroll:true});
-    });
-    wrap.appendChild(button);
+    const input=document.getElementById(id);if(!input||input.closest('.password-eye-wrap'))return;
+    const wrap=document.createElement('span');wrap.className='password-eye-wrap';input.parentNode.insertBefore(wrap,input);wrap.appendChild(input);
+    const button=document.createElement('button');button.type='button';button.className='password-eye-btn';button.textContent='👁';button.setAttribute('aria-label','Show password');
+    button.addEventListener('click',()=>{const showing=input.type==='text';input.type=showing?'password':'text';button.textContent=showing?'👁':'🙈';button.setAttribute('aria-label',showing?'Show password':'Hide password');input.focus({preventScroll:true})});wrap.appendChild(button);
   });
 })();
 
-function updateLessonCount(){
-  const items=[...document.querySelectorAll('#courseTab [data-item]')];
-  const completed=typeof getCompleted==='function'?getCompleted():[];
-  const done=items.filter(x=>completed.includes(x.dataset.item)).length;
-  const el=document.getElementById('lessonCount');
-  if(el)el.textContent=`${done} of ${items.length} lessons completed`;
-}
-updateLessonCount();
-document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>setTimeout(updateLessonCount,0)));
+function updateLessonCount(){const items=[...document.querySelectorAll('#courseTab [data-item]')];const completed=typeof getCompleted==='function'?getCompleted():[];const done=items.filter(x=>completed.includes(x.dataset.item)).length;const el=document.getElementById('lessonCount');if(el)el.textContent=`${done} of ${items.length} lessons completed`}
+updateLessonCount();document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>setTimeout(updateLessonCount,0)));
 
 /* Load account cloud-sync layer after the base portal is ready. */
-if(!document.querySelector('link[data-nexora-cloud-style]')){
-  const style=document.createElement('link');
-  style.rel='stylesheet';
-  style.href='portal-cloud.css';
-  style.dataset.nexoraCloudStyle='1';
-  document.head.appendChild(style);
-}
-if(!document.querySelector('script[data-nexora-cloud]')){
-  const cloud=document.createElement('script');
-  cloud.src='portal-cloud.js';
-  cloud.defer=true;
-  cloud.dataset.nexoraCloud='1';
-  document.body.appendChild(cloud);
-}
+if(!document.querySelector('link[data-nexora-cloud-style]')){const style=document.createElement('link');style.rel='stylesheet';style.href='portal-cloud.css';style.dataset.nexoraCloudStyle='1';document.head.appendChild(style)}
+if(!document.querySelector('script[data-nexora-cloud]')){const cloud=document.createElement('script');cloud.src='portal-cloud.js';cloud.defer=true;cloud.dataset.nexoraCloud='1';document.body.appendChild(cloud)}
