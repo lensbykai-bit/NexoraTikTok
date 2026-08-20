@@ -1,12 +1,12 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v1.4.0**
+Current version: **v1.5.0**
 
 Production-oriented static website for Nexora Digital, deployed with GitHub Pages and connected to Supabase services.
 
 ## Public pages
 
-- `index.html` — Home
+- `index.html` — Premium Home experience
 - `free-lessons.html` — Free starter lessons
 - `courses.html` — Course tracks
 - `support-program.html` — Flagship support program
@@ -21,26 +21,41 @@ Production-oriented static website for Nexora Digital, deployed with GitHub Page
 - `legal.html` — Privacy, terms and service policies
 - `404.html` — Not found page
 
+## Home design
+
+`home-v2.css` provides the premium Home presentation, including:
+
+- Creator-academy hero with a visual student-dashboard preview.
+- Free-learning, curriculum and prompt-library calls to action.
+- Connected Learn → Create → Track system cards.
+- Curriculum/path preview.
+- Student Portal preview with cloud-sync messaging.
+- Prompt Book preview and premium responsive layout.
+
 ## Private admin page
 
-- `admin.html` — Nexora request management control center
-- `admin.js` — Protected admin login, request management, filters and CSV export
+- `admin.html` — Nexora management control center
+- `admin.js` — Protected admin login and management logic
 - `admin.css` — Responsive admin interface
 
-The admin page is intentionally excluded from the public sitemap and uses `noindex`. Database Row Level Security still protects the records even if someone guesses the URL.
+The admin page is intentionally excluded from the public sitemap and uses `noindex`. Database Row Level Security protects the records even if someone guesses the URL.
 
 Authorized admins can:
 
+- Review cloud-synced student activity.
+- Search students by name, email and progress data.
+- See lesson progress, study time, streak and last visit.
+- Set internal student workflow status and private admin notes.
 - Review enrollment requests and contact messages.
 - Search and filter requests.
-- Update workflow status.
-- Save private admin notes.
-- Export current records as CSV.
+- Update request workflow status.
+- Export student, enrollment or contact records as CSV.
 
 ## Shared assets
 
 - `styles.css` — Base design system
 - `extras.css` — Forms, portal and production polish
+- `home-v2.css` — Premium Home design layer
 - `app.js` — Shared navigation, auth and portal behavior
 - `forms.js` — Supabase-backed enrollment/contact submissions
 - `portal-extra.js` — Password recovery and portal enhancements
@@ -55,7 +70,9 @@ Authorized admins can:
 
 The student portal keeps a local browser copy for resilience and also syncs lesson completion, notes, study time and streak information to the Nexora backend when the signed-in account is online.
 
-The cloud endpoint validates the existing student Supabase Auth session server-side before reading or writing portal state. The portal-state database table is not directly readable or writable by browser roles.
+The cloud endpoint validates the existing student Supabase Auth session server-side before reading or writing portal state. Direct browser roles cannot edit student cloud state. The backend admin project has explicit RLS policies allowing only authorized Nexora admins to read and manage internal student metadata.
+
+Admin-only fields such as `student_status` and `admin_note` are not written by the student portal sync process.
 
 ## Prompt images
 
@@ -88,7 +105,7 @@ The student portal uses the existing student Supabase Auth project. The authoriz
 
 `https://lensbykai-bit.github.io/NexoraTikTok/learn.html`
 
-The private admin page uses the Nexora backend Supabase Auth project and only users listed in `admin_users` can access protected request data.
+The private admin page uses the Nexora backend Supabase Auth project and only users listed in `admin_users` can access protected operational data.
 
 Never place Supabase secret/service-role keys or OAuth client secrets in this repository. Browser code should only contain publishable keys. Elevated database access is isolated to server-side infrastructure.
 
