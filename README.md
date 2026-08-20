@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v2.0.0**
+Current version: **v2.1.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -21,26 +21,42 @@ Production-oriented creator-learning website deployed with GitHub Pages and conn
 - `legal.html` — Policies
 - `404.html` — Not found page
 
-## Student Portal v2
+`certificate.html` is a private `noindex` Student Portal companion page and is not a public discovery page.
 
-The Student Portal now has a dedicated Overview dashboard that combines the signed-in student's key account information in one place:
+## Student Portal v2.1
+
+The Student Portal Overview combines the signed-in student's main account state:
 
 - Starter / Full course access
-- live lesson progress
+- server-verified active lesson count and completed lesson count
 - latest linked enrollment status
 - submitted and approved dates
-- manual payment-status summary
+- non-secret payment-status summary
 - unread notification count
 - next-step guidance
-- one-click refresh after an admin update
+- one-click account/status refresh
+- automatic certificate progress and Certificate Ready state
 
-`student-dashboard.js` and `student-dashboard.css` power the overview UI. The portal also loads `student-notifications.js` automatically so enrollment, support and course-access updates are visible without editing `learn.html` for every feature release.
+`student-dashboard.js` and `student-dashboard.css` power the Overview experience. The portal also loads `student-notifications.js` automatically.
 
 ### Student status endpoint
 
-The `student-status` Edge Function validates the existing Student Portal Supabase Auth session against the student-auth project. It then returns only the signed-in student's access, enrollment-status and unread-notification summary from the backend project.
+The `student-status` Edge Function validates the existing Student Portal Supabase Auth session against the student-auth project. Version 2 returns only the signed-in student's access, lesson totals, completion count, enrollment summary, unread notification count and active certificate summary from the backend project.
 
-Students do not get direct browser read access to private operations tables.
+Students do not receive direct browser read access to private operations or certificate tables.
+
+## Course completion certificates
+
+v2.1 adds `public.nexora_certificates`.
+
+A certificate is automatically issued when a student:
+
+1. has `full` course access, and
+2. has completed every currently active lesson in the Nexora course database.
+
+The certificate record includes a unique Nexora certificate code, student display name, number of lessons completed and issue date. Certificate data is not publicly readable through Supabase.
+
+`certificate.html` validates the signed-in Student Portal session through `student-status` and displays only that student's active certificate. The page supports browser **Print / Save PDF**.
 
 ## Live courses and lessons
 
@@ -69,7 +85,7 @@ Approved enrollment requests are automatically matched to a Student Portal accou
 
 ### Payment-provider-ready structure
 
-v2 adds backend fields for payment provider, amount, currency and verification timestamp plus the private `nexora_payment_events` table for a future server-side provider/webhook integration.
+The backend includes fields for payment provider, amount, currency and verification timestamp plus the private `nexora_payment_events` table for a future server-side provider/webhook integration.
 
 This structure does **not** charge, verify or refund money by itself. A real payment provider and secret server-side credentials are still required before automated payment processing can be enabled. No payment secret belongs in GitHub or client-side JavaScript.
 
@@ -96,15 +112,18 @@ All admin pages are marked `noindex`. Supabase Row Level Security and admin auth
 
 The Prompt Book uses `public.nexora_prompts`. Authorized admins can create, edit, hide, reorder and delete prompts while public users only load active content.
 
+Prompt images can be added later without changing the database architecture; each prompt already supports an image path/URL.
+
 ## Main frontend assets
 
 - `styles.css`, `extras.css`, `home-v2.css`
 - `portal-v2.css`, `portal-cloud.css`, `course-library.css`
 - `student-notifications.css`, `student-dashboard.css`
+- `certificate.css`
 - `prompt-library.css`
 - `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`, `admin-operations.css`
 - `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
-- `student-notifications.js`, `student-dashboard.js`
+- `student-notifications.js`, `student-dashboard.js`, `certificate.js`
 - `course-library.js`, `prompt-library.js`
 - `admin.js`, `admin-courses.js`, `admin-analytics.js`, `admin-operations.js`
 - `forms.js`
