@@ -1,5 +1,17 @@
 # NexoraTikTok Changelog
 
+## v1.5.0 — 2026-08-20
+
+- Rebuilt the Home page with a premium creator-academy presentation.
+- Added a new responsive `home-v2.css` design layer with richer hero, learning-path, portal-preview and prompt-preview sections.
+- Added a visual Student Portal preview to explain progress, tasks and cloud sync before login.
+- Expanded the private Admin Control Center with a dedicated Students tab.
+- Added student search, status filtering, progress/time summaries, private admin notes and CSV export.
+- Added protected admin read/update access for cloud student records through Row Level Security.
+- Added `student_status` and private `admin_note` fields to portal-state records without exposing them to students.
+- Added database indexes for student status and email lookup.
+- Cleared the previous `RLS Enabled No Policy` security advisory for `nexora_portal_state` by adding explicit admin-only policies.
+
 ## v1.4.0 — 2026-08-20
 
 - Added a private `admin.html` control center for Nexora operations.
