@@ -1,3 +1,12 @@
+/* Direct site entry should land on the public homepage, not the login screen. */
+(function guardDirectLoginEntry(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.has('login')||params.has('forgot')||window.location.hash)return;
+  let sameSite=false;
+  try{sameSite=Boolean(document.referrer)&&new URL(document.referrer).origin===window.location.origin}catch{}
+  if(!sameSite)window.location.replace('./index.html');
+})();
+
 const forgotBtn=document.getElementById('forgotPassword');
 const recoveryBox=document.getElementById('recoveryBox');
 const loginBoxExtra=document.getElementById('loginBox');
@@ -183,12 +192,12 @@ if(sb){
   });
 }
 
-/* Add eye buttons so students can show or hide reset-password fields. */
+/* Add eye buttons so students can show or hide password fields. */
 (function initPasswordVisibility(){
   const style=document.createElement('style');
   style.textContent='.password-eye-wrap{position:relative;display:block}.password-eye-wrap input{padding-right:58px!important}.password-eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:12px;background:#f4f2ff;color:#654bdf;display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1}.password-eye-btn:hover{background:#ebe6ff}.password-eye-btn:focus-visible{outline:3px solid rgba(101,75,223,.2);outline-offset:2px}';
   document.head.appendChild(style);
-  ['newPassword','confirmPassword'].forEach(id=>{
+  ['loginPassword','newPassword','confirmPassword'].forEach(id=>{
     const input=document.getElementById(id);
     if(!input||input.closest('.password-eye-wrap'))return;
     const wrap=document.createElement('span');
