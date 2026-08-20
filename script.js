@@ -32,6 +32,12 @@ const menuToggle=document.getElementById('menuToggle');
 if(navLinks){
   navLinks.innerHTML=publicNavItems.map(([href,label])=>`<a${currentPage===href?' class="active"':''} href="${href}">${label}</a>`).join('');
 }
+
+const navActions=document.querySelector('.nav-actions');
+if(navActions&&!document.body.classList.contains('login-body')){
+  navActions.innerHTML='<a class="btn btn-ghost" href="login.html">Log In</a><a class="btn btn-primary" href="login.html?mode=signup">Sign Up</a>';
+}
+
 if(menuToggle&&navLinks){
   menuToggle.addEventListener('click',()=>navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
