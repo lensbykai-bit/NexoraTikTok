@@ -6,6 +6,8 @@
   if(!form||!signupBox)return;
 
   let signupEmail='';
+  const authClient=typeof sb!=='undefined'?sb:null;
+  if(!authClient)return;
 
   const verifyStep=document.createElement('div');
   verifyStep.id='signupVerifyStep';
@@ -47,14 +49,13 @@
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     e.stopImmediatePropagation();
-    if(!window.sb)return;
     const name=document.getElementById('signupName')?.value.trim()||'';
     const email=document.getElementById('signupEmail')?.value.trim()||'';
     const password=document.getElementById('signupPassword')?.value||'';
     if(!email||password.length<6)return;
     if(msg)msg.textContent='Sending verification code…';
 
-    const {data,error}=await window.sb.auth.signUp({
+    const {data,error}=await authClient.auth.signUp({
       email,
       password,
       options:{data:{full_name:name}}
@@ -78,9 +79,9 @@
       if(verifyMsg)verifyMsg.textContent='Enter the 6-digit verification code.';
       return;
     }
-    if(!window.sb||!signupEmail)return;
+    if(!signupEmail)return;
     if(verifyMsg)verifyMsg.textContent='Verifying code…';
-    const {data,error}=await window.sb.auth.verifyOtp({
+    const {data,error}=await authClient.auth.verifyOtp({
       email:signupEmail,
       token:code,
       type:'signup'
@@ -92,9 +93,9 @@
 
   document.getElementById('signupResendCode')?.addEventListener('click',async()=>{
     const verifyMsg=document.getElementById('signupVerifyMessage');
-    if(!window.sb||!signupEmail)return;
+    if(!signupEmail)return;
     if(verifyMsg)verifyMsg.textContent='Sending a new code…';
-    const {error}=await window.sb.auth.resend({type:'signup',email:signupEmail});
+    const {error}=await authClient.auth.resend({type:'signup',email:signupEmail});
     if(verifyMsg)verifyMsg.textContent=error?error.message:'A new verification code was sent ✓';
   });
 
