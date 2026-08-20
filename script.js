@@ -43,16 +43,30 @@ if(menuToggle&&navLinks){
   navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('open')));
 }
 
-const togglePassword=document.getElementById('togglePassword');
-const password=document.getElementById('password');
-if(togglePassword&&password){
-  togglePassword.addEventListener('click',()=>{
-    const show=password.type==='password';
-    password.type=show?'text':'password';
-    togglePassword.textContent=show?'◌':'◉';
-    togglePassword.setAttribute('aria-label',show?'Hide password':'Show password');
+function bindPasswordToggle(buttonId,inputId){
+  const button=document.getElementById(buttonId);
+  const input=document.getElementById(inputId);
+  if(!button||!input)return;
+  const sync=()=>{
+    const visible=input.type==='text';
+    button.textContent=visible?'◎':'◉';
+    button.setAttribute('aria-label',visible?'Hide password':'Show password');
+    button.setAttribute('aria-pressed',String(visible));
+    button.title=visible?'Hide password':'Show password';
+  };
+  button.addEventListener('click',()=>{
+    const start=input.selectionStart;
+    const end=input.selectionEnd;
+    input.type=input.type==='password'?'text':'password';
+    sync();
+    input.focus({preventScroll:true});
+    try{input.setSelectionRange(start,end);}catch(_){/* no-op */}
   });
+  sync();
 }
+
+bindPasswordToggle('togglePassword','password');
+bindPasswordToggle('toggleConfirmPassword','confirmPassword');
 
 function loadScriptOnce(src,id,onload){
   if(document.getElementById(id)){onload?.();return;}
