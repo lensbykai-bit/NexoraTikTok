@@ -1,5 +1,11 @@
 # Nexora Digital Changelog
 
+## 1.3.2
+- Temporarily removed Courses, Tools, Resources and Success Stories from the public navbar.
+- Direct visits to those four pages now open a temporary closed notice instead of the full page.
+- Kept Home, Pricing and About available in the public navigation.
+- The closed page files and content remain in the repository so they can be reopened later.
+
 ## 1.3.1
 - Unified the public navbar across Home, Courses, Tools, Resources, Success Stories, Pricing and About.
 - Added automatic active-page highlighting based on the current page.
