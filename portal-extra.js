@@ -17,7 +17,7 @@ let passwordResetMode=false;
   signupIntro?.remove();
 })();
 
-/* Password recovery now uses an email verification code (OTP), not a reset link. */
+/* Password recovery uses the same 8-digit email OTP length configured in Nexora DIGI Auth. */
 if(recoveryBox){
   recoveryBox.innerHTML=`
     <span class="section-kicker">PASSWORD RECOVERY</span>
@@ -39,7 +39,7 @@ if(recoveryBox){
       <p class="portal-status" style="margin-top:0">Code sent to <strong id="recoveryEmailDisplay"></strong></p>
       <form class="auth-form" id="recoveryVerifyForm">
         <label>Verification code
-          <input id="recoveryCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit code" required>
+          <input id="recoveryCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]{8}" placeholder="8-digit code" required>
         </label>
         <button class="auth-btn" type="submit">Verify code</button>
       </form>
@@ -141,8 +141,8 @@ document.getElementById('recoveryVerifyForm')?.addEventListener('submit',async e
   const code=(document.getElementById('recoveryCode')?.value||'').trim();
   const msg=document.getElementById('recoveryVerifyMessage');
   if(!sb||!recoveryEmail)return;
-  if(!/^\d{6}$/.test(code)){
-    if(msg)msg.textContent='Enter the 6-digit verification code.';
+  if(!/^\d{8}$/.test(code)){
+    if(msg)msg.textContent='Enter the 8-digit verification code.';
     return;
   }
   if(msg)msg.textContent='Verifying code…';
