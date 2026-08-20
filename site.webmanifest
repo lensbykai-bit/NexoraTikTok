@@ -1,14 +1,14 @@
 {
   "id":"./",
-  "name":"Nexora Digital Creator Academy",
+  "name":"Nexora Digital Creator Business Hub",
   "short_name":"Nexora",
-  "description":"Creator education, AI workflows, prompt resources and a structured student learning portal.",
+  "description":"Creator education, TikTok and multi-platform growth, AI workflows, prompt resources and student learning tools.",
   "start_url":"./learn.html?login=1",
   "scope":"./",
   "display":"standalone",
   "orientation":"portrait-primary",
-  "background_color":"#12070f",
-  "theme_color":"#ff3f93",
+  "background_color":"#10050d",
+  "theme_color":"#ff348e",
   "categories":["education","productivity"],
   "icons":[{"src":"assets/logo.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}],
   "shortcuts":[
