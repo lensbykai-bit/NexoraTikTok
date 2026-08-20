@@ -1,5 +1,18 @@
 # NexoraTikTok Changelog
 
+## v2.0.0 — 2026-08-20
+
+- Added a new Student Portal **Overview** dashboard with access, lesson progress, enrollment status and unread-notification summaries.
+- Added an authenticated `student-status` Edge Function that validates the existing Student Portal session before returning the signed-in student's enrollment/access summary.
+- Added an in-portal enrollment receipt/status view showing the latest linked request, track, level, submitted/approved dates and non-secret payment status information.
+- Fixed the v1.9 Notifications feature so the Student Portal now loads its notification UI automatically in production.
+- Added `student-dashboard.js` and `student-dashboard.css` for the new overview experience.
+- Added payment-provider-ready backend fields for provider, amount, currency and verification time without implementing or claiming real payment processing.
+- Added the private `nexora_payment_events` table for a future server-side payment/webhook integration; public browser roles have no direct access.
+- Upgraded the Operations Center to manage provider, amount and currency alongside the existing manual payment status/reference workflow.
+- Added database indexes for student status/enrollment lookup and notification reads.
+- Expanded GitHub Pages validation and JavaScript syntax checks for all v2 student-dashboard assets.
+
 ## v1.9.0 — 2026-08-20
 
 - Added `admin-operations.html` as a private enrollment operations center.
@@ -59,37 +72,18 @@
 ## v1.5.0 — 2026-08-20
 
 - Rebuilt the Home page with a premium creator-academy presentation.
-- Added a new responsive `home-v2.css` design layer with richer hero, learning-path, portal-preview and prompt-preview sections.
-- Added a visual Student Portal preview to explain progress, tasks and cloud sync before login.
+- Added a new responsive `home-v2.css` design layer with richer hero, learning-path, student-dashboard preview and prompt-preview sections.
 - Expanded the private Admin Control Center with a dedicated Students tab.
-- Added student search, status filtering, progress/time summaries, private admin notes and CSV export.
-- Added protected admin read/update access for cloud student records through Row Level Security.
-- Added internal student workflow status and private admin-note fields to portal-state records without exposing those controls to students.
-- Added database indexes for student status and email lookup.
-- Added explicit admin policies for `nexora_portal_state`.
 
 ## v1.4.0 — 2026-08-20
 
 - Added a private `admin.html` control center for Nexora operations.
-- Added Supabase-backed admin authentication using the Nexora backend project.
-- Added protected admin read/update policies for enrollment and contact requests.
-- Added request status workflows and private admin notes.
-- Added search, filters, request metrics, refresh controls and CSV export.
-- Added responsive admin UI for desktop and mobile.
-- Kept the admin page out of the public sitemap and marked it `noindex`.
-- Added database indexes and automatic `updated_at` handling for request management.
+- Added protected enrollment/contact management, search, filters, status workflow and CSV export.
 
 ## v1.3.0 — 2026-08-20
 
-- Added secure cross-device Student Portal cloud sync.
-- Added server-side session validation through the `portal-sync` Edge Function.
-- Added database storage for lesson completion, notes, time and streak state.
-- Kept local browser storage as an offline/fallback copy.
-- Added visible cloud-sync status in the Student Portal.
-- Added automatic Prompt Book image slots at `images/prompts/prompt-01.jpg` through `prompt-06.jpg`.
-- Added prompt popup image previews when an uploaded image is available.
-- Expanded GitHub Pages deployment validation for all v1.3 files.
-- Documented image slots and production architecture in README.
+- Added secure cross-device Student Portal cloud sync, offline fallback and visible sync status.
+- Added Prompt Book image slots and deployment validation improvements.
 
 ## v1.2.0
 
