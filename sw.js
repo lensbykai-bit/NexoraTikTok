@@ -1,4 +1,4 @@
-const CACHE_VERSION='nexora-v2.6.20';
+const CACHE_VERSION='nexora-v3.0.0';
 const STATIC_CACHE=`${CACHE_VERSION}-static`;
 const PAGE_CACHE=`${CACHE_VERSION}-pages`;
 
@@ -22,6 +22,7 @@ const PUBLIC_PAGES=[
 const STATIC_ASSETS=[
   './styles.css',
   './extras.css',
+  './reference-theme.css',
   './home-v2.css',
   './course-library.css',
   './prompt-library.css',
