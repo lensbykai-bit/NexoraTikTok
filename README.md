@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v2.1.0**
+Current version: **v2.2.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -15,6 +15,7 @@ Production-oriented creator-learning website deployed with GitHub Pages and conn
 - `prompt-book.html` — Live searchable prompt library
 - `results.html` — Results/case-study layout
 - `faq.html` — FAQ
+- `verify-certificate.html` — Public certificate verification by certificate code
 - `learn.html` — Student login and live learning portal
 - `enroll.html` — Enrollment form
 - `contact.html` — Contact form
@@ -23,7 +24,7 @@ Production-oriented creator-learning website deployed with GitHub Pages and conn
 
 `certificate.html` is a private `noindex` Student Portal companion page and is not a public discovery page.
 
-## Student Portal v2.1
+## Student Portal
 
 The Student Portal Overview combines the signed-in student's main account state:
 
@@ -41,22 +42,40 @@ The Student Portal Overview combines the signed-in student's main account state:
 
 ### Student status endpoint
 
-The `student-status` Edge Function validates the existing Student Portal Supabase Auth session against the student-auth project. Version 2 returns only the signed-in student's access, lesson totals, completion count, enrollment summary, unread notification count and active certificate summary from the backend project.
+The `student-status` Edge Function validates the existing Student Portal Supabase Auth session against the student-auth project. It returns only the signed-in student's access, lesson totals, completion count, enrollment summary, unread notification count and active certificate summary from the backend project.
 
 Students do not receive direct browser read access to private operations or certificate tables.
 
 ## Course completion certificates
 
-v2.1 adds `public.nexora_certificates`.
+`public.nexora_certificates` stores completion certificates.
 
 A certificate is automatically issued when a student:
 
 1. has `full` course access, and
 2. has completed every currently active lesson in the Nexora course database.
 
-The certificate record includes a unique Nexora certificate code, student display name, number of lessons completed and issue date. Certificate data is not publicly readable through Supabase.
+The certificate record includes a unique Nexora certificate code, student display name, number of lessons completed and issue date.
 
-`certificate.html` validates the signed-in Student Portal session through `student-status` and displays only that student's active certificate. The page supports browser **Print / Save PDF**.
+`certificate.html` validates the signed-in Student Portal session through `student-status` and displays only that student's active certificate. The page supports browser **Print / Save PDF** and links directly to public verification.
+
+### Public certificate verification
+
+`verify-certificate.html` lets anyone verify a certificate when they already have its high-entropy certificate code. It calls the `certificate-verify` Edge Function, which validates the code format and returns only minimal public fields for an active certificate:
+
+- certificate code
+- display name
+- completed lesson count
+- issue date
+- active verification status
+
+The public browser never gets direct read access to `nexora_certificates`.
+
+### Certificate Manager
+
+`admin-certificates.html` is the private certificate operations page. Authorized admins can search issued certificates, filter active/revoked status, copy a public verification link, revoke a certificate, or reactivate it.
+
+Certificate identity fields such as learner name and certificate code are not browser-editable by the authenticated admin role; only certificate status/timestamp fields are granted for update.
 
 ## Live courses and lessons
 
@@ -105,8 +124,11 @@ The portal provides unread counts, mark-read, mark-all-read, enrollment/course/s
 - `admin-courses.html` — courses and lessons
 - `admin-analytics.html` — live operational analytics
 - `admin-operations.html` — enrollment, payment tracking, matching, notifications and audit history
+- `admin-certificates.html` — certificate verification links and active/revoked management
 
 All admin pages are marked `noindex`. Supabase Row Level Security and admin authorization are the actual protection layer.
+
+The main `admin.html` page intentionally loads only its admin runtime and no longer loads the public/student `app.js` runtime.
 
 ## Prompt Book
 
@@ -119,13 +141,13 @@ Prompt images can be added later without changing the database architecture; eac
 - `styles.css`, `extras.css`, `home-v2.css`
 - `portal-v2.css`, `portal-cloud.css`, `course-library.css`
 - `student-notifications.css`, `student-dashboard.css`
-- `certificate.css`
+- `certificate.css`, `certificate-verify.css`
 - `prompt-library.css`
-- `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`, `admin-operations.css`
+- `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`, `admin-operations.css`, `admin-certificates.css`
 - `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
-- `student-notifications.js`, `student-dashboard.js`, `certificate.js`
+- `student-notifications.js`, `student-dashboard.js`, `certificate.js`, `certificate-verify.js`
 - `course-library.js`, `prompt-library.js`
-- `admin.js`, `admin-courses.js`, `admin-analytics.js`, `admin-operations.js`
+- `admin.js`, `admin-courses.js`, `admin-analytics.js`, `admin-operations.js`, `admin-certificates.js`
 - `forms.js`
 
 ## Deployment
