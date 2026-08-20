@@ -2,7 +2,7 @@
 (function initHeaderAuth(){
   if(!window.supabase)return;
 
-  const loginLink=document.querySelector('#navLinks a[href="learn.html"]');
+  const loginLink=document.querySelector('#navLinks a[href^="learn.html"]');
   if(!loginLink)return;
 
   const client=window.supabase.createClient(
@@ -36,7 +36,7 @@
       loginLink.addEventListener('click',logoutHandler);
     }else{
       loginLink.textContent='Login';
-      loginLink.href='learn.html';
+      loginLink.href='learn.html?login=1';
       loginLink.setAttribute('aria-label','Login to Nexora Digital');
     }
   }
