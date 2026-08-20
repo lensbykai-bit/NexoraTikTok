@@ -1,0 +1,32 @@
+const ANALYTICS_CONFIG={url:'https://bcvtkdehflmqiyvloyiy.supabase.co',key:'sb_publishable_KgISTJ7-YKktjQXw3u0yuQ_KG6H1bFa'};
+const analyticsSb=window.supabase?.createClient(ANALYTICS_CONFIG.url,ANALYTICS_CONFIG.key,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const Q=(s,r=document)=>r.querySelector(s);
+let analyticsRole=null;
+function showAnalyticsLogin(message=''){Q('#analyticsApp')?.classList.add('hidden');Q('#analyticsLogin')?.classList.remove('hidden');if(Q('#analyticsLoginMessage'))Q('#analyticsLoginMessage').textContent=message}
+function hours(sec){return `${(Math.max(0,Number(sec)||0)/3600).toFixed(1)}h`}
+function lessonCount(row){return Array.isArray(row.completed)?row.completed.filter(x=>String(x).startsWith('lesson:')||String(x).startsWith('lesson-')).length:0}
+function daysAgo(date){if(!date)return Infinity;const d=new Date(`${date}T00:00:00Z`),now=new Date();return Math.floor((Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate())-d.getTime())/86400000)}
+function countBy(rows,key,fallback='Unknown'){const out={};for(const r of rows){const v=(typeof key==='function'?key(r):r[key])||fallback;out[v]=(out[v]||0)+1}return out}
+function renderBars(id,map){const root=Q(id);if(!root)return;const entries=Object.entries(map);if(!entries.length){root.innerHTML='<div class="analytics-empty">No data yet.</div>';return}const max=Math.max(1,...entries.map(([,n])=>n));root.innerHTML=entries.map(([label,n])=>`<div class="bar-row"><label>${String(label).replaceAll('_',' ')}</label><div class="bar-track"><span style="width:${Math.max(2,Math.round(n/max*100))}%"></span></div><b>${n}</b></div>`).join('')}
+async function checkAnalyticsAdmin(){if(!analyticsSb)return false;const{data:{session}}=await analyticsSb.auth.getSession();if(!session){showAnalyticsLogin();return false}const{data,error}=await analyticsSb.from('admin_users').select('role').eq('user_id',session.user.id).maybeSingle();if(error||!data){await analyticsSb.auth.signOut();showAnalyticsLogin('This account is not authorized for Nexora Analytics.');return false}analyticsRole=data.role;Q('#analyticsIdentity').textContent=`${session.user.email||'Admin'} · ${analyticsRole}`;Q('#analyticsLogin')?.classList.add('hidden');Q('#analyticsApp')?.classList.remove('hidden');await loadAnalytics();return true}
+Q('#analyticsLoginForm')?.addEventListener('submit',async e=>{e.preventDefault();const msg=Q('#analyticsLoginMessage');if(msg)msg.textContent='Signing in…';const{error}=await analyticsSb.auth.signInWithPassword({email:Q('#analyticsEmail').value.trim(),password:Q('#analyticsPassword').value||''});if(error){if(msg)msg.textContent=error.message;return}if(msg)msg.textContent='Checking admin access…';await checkAnalyticsAdmin()});
+Q('#analyticsLogout')?.addEventListener('click',async()=>{await analyticsSb.auth.signOut();location.reload()});
+Q('#analyticsRefresh')?.addEventListener('click',loadAnalytics);
+async function loadAnalytics(){const status=Q('#analyticsStatus');if(status)status.textContent='Loading live analytics…';const[s,e,c,p,co,l]=await Promise.all([
+ analyticsSb.from('nexora_portal_state').select('external_user_id,display_name,email,completed,total_seconds,last_visit,streak,creator_level,preferred_language,niche,course_access,updated_at'),
+ analyticsSb.from('nexora_enrollments').select('id,status,created_at,approved_at'),
+ analyticsSb.from('nexora_contacts').select('id,status,created_at'),
+ analyticsSb.from('nexora_prompts').select('id,is_active'),
+ analyticsSb.from('nexora_courses').select('id,is_active'),
+ analyticsSb.from('nexora_lessons').select('id,is_active,is_preview,course_id')
+]);const err=s.error||e.error||c.error||p.error||co.error||l.error;if(err){console.error(err);if(status)status.textContent='Could not load analytics. Check admin permissions.';return}
+ const students=s.data||[],enrollments=e.data||[],contacts=c.data||[],prompts=p.data||[],courses=co.data||[],lessons=l.data||[];
+ const full=students.filter(x=>x.course_access==='full').length,active7=students.filter(x=>daysAgo(x.last_visit)<=7).length,totalStudy=students.reduce((a,x)=>a+(Number(x.total_seconds)||0),0),approved=enrollments.filter(x=>x.status==='approved').length,openRequests=[...enrollments,...contacts].filter(x=>!['approved','answered','closed'].includes(x.status)).length;
+ Q('#aStudents').textContent=students.length;Q('#aFull').textContent=full;Q('#aActive7').textContent=active7;Q('#aStudy').textContent=hours(totalStudy);Q('#aApproved').textContent=approved;Q('#aRequests').textContent=openRequests;Q('#aPrompts').textContent=prompts.filter(x=>x.is_active).length;Q('#aLessons').textContent=lessons.filter(x=>x.is_active).length;Q('#aEnrollmentTotal').textContent=`${enrollments.length} total`;
+ renderBars('#enrollmentBars',countBy(enrollments,'status','new'));renderBars('#accessBars',{starter:students.filter(x=>x.course_access!=='full').length,full});renderBars('#languageBars',countBy(students,'preferred_language','Not set'));renderBars('#levelBars',countBy(students,'creator_level','Not set'));
+ const avg=students.length?(students.reduce((a,x)=>a+lessonCount(x),0)/students.length).toFixed(1):'0.0';Q('#aAverageProgress').textContent=`Average ${avg} lessons`;
+ const recent=[...students].sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||''))).slice(0,8),recentRoot=Q('#recentStudents');recentRoot.innerHTML=recent.length?recent.map(r=>`<div class="analytics-row"><div><strong>${r.display_name||'Student'}</strong><small>${r.email||'No email'}</small></div><span>${lessonCount(r)} lessons</span><span>${hours(r.total_seconds)}</span><span class="analytics-badge">${r.course_access||'starter'}</span></div>`).join(''):'<div class="analytics-empty">No cloud student activity yet.</div>';
+ const health=Q('#contentHealth');health.innerHTML=`<article><strong>${courses.filter(x=>x.is_active).length}</strong><span>Active courses</span></article><article><strong>${lessons.filter(x=>x.is_active).length}</strong><span>Active lessons</span></article><article><strong>${lessons.filter(x=>x.is_active&&x.is_preview).length}</strong><span>Free previews</span></article><article><strong>${prompts.filter(x=>x.is_active).length}</strong><span>Active prompts</span></article>`;
+ if(status)status.textContent=`Updated ${new Date().toLocaleTimeString()}`;
+}
+analyticsSb?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT')showAnalyticsLogin()});checkAnalyticsAdmin();
