@@ -23,12 +23,46 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate required site files
+        shell: bash
+        run: |
+          set -e
+          for f in index.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html 404.html styles.css extras.css app.js forms.js portal-extra.js; do
+            test -f "$f" || { echo "Missing required file: $f"; exit 1; }
+          done
+          echo "Required files OK"
+
+      - name: Check local HTML links
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re, sys
+          broken=[]
+          for page in Path('.').glob('*.html'):
+              text=page.read_text(encoding='utf-8')
+              for href in re.findall(r'href=["\']([^"\']+)["\']', text):
+                  if href.startswith(('#','http://','https://','mailto:','tel:','javascript:')):
+                      continue
+                  target=href.split('#',1)[0].split('?',1)[0]
+                  if target and not Path(target).exists():
+                      broken.append((page.name,href))
+          if broken:
+              for page,href in broken:
+                  print(f'Broken local link: {page} -> {href}')
+              sys.exit(1)
+          print('Local links OK')
+          PY
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
