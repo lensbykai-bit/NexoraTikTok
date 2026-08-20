@@ -1,5 +1,18 @@
 # NexoraTikTok Changelog
 
+## v2.2.0 — 2026-08-20
+
+- Added public certificate verification by secure certificate code at `verify-certificate.html`.
+- Deployed the public `certificate-verify` Edge Function, which only accepts well-formed certificate codes and returns a minimal public verification record.
+- Added `certificate-verify.js` and `certificate-verify.css` for verified, revoked and not-found states.
+- Added direct Public Verify links from the authenticated student certificate viewer.
+- Added `admin-certificates.html`, `admin-certificates.js` and `admin-certificates.css` as a private certificate operations dashboard.
+- Added admin search, active/revoked filters, verification-link copy, certificate revocation and reactivation controls.
+- Hardened certificate updates so authenticated admins can update certificate status fields but cannot edit certificate identity/name/code fields through the browser role.
+- Added automatic revoked/active timestamp handling and a status constraint for certificate records.
+- Removed the public-site `app.js` runtime from `admin.html` so the private Admin dashboard no longer initializes student/public-site behavior unnecessarily.
+- Added the public verification page to the sitemap and expanded GitHub Pages validation for all v2.2 assets.
+
 ## v2.1.0 — 2026-08-20
 
 - Added automatic course-completion certificates for Full-access students who complete every active lesson.
