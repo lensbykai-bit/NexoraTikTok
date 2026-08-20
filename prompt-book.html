@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#11070d">
+<title>Nexora Digital — Prompt Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="prompt-book.css">
+</head>
+<body class="prompt-body">
+<header class="site-header"><div class="shell nav-wrap"><a class="brand" href="index.html"><span class="brand-mark">N</span><span><b>NEXORA</b><small>DIGITAL</small></span></a><button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button><nav class="nav-links" id="navLinks"><a href="index.html">Home</a><a href="courses.html">Courses</a><a class="active" href="prompt-book.html">Prompt Book</a><a href="enroll.html">Pricing</a></nav><div class="nav-actions"><a class="btn btn-ghost" href="login.html">Log In</a><a class="btn btn-primary" href="dashboard.html">Dashboard →</a></div></div></header>
+<main>
+<section class="prompt-hero"><div class="shell"><span>PROMPT LIBRARY</span><h1>Creator prompts for <em>better workflows.</em></h1><p>Original Nexora prompts for TikTok, YouTube, Instagram, AI-assisted planning, branding and digital products.</p><div class="prompt-toolbar"><input id="promptSearch" type="search" placeholder="Search prompts…"><select id="promptCategory"><option value="all">All categories</option></select></div></div></section>
+<section class="prompt-section"><div class="shell"><div id="promptGrid" class="prompt-grid"><div class="prompt-loading">Loading prompts…</div></div></div></section>
+</main>
+<dialog id="promptDialog" class="prompt-dialog"><div class="prompt-modal-head"><div><span id="modalCategory">PROMPT</span><h2 id="modalTitle">Prompt</h2></div><button id="closePrompt" type="button">×</button></div><p id="modalDescription"></p><pre id="modalPrompt"></pre><button id="copyPrompt" class="btn btn-primary" type="button">Copy Prompt</button><p id="copyStatus" class="copy-status"></p></dialog>
+<footer><div class="shell footer-grid"><div class="brand-footer"><span class="brand-mark">N</span><div><b>NEXORA DIGITAL</b><small>Creator Academy</small></div></div><p>Practical creator education and tools.</p><div class="footer-links"><a href="courses.html">Courses</a><a href="dashboard.html">Dashboard</a></div></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="auth.js"></script><script src="script.js"></script><script src="prompt-book.js"></script>
+</body></html>
