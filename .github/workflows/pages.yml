@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html admin.html admin-courses.html admin-analytics.html admin-operations.html 404.html styles.css extras.css home-v2.css portal-cloud.css portal-v2.css course-library.css prompt-library.css student-notifications.css student-dashboard.css admin.css admin-v2.css admin-courses.css admin-analytics.css admin-operations.css app.js forms.js portal-extra.js portal-cloud.js portal-courses.js course-library.js prompt-library.js student-notifications.js student-dashboard.js admin.js admin-courses.js admin-analytics.js admin-operations.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
+          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html certificate.html admin.html admin-courses.html admin-analytics.html admin-operations.html 404.html styles.css extras.css home-v2.css portal-cloud.css portal-v2.css course-library.css prompt-library.css student-notifications.css student-dashboard.css certificate.css admin.css admin-v2.css admin-courses.css admin-analytics.css admin-operations.css app.js forms.js portal-extra.js portal-cloud.js portal-courses.js course-library.js prompt-library.js student-notifications.js student-dashboard.js certificate.js admin.js admin-courses.js admin-analytics.js admin-operations.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
             test -f "$f" || { echo "Missing required file: $f"; exit 1; }
           done
           echo "Required files OK"
@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          for f in app.js forms.js portal-extra.js portal-cloud.js portal-courses.js course-library.js prompt-library.js student-notifications.js student-dashboard.js admin.js admin-courses.js admin-analytics.js admin-operations.js; do
+          for f in app.js forms.js portal-extra.js portal-cloud.js portal-courses.js course-library.js prompt-library.js student-notifications.js student-dashboard.js certificate.js admin.js admin-courses.js admin-analytics.js admin-operations.js; do
             node --check "$f"
           done
           echo "JavaScript syntax OK"
