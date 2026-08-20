@@ -33,6 +33,7 @@ function renderPortalCourses(){
   root.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>{const row=btn.closest('[data-item]');if(typeof markComplete==='function')markComplete(row);if(typeof updateLessonCount==='function')updateLessonCount();if(typeof scheduleCloudSave==='function')scheduleCloudSave(250)}));
   if(typeof updateProgress==='function')updateProgress();
   if(typeof updateLessonCount==='function')updateLessonCount();
+  if(typeof renderStudentDashboard==='function')renderStudentDashboard();
 }
 function openPortalLesson(id){
   const l=portalCourseData.lessons.find(x=>String(x.id)===String(id));
@@ -48,4 +49,5 @@ function openPortalLesson(id){
 document.getElementById('lessonViewerClose')?.addEventListener('click',()=>document.getElementById('lessonViewer')?.classList.add('hidden'));
 ensureAccessRefresh();
 if(typeof sb!=='undefined'&&sb){sb.auth.getSession().then(({data})=>{if(data.session)loadPortalCourses()});sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==='SIGNED_IN'||event==='INITIAL_SESSION'))loadPortalCourses()})}
-if(document.getElementById('portal')&&!document.querySelector('script[data-nexora-notifications]')){const s=document.createElement('script');s.src='student-notifications.js';s.defer=true;s.dataset.nexoraNotifications='1';document.body.appendChild(s)}
+function addPortalAsset(type,path,marker,onload){if(document.querySelector(`[data-${marker}]`)){onload?.();return}const el=document.createElement(type==='style'?'link':'script');if(type==='style'){el.rel='stylesheet';el.href=path}else{el.src=path;el.defer=true;if(onload)el.onload=onload}el.dataset[marker]='1';(type==='style'?document.head:document.body).appendChild(el)}
+if(document.getElementById('portal')){addPortalAsset('style','student-notifications.css','nexoraNotificationsCss');addPortalAsset('style','student-dashboard.css','nexoraDashboardCss');addPortalAsset('script','student-notifications.js','nexoraNotifications',()=>addPortalAsset('script','student-dashboard.js','nexoraDashboard'))}
