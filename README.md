@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v2.3.0**
+Current version: **v2.4.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -20,9 +20,25 @@ Production-oriented creator-learning website deployed with GitHub Pages and conn
 - `enroll.html` — Enrollment form
 - `contact.html` — Contact form
 - `legal.html` — Policies
+- `offline.html` — Offline fallback
 - `404.html` — Not found page
 
 `certificate.html` is a private `noindex` Student Portal companion page.
+
+## v2.4 PWA and offline foundation
+
+Nexora now includes an installable Progressive Web App foundation.
+
+- `site.webmanifest` contains the Nexora app identity, standalone display mode and shortcuts to Student Portal, Prompt Book and Free Lessons.
+- `sw.js` caches safe public pages and static same-origin assets using versioned caches.
+- public navigations use network-first behavior so fresh content is preferred whenever the connection is available.
+- static assets use cache-first/stale-while-revalidate behavior for faster repeat visits.
+- `offline.html` provides a branded recovery screen when a requested network page cannot be reached.
+- the shared `app.js` runtime registers the service worker and surfaces online/offline connection feedback.
+
+Private/account-specific routes are deliberately excluded from service-worker caching: Admin pages, `learn.html`, `certificate.html` and `enroll.html`. Protected account data and Supabase API responses are not part of the public offline cache.
+
+The GitHub Pages workflow includes PWA cache-safety checks so deployment fails if private routes are accidentally removed from the service-worker exclusion list or added to the precache.
 
 ## v2.3 production polish
 
@@ -129,7 +145,7 @@ All admin pages are marked `noindex`. Supabase Row Level Security and admin auth
 
 ## Deployment
 
-GitHub Pages deploys from `.github/workflows/pages.yml`, which validates required files, JavaScript syntax, local HTML links, privacy regressions and obvious browser-secret mistakes before deployment.
+GitHub Pages deploys from `.github/workflows/pages.yml`, which validates required files, JavaScript syntax, local HTML links, privacy regressions, PWA cache safety and obvious browser-secret mistakes before deployment.
 
 Expected production URL:
 
