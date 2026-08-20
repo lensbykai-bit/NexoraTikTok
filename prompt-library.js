@@ -26,6 +26,7 @@
 
   const esc=v=>String(v??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','\"':'&quot;'}[c]));
   const safeSrc=v=>{const s=String(v||'').trim();return /^(https?:\/\/|images\/|assets\/)/i.test(s)?s:''};
+  const isDirectUpload=p=>/^https?:\/\//i.test(String(p?.image_url||'').trim());
 
   function placeholder(index){
     return `<div class="prompt-media prompt-media-placeholder"><span class="prompt-slot">${String(index+1).padStart(2,'0')}</span><div><b>IMAGE SLOT</b><small>Add preview later</small></div><em>VIEW PROMPT</em></div>`;
@@ -155,7 +156,8 @@
       const url=`${API}?select=id,slug,title,category,prompt_text,image_url,sort_order&is_active=eq.true&order=sort_order.asc,created_at.asc`;
       const res=await fetch(url,{headers:{apikey:KEY},cache:'no-store'});
       if(!res.ok)throw new Error(`Prompt library request failed (${res.status})`);
-      prompts=await res.json();
+      const raw=await res.json();
+      prompts=[...raw.filter(isDirectUpload),...raw.filter(p=>!isDirectUpload(p))];
       visibleCount=PAGE_SIZE;
       render();
       ensureCopyButton();
