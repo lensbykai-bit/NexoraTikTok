@@ -35,8 +35,8 @@
       <form id="loginForm" class="login-form">
         <label id="nameFieldWrap" hidden>Full Name<input id="fullName" type="text" placeholder="Your name" autocomplete="name"></label>
         <label>Email<input id="email" type="email" placeholder="you@example.com" autocomplete="email" required></label>
-        <label><span id="passwordLabelText">Password</span><div class="password-wrap"><input id="password" type="password" placeholder="Your password" autocomplete="current-password" required><button id="togglePassword" type="button" aria-label="Show password">◉</button></div></label>
-        <label id="confirmFieldWrap" hidden>Confirm Password<input id="confirmPassword" type="password" placeholder="Repeat your password" autocomplete="new-password"></label>
+        <label><span id="passwordLabelText">Password</span><div class="password-wrap"><input id="password" type="password" placeholder="Your password" autocomplete="current-password" required><button id="togglePassword" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password">◉</button></div></label>
+        <label id="confirmFieldWrap" hidden>Confirm Password<div class="password-wrap"><input id="confirmPassword" type="password" placeholder="Repeat your password" autocomplete="new-password"><button id="toggleConfirmPassword" class="password-toggle" type="button" aria-label="Show confirm password" aria-pressed="false" title="Show password">◉</button></div></label>
         <button class="btn btn-primary btn-lg login-submit" type="submit">Sign In</button>
         <p id="loginMessage" class="form-message" aria-live="polite"></p>
       </form>
@@ -46,7 +46,7 @@
         <div class="auth-switch"><span id="authSwitchText">New to Nexora?</span> <button id="authSwitchBtn" class="text-action" type="button">Create Account</button></div>
       </div>
 
-      <div class="login-links"><a href="index.html">← Back Home</a><a href="courses.html">Browse Courses</a></div>
+      <div class="login-links"><a href="index.html">← Back Home</a><a href="temporarily-closed.html?page=courses.html">Browse Courses</a></div>
       <div class="login-note">Secure account sign-in is connected to Nexora's authentication backend. Your password is handled by the authentication provider, not stored in this website code.</div>
     </div>
   </section>
