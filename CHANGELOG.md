@@ -1,5 +1,14 @@
 # NexoraTikTok Changelog
 
+## v2.5.0 — 2026-08-20
+
+- Added `admin-prompt-intake.html` as a private batch workspace for preparing many Prompt Book entries before final images are available.
+- Added five-row batch creation, duplicate/remove controls, default category and starting-sort helpers, and keyboard save support.
+- Added server-side duplicate protection at intake time by checking existing prompt slugs before insert.
+- Added per-row validation and saved/error states so incomplete prompt records cannot be inserted accidentally.
+- Kept image paths optional during intake so numbered Prompt Book image slots remain usable until real artwork is supplied later.
+- Added responsive styling for desktop and mobile prompt intake workflows.
+
 ## v2.4.0 — 2026-08-20
 
 - Added an installable Progressive Web App foundation with an upgraded `site.webmanifest`, app identity, shortcuts and standalone display settings.
