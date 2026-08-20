@@ -48,3 +48,4 @@ function openPortalLesson(id){
 document.getElementById('lessonViewerClose')?.addEventListener('click',()=>document.getElementById('lessonViewer')?.classList.add('hidden'));
 ensureAccessRefresh();
 if(typeof sb!=='undefined'&&sb){sb.auth.getSession().then(({data})=>{if(data.session)loadPortalCourses()});sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==='SIGNED_IN'||event==='INITIAL_SESSION'))loadPortalCourses()})}
+if(document.getElementById('portal')&&!document.querySelector('script[data-nexora-notifications]')){const s=document.createElement('script');s.src='student-notifications.js';s.defer=true;s.dataset.nexoraNotifications='1';document.body.appendChild(s)}
