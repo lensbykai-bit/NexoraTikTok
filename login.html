@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#11070d"><title>Nexora Digital — Student Login</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"></head>
+<body class="login-body">
+<main class="login-page">
+  <section class="login-showcase">
+    <a class="brand login-brand" href="index.html"><span class="brand-mark">N</span><span><b>NEXORA</b><small>DIGITAL</small></span></a>
+    <div class="login-showcase-copy"><span>STUDENT LOGIN</span><h1>Everything you need, <em>in one place.</em></h1><p>Sign in to continue your creator learning journey, course notes and progress when the student backend is connected.</p><ul><li>Creator courses by learning path</li><li>Practical action steps</li><li>Multi-platform creator workflows</li></ul></div>
+    <div class="login-art"><img src="assets/creator-hero.svg" alt="Nexora creator illustration"><div class="mini-login-card"><small>NEXORA CREATOR ACADEMY</small><strong>Learn · Create · Grow</strong></div></div>
+  </section>
+  <section class="login-panel">
+    <div class="login-box">
+      <span class="login-kicker">WELCOME BACK</span><h2>Student Log In</h2><p>Enter your details below.</p>
+      <form id="loginForm" class="login-form">
+        <label>Email<input id="email" type="email" placeholder="you@example.com" autocomplete="email" required></label>
+        <label>Password<div class="password-wrap"><input id="password" type="password" placeholder="Your password" autocomplete="current-password" required><button id="togglePassword" type="button" aria-label="Show password">◉</button></div></label>
+        <button class="btn btn-primary btn-lg login-submit" type="submit">Sign In</button>
+        <p id="loginMessage" class="form-message" aria-live="polite"></p>
+      </form>
+      <div class="login-links"><a href="index.html">← Back Home</a><a href="courses.html">Browse Courses</a></div>
+      <div class="login-note">Front-end login UI is ready. Secure account authentication can be connected to the backend next.</div>
+    </div>
+  </section>
+</main>
+<script src="script.js"></script></body></html>
