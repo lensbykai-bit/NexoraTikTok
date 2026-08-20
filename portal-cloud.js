@@ -20,3 +20,28 @@ async function portalCloudSave(force=false){if(portalCloudBusy&&!force)return;co
 function scheduleCloudSave(delay=350){clearTimeout(window.__nexoraCloudSaveDelay);window.__nexoraCloudSaveDelay=setTimeout(()=>portalCloudSave(),delay)}
 ensureCloudStatus();renderProfile();if(typeof sb!=='undefined'&&sb){sb.auth.getSession().then(({data})=>{if(data.session)portalCloudLoad();else setCloudStatus('Sign in to enable cloud sync','local')});sb.auth.onAuthStateChange((event,session)=>{if(session&&(event==='SIGNED_IN'||event==='TOKEN_REFRESHED'))portalCloudLoad();if(event==='SIGNED_OUT')setCloudStatus('Signed out','local')})}
 document.querySelectorAll('[data-complete]').forEach(btn=>btn.addEventListener('click',()=>scheduleCloudSave(500)));document.getElementById('saveNote')?.addEventListener('click',()=>scheduleCloudSave(250));document.getElementById('saveProfile')?.addEventListener('click',()=>{const p=readProfile();saveProfileLocal(p);const msg=document.getElementById('profileSaved');if(msg)msg.textContent='Saved locally · syncing…';scheduleCloudSave(100);setTimeout(()=>{if(msg)msg.textContent='Profile saved ✓'},650)});['profileNiche','profileGoal','profileLevel','profileLanguage','profileBio'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>saveProfileLocal(readProfile())));window.addEventListener('online',()=>portalCloudSave(true));window.addEventListener('offline',()=>setCloudStatus('Offline · local copy saved','local'));document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')portalCloudSave(true)});portalCloudTimer=setInterval(()=>{if(document.getElementById('portal')?.classList.contains('show'))portalCloudSave()},60000);
+
+/* Show / hide password on the student login form. */
+(function initLoginPasswordVisibility(){
+  const input=document.getElementById('loginPassword');
+  if(!input||input.closest('.login-password-eye-wrap'))return;
+  const wrap=document.createElement('span');
+  wrap.className='login-password-eye-wrap';
+  wrap.style.cssText='position:relative;display:block';
+  input.parentNode.insertBefore(wrap,input);
+  wrap.appendChild(input);
+  input.style.paddingRight='58px';
+  const button=document.createElement('button');
+  button.type='button';
+  button.textContent='👁';
+  button.setAttribute('aria-label','Show password');
+  button.style.cssText='position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:12px;background:#f4f2ff;color:#654bdf;display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1';
+  button.addEventListener('click',()=>{
+    const showing=input.type==='text';
+    input.type=showing?'password':'text';
+    button.textContent=showing?'👁':'🙈';
+    button.setAttribute('aria-label',showing?'Show password':'Hide password');
+    input.focus({preventScroll:true});
+  });
+  wrap.appendChild(button);
+})();
