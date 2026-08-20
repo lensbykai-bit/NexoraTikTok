@@ -1,5 +1,19 @@
 # NexoraTikTok Changelog
 
+## v1.8.0 — 2026-08-20
+
+- Added automatic Full Course Access when an enrollment is marked `approved`.
+- Added approval-time tracking on enrollment records and course-access grant timestamps on student portal records.
+- Added database triggers so approved enrollments grant access immediately to matching existing student accounts.
+- Added a second trigger so students who create/login to their portal after an earlier approval automatically receive Full access by matching the approved enrollment email.
+- Added a backfill step so any already-approved enrollment is synchronized with an existing portal student.
+- Added `admin-analytics.html`, `admin-analytics.js` and `admin-analytics.css` as a private live operations dashboard.
+- Added analytics for student totals, Full access, 7-day activity, study time, approved enrollments, open requests, prompts and lessons.
+- Added enrollment funnel, student access, preferred-language and creator-level breakdowns.
+- Added recent student activity and published-content health summaries.
+- Linked Analytics from the main Admin dashboard and Course Manager.
+- Expanded deployment validation to cover v1.8 analytics files and JavaScript syntax.
+
 ## v1.7.0 — 2026-08-20
 
 - Added live database-managed course tracks and lesson content with `nexora_courses` and `nexora_lessons`.
