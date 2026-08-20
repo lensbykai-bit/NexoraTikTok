@@ -1,5 +1,18 @@
 # NexoraTikTok Changelog
 
+## v1.6.0 — 2026-08-20
+
+- Rebuilt Prompt Book as a live Supabase-backed content library instead of hard-coded HTML cards.
+- Added the `nexora_prompts` database table with public active-prompt reads and protected admin CRUD policies.
+- Seeded 12 original starter prompts across emotional story, AI short film, 3D animation, cute animals, cinematic, miniature, product reveal, food, fantasy, restoration, luxury interior and nature-growth categories.
+- Added automatic Prompt Book categories, search, live result count, image paths and database-driven modal content.
+- Added a private Prompt Manager to Nexora Admin with create, edit, visibility, sort order, image path and delete controls.
+- Upgraded Student Portal with a Creator Profile tab for niche, creator goal, level, preferred language and bio.
+- Upgraded the `portal-sync` Edge Function to v2 so creator-profile fields sync securely with the signed-in student account.
+- Added creator profile information to the Admin Students view while keeping admin-only status and notes separate from student writes.
+- Corrected Admin student workflow to use the protected `admin_status` field.
+- Added `portal-v2.css`, `prompt-library.css` and `admin-v2.css` design layers.
+
 ## v1.5.0 — 2026-08-20
 
 - Rebuilt the Home page with a premium creator-academy presentation.
@@ -8,9 +21,9 @@
 - Expanded the private Admin Control Center with a dedicated Students tab.
 - Added student search, status filtering, progress/time summaries, private admin notes and CSV export.
 - Added protected admin read/update access for cloud student records through Row Level Security.
-- Added `student_status` and private `admin_note` fields to portal-state records without exposing them to students.
+- Added internal student workflow status and private admin-note fields to portal-state records without exposing those controls to students.
 - Added database indexes for student status and email lookup.
-- Cleared the previous `RLS Enabled No Policy` security advisory for `nexora_portal_state` by adding explicit admin-only policies.
+- Added explicit admin policies for `nexora_portal_state`.
 
 ## v1.4.0 — 2026-08-20
 
