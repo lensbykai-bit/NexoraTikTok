@@ -1,6 +1,16 @@
-/* Nexora Digital public-header auth state */
+/* Nexora Digital entry/auth routing */
 (function initHeaderAuth(){
   if(!window.supabase)return;
+
+  const LOGIN_URL='./learn.html?login=1';
+
+  /* Opening the public root should enter through the student login screen.
+     Signed-in users will automatically see their portal on learn.html. */
+  const current=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  if(current==='index.html'||current===''){
+    window.location.replace(LOGIN_URL);
+    return;
+  }
 
   const loginLink=document.querySelector('#navLinks a[href^="learn.html"]');
   if(!loginLink)return;
@@ -31,7 +41,7 @@
           loginLink.textContent='Sign out';
           return;
         }
-        window.location.replace('./index.html');
+        window.location.replace(LOGIN_URL);
       };
       loginLink.addEventListener('click',logoutHandler);
     }else{
