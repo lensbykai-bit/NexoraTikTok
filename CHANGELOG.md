@@ -1,5 +1,19 @@
 # NexoraTikTok Changelog
 
+## v1.7.0 — 2026-08-20
+
+- Added live database-managed course tracks and lesson content with `nexora_courses` and `nexora_lessons`.
+- Seeded 3 learning tracks and 14 original starter/full lessons.
+- Added public course and curriculum previews that load from Supabase instead of hard-coded course cards.
+- Added account-specific lesson access with `starter` and `full` course-access levels.
+- Deployed the `course-content` Edge Function to validate the existing student-auth session before returning protected lesson content.
+- Rebuilt the Student Portal Course tab as a live lesson viewer with lesson text, actions, duration, preview badges and progress buttons.
+- Connected dynamic lesson completion to existing progress tracking and cloud sync.
+- Added a private `admin-courses.html` manager for creating, editing, hiding, sorting and deleting courses and lessons.
+- Added public-preview, video URL, duration, lesson text and student-action controls to the lesson editor.
+- Added course-access control to the main Admin Students modal so admins can switch a student between starter and full access.
+- Added `course-library.js`, `course-library.css`, `portal-courses.js`, `admin-courses.js` and `admin-courses.css`.
+
 ## v1.6.0 — 2026-08-20
 
 - Rebuilt Prompt Book as a live Supabase-backed content library instead of hard-coded HTML cards.
