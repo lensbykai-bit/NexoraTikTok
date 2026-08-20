@@ -1,6 +1,6 @@
 const CONFIG={
-  supabaseUrl:'https://vlnhsdsncqcugfpjjlas.supabase.co',
-  supabaseKey:'sb_publishable_S-YSKMI32JyEoPb1cMJL_Q_1_0jKBn0',
+  supabaseUrl:'https://lzzujiyiltwfrvcwnrlh.supabase.co',
+  supabaseKey:'sb_publishable_Ui-w7uI27X5dEybtGozMTA_kuFyfM2R',
   googleRedirect:'https://lensbykai-bit.github.io/NexoraTikTok/learn.html'
 };
 
