@@ -18,6 +18,19 @@ function toast(message){let el=$('#toast');if(!el){el=document.createElement('di
   if(!document.body.classList.contains('no-floating-support')&&!$('.floating-support')){const a=document.createElement('a');a.href='contact.html';a.className='floating-support';a.setAttribute('aria-label','Contact Nexora support');a.innerHTML='<span>?</span> Support';document.body.appendChild(a)}
 })();
 
+/* Offline-safe PWA runtime */
+(function initPwa(){
+  if('serviceWorker' in navigator&&location.protocol==='https:'){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+    },{once:true});
+  }
+  let ready=false;
+  window.addEventListener('load',()=>{ready=true},{once:true});
+  window.addEventListener('offline',()=>{if(ready)toast('Offline mode · some public pages still work')});
+  window.addEventListener('online',()=>{if(ready)toast('Back online ✓')});
+})();
+
 const menuToggle=$('#menuToggle'),navLinks=$('#navLinks');menuToggle?.setAttribute('aria-expanded','false');menuToggle?.addEventListener('click',()=>{const open=navLinks?.classList.toggle('open');menuToggle.setAttribute('aria-expanded',open?'true':'false')});$$('#navLinks a').forEach(a=>a.addEventListener('click',()=>{navLinks?.classList.remove('open');menuToggle?.setAttribute('aria-expanded','false')}));
 const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();$$('#navLinks a').forEach(a=>{const href=(a.getAttribute('href')||'').toLowerCase();if(href===page)a.classList.add('active')});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&navLinks?.classList.contains('open')){navLinks.classList.remove('open');menuToggle?.setAttribute('aria-expanded','false')}});
