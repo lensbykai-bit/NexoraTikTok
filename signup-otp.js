@@ -106,7 +106,7 @@
 
     signupPassword='';
     if(verifyMsg)verifyMsg.textContent='Account verified ✓ Redirecting to Home…';
-    setTimeout(()=>window.location.replace('./index.html?welcome=1'),350);
+    setTimeout(()=>window.location.replace('./index.html?home=1&welcome=1'),350);
   });
 
   document.getElementById('signupResendCode')?.addEventListener('click',async()=>{
@@ -188,6 +188,6 @@
     }
 
     if(msg)msg.textContent='Signed in successfully ✓ Redirecting to Home…';
-    window.location.replace('./index.html?student=1&signed=1');
+    window.location.replace('./index.html?home=1&student=1&signed=1');
   },true);
 })();
