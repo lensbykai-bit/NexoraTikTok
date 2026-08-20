@@ -183,6 +183,34 @@ if(sb){
   });
 }
 
+/* Add eye buttons so students can show or hide reset-password fields. */
+(function initPasswordVisibility(){
+  const style=document.createElement('style');
+  style.textContent='.password-eye-wrap{position:relative;display:block}.password-eye-wrap input{padding-right:58px!important}.password-eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;border-radius:12px;background:#f4f2ff;color:#654bdf;display:grid;place-items:center;cursor:pointer;font-size:18px;line-height:1}.password-eye-btn:hover{background:#ebe6ff}.password-eye-btn:focus-visible{outline:3px solid rgba(101,75,223,.2);outline-offset:2px}';
+  document.head.appendChild(style);
+  ['newPassword','confirmPassword'].forEach(id=>{
+    const input=document.getElementById(id);
+    if(!input||input.closest('.password-eye-wrap'))return;
+    const wrap=document.createElement('span');
+    wrap.className='password-eye-wrap';
+    input.parentNode.insertBefore(wrap,input);
+    wrap.appendChild(input);
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='password-eye-btn';
+    button.textContent='👁';
+    button.setAttribute('aria-label','Show password');
+    button.addEventListener('click',()=>{
+      const showing=input.type==='text';
+      input.type=showing?'password':'text';
+      button.textContent=showing?'👁':'🙈';
+      button.setAttribute('aria-label',showing?'Show password':'Hide password');
+      input.focus({preventScroll:true});
+    });
+    wrap.appendChild(button);
+  });
+})();
+
 function updateLessonCount(){
   const items=[...document.querySelectorAll('#courseTab [data-item]')];
   const completed=typeof getCompleted==='function'?getCompleted():[];
