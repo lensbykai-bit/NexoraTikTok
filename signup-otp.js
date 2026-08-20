@@ -105,8 +105,8 @@
     if(updateError){if(verifyMsg)verifyMsg.textContent=updateError.message;return}
 
     signupPassword='';
-    if(verifyMsg)verifyMsg.textContent='Account verified ✓';
-    setTimeout(()=>location.reload(),350);
+    if(verifyMsg)verifyMsg.textContent='Account verified ✓ Redirecting to Home…';
+    setTimeout(()=>window.location.replace('./index.html?welcome=1'),350);
   });
 
   document.getElementById('signupResendCode')?.addEventListener('click',async()=>{
@@ -187,7 +187,7 @@
       return;
     }
 
-    if(msg)msg.textContent='Signed in successfully ✓';
-    window.location.replace('./learn.html?login=1&signed=1');
+    if(msg)msg.textContent='Signed in successfully ✓ Redirecting to Home…';
+    window.location.replace('./index.html?student=1&signed=1');
   },true);
 })();
