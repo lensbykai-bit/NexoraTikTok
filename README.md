@@ -1,6 +1,6 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v2.2.0**
+Current version: **v2.3.0**
 
 Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
 
@@ -22,7 +22,43 @@ Production-oriented creator-learning website deployed with GitHub Pages and conn
 - `legal.html` — Policies
 - `404.html` — Not found page
 
-`certificate.html` is a private `noindex` Student Portal companion page and is not a public discovery page.
+`certificate.html` is a private `noindex` Student Portal companion page.
+
+## v2.3 production polish
+
+v2.3 focuses on privacy, Prompt Book scale, mobile usability and deployment safeguards.
+
+### Admin privacy isolation
+
+The main Admin student list now requests an explicit safe field set from `nexora_portal_state` instead of `select('*')`. The Student Portal private notebook field is not selected, searched, displayed or exported by the Admin dashboard.
+
+Private admin notes remain available to authorized admins and are separate from student-authored notebook content.
+
+The GitHub Pages workflow now fails before deployment if:
+
+- `Student note preview` is reintroduced into `admin.js`
+- a wildcard Student Portal state read returns to `admin.js`
+- public/student `app.js` is loaded by `admin.html`
+- obvious service-role or client-secret references appear in browser `.js` / `.html` assets
+
+### Prompt Book image-ready workflow
+
+Prompt Book remains Supabase-backed through `public.nexora_prompts`, but the frontend is now prepared for images to be added later:
+
+- prompts without images show clean numbered image slots
+- image previews lazy-load when an image URL/path exists
+- broken images automatically fall back to the numbered placeholder
+- modal previews use the same fallback behavior
+- search includes a one-click Clear action
+- category filters expose accessible pressed-state information
+- large libraries use an 8-at-a-time **Show more** flow
+- failed library requests expose a visible Retry action
+
+The database structure is unchanged: each prompt already has `image_url`, so later image uploads only require updating that field/path.
+
+### Mobile and accessibility polish
+
+Shared UI now includes stronger `focus-visible` treatment, reduced-motion support, improved touch interaction, mobile toast sizing and a defensive `.no-floating-support` rule for private/admin pages.
 
 ## Student Portal
 
@@ -48,111 +84,52 @@ Students do not receive direct browser read access to private operations or cert
 
 ## Course completion certificates
 
-`public.nexora_certificates` stores completion certificates.
+`public.nexora_certificates` stores completion certificates. A certificate is automatically issued when a student has `full` course access and has completed every currently active lesson.
 
-A certificate is automatically issued when a student:
-
-1. has `full` course access, and
-2. has completed every currently active lesson in the Nexora course database.
-
-The certificate record includes a unique Nexora certificate code, student display name, number of lessons completed and issue date.
-
-`certificate.html` validates the signed-in Student Portal session through `student-status` and displays only that student's active certificate. The page supports browser **Print / Save PDF** and links directly to public verification.
+`certificate.html` validates the signed-in Student Portal session through `student-status`, displays only that student's active certificate, supports browser Print / Save PDF, and links to public verification.
 
 ### Public certificate verification
 
-`verify-certificate.html` lets anyone verify a certificate when they already have its high-entropy certificate code. It calls the `certificate-verify` Edge Function, which validates the code format and returns only minimal public fields for an active certificate:
-
-- certificate code
-- display name
-- completed lesson count
-- issue date
-- active verification status
-
-The public browser never gets direct read access to `nexora_certificates`.
+`verify-certificate.html` calls the `certificate-verify` Edge Function. Given a well-formed certificate code, it returns only the minimal public verification fields required to confirm a certificate.
 
 ### Certificate Manager
 
-`admin-certificates.html` is the private certificate operations page. Authorized admins can search issued certificates, filter active/revoked status, copy a public verification link, revoke a certificate, or reactivate it.
-
-Certificate identity fields such as learner name and certificate code are not browser-editable by the authenticated admin role; only certificate status/timestamp fields are granted for update.
+`admin-certificates.html` lets authorized admins search certificates, filter active/revoked status, copy a public verification link, revoke a certificate, or reactivate it. Certificate identity fields are not browser-editable by the authenticated admin role.
 
 ## Live courses and lessons
 
-Course content is stored in `public.nexora_courses` and `public.nexora_lessons`.
-
-Public visitors can read active course metadata and lessons marked as previews. Signed-in students load account-specific protected lesson content through the `course-content` Edge Function.
+Course content is stored in `public.nexora_courses` and `public.nexora_lessons`. Public visitors can read active course metadata and preview lessons. Signed-in students load account-specific protected lesson content through the `course-content` Edge Function.
 
 Student accounts support:
 
 - `starter` — preview lessons only
 - `full` — all active lessons
 
-Approved enrollment requests are automatically matched to a Student Portal account by normalized email and can grant Full access. If approval happens first, the later portal record is matched when the student account syncs.
+Approved enrollment requests are automatically matched to a Student Portal account by normalized email and can grant Full access.
 
 ## Enrollment operations
 
-`admin-operations.html` is the private Enrollment Operations center. It provides:
+`admin-operations.html` provides enrollment/student matching visibility, approval workflow controls, manual payment tracking, payment provider/amount/currency fields, Full-access automation, custom Student Portal notifications and operational activity history.
 
-- enrollment/student matching visibility
-- approval workflow controls
-- manual payment status/reference tracking
-- payment provider, amount and currency fields
-- Full-access automation
-- custom Student Portal notifications
-- protected operational activity history
-
-### Payment-provider-ready structure
-
-The backend includes fields for payment provider, amount, currency and verification timestamp plus the private `nexora_payment_events` table for a future server-side provider/webhook integration.
-
-This structure does **not** charge, verify or refund money by itself. A real payment provider and secret server-side credentials are still required before automated payment processing can be enabled. No payment secret belongs in GitHub or client-side JavaScript.
+The payment structure is provider-ready but does **not** process money. A real provider integration and secret server-side credentials are still required before automated charging or verification can be enabled.
 
 ## Student notifications
 
 `public.nexora_student_notifications` stores account updates. Students read and mark them through the `student-notifications` Edge Function after their Student Portal session is validated.
 
-The portal provides unread counts, mark-read, mark-all-read, enrollment/course/support updates and custom admin messages.
-
-## Course Manager
-
-`admin-courses.html` lets authorized admins create, edit, hide, reorder and delete courses and lessons, including preview state, duration, lesson text, student tasks and optional video URLs.
-
-## Analytics and administration
+## Administration
 
 - `admin.html` — students, prompts, enrollments and contacts
 - `admin-courses.html` — courses and lessons
 - `admin-analytics.html` — live operational analytics
-- `admin-operations.html` — enrollment, payment tracking, matching, notifications and audit history
-- `admin-certificates.html` — certificate verification links and active/revoked management
+- `admin-operations.html` — enrollment/payment/matching/notifications/audit history
+- `admin-certificates.html` — certificate status and verification-link management
 
-All admin pages are marked `noindex`. Supabase Row Level Security and admin authorization are the actual protection layer.
-
-The main `admin.html` page intentionally loads only its admin runtime and no longer loads the public/student `app.js` runtime.
-
-## Prompt Book
-
-The Prompt Book uses `public.nexora_prompts`. Authorized admins can create, edit, hide, reorder and delete prompts while public users only load active content.
-
-Prompt images can be added later without changing the database architecture; each prompt already supports an image path/URL.
-
-## Main frontend assets
-
-- `styles.css`, `extras.css`, `home-v2.css`
-- `portal-v2.css`, `portal-cloud.css`, `course-library.css`
-- `student-notifications.css`, `student-dashboard.css`
-- `certificate.css`, `certificate-verify.css`
-- `prompt-library.css`
-- `admin.css`, `admin-v2.css`, `admin-courses.css`, `admin-analytics.css`, `admin-operations.css`, `admin-certificates.css`
-- `app.js`, `portal-extra.js`, `portal-cloud.js`, `portal-courses.js`
-- `student-notifications.js`, `student-dashboard.js`, `certificate.js`, `certificate-verify.js`
-- `course-library.js`, `prompt-library.js`
-- `admin.js`, `admin-courses.js`, `admin-analytics.js`, `admin-operations.js`, `admin-certificates.js`
-- `forms.js`
+All admin pages are marked `noindex`. Supabase Row Level Security and admin authorization are the real protection layer.
 
 ## Deployment
 
-GitHub Pages deploys from `.github/workflows/pages.yml`, which checks required files, JavaScript syntax and local HTML links before deployment.
+GitHub Pages deploys from `.github/workflows/pages.yml`, which validates required files, JavaScript syntax, local HTML links, privacy regressions and obvious browser-secret mistakes before deployment.
 
 Expected production URL:
 
