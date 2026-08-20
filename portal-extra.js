@@ -169,10 +169,10 @@ document.getElementById('resetPasswordForm')?.addEventListener('submit',async e=
   if(msg)msg.textContent='Updating password…';
   const {error}=await sb.auth.updateUser({password});
   if(error){if(msg)msg.textContent=error.message;return}
-  if(msg)msg.textContent='Password updated ✓ You can now sign in.';
+  if(msg)msg.textContent='Password updated ✓ Redirecting to homepage…';
   passwordResetMode=false;
   await sb.auth.signOut();
-  setTimeout(()=>location.href='learn.html',900);
+  location.replace('index.html');
 });
 
 if(sb){
