@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#11070d">
+  <meta name="description" content="Nexora Digital student dashboard.">
+  <title>Nexora Digital — Student Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body class="dashboard-body">
+  <header class="dash-header">
+    <div class="shell dash-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">N</span><span><b>NEXORA</b><small>DIGITAL</small></span></a>
+      <nav><a href="index.html">Home</a><a href="courses.html">Courses</a><a class="active" href="dashboard.html">Dashboard</a><a href="admin.html" id="adminLink" hidden>Admin</a></nav>
+      <button class="btn btn-ghost" id="logoutBtn" type="button">Log Out</button>
+    </div>
+  </header>
+
+  <main class="dash-main shell">
+    <section class="dash-hero">
+      <div>
+        <span class="dash-kicker">STUDENT DASHBOARD</span>
+        <h1>Welcome back, <em id="welcomeName">Creator</em>.</h1>
+        <p>Continue your creator learning path, track progress and manage your Nexora profile.</p>
+      </div>
+      <div class="access-card">
+        <small>COURSE ACCESS</small>
+        <strong id="accessLabel">Starter</strong>
+        <span id="accessHelp">Free preview lessons are available.</span>
+        <button class="btn btn-primary" id="requestAccessBtn" type="button">Request Full Access</button>
+      </div>
+    </section>
+
+    <section class="stat-grid" aria-label="Progress summary">
+      <article><span>Overall progress</span><strong id="progressPercent">0%</strong><div class="progress-track"><i id="progressBar"></i></div></article>
+      <article><span>Lessons completed</span><strong id="completedCount">0</strong><small id="lessonTotal">of 0 lessons</small></article>
+      <article><span>Learning paths</span><strong id="courseCount">0</strong><small>creator tracks</small></article>
+      <article><span>Enrollment</span><strong id="enrollmentStatus">None</strong><small id="enrollmentHelp">No request yet</small></article>
+    </section>
+
+    <section class="dash-layout">
+      <div class="dash-content">
+        <div class="section-title"><div><span>YOUR COURSES</span><h2>Continue learning</h2></div><button class="btn btn-ghost" id="refreshBtn" type="button">Refresh</button></div>
+        <div id="courseList" class="dashboard-courses"><div class="loading-card">Loading your courses…</div></div>
+      </div>
+
+      <aside class="profile-panel">
+        <span class="dash-kicker">PROFILE</span>
+        <h2>Your creator profile</h2>
+        <form id="profileForm">
+          <label>Full name<input id="profileName" maxlength="120" placeholder="Your name"></label>
+          <label>Creator niche<input id="profileNiche" maxlength="160" placeholder="e.g. Food, Gaming, Education"></label>
+          <label>Main goal<textarea id="profileGoal" maxlength="240" rows="3" placeholder="What do you want to build?"></textarea></label>
+          <label>Level<select id="profileLevel"><option value="beginner">Beginner</option><option value="intermediate">Intermediate</option><option value="advanced">Advanced</option></select></label>
+          <button class="btn btn-primary" type="submit">Save Profile</button>
+          <p id="profileMessage" class="dash-message" aria-live="polite"></p>
+        </form>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="lessonDialog" class="lesson-dialog">
+    <form method="dialog"><button class="lesson-close" aria-label="Close">×</button></form>
+    <span class="dash-kicker" id="lessonCourse">LESSON</span>
+    <h2 id="lessonTitle">Lesson</h2>
+    <p class="lesson-meta" id="lessonMeta"></p>
+    <div id="lessonBody" class="lesson-body"></div>
+    <div id="lessonTask" class="lesson-task"></div>
+    <button class="btn btn-primary" id="completeLessonBtn" type="button">Mark Complete</button>
+    <p id="lessonMessage" class="dash-message" aria-live="polite"></p>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>
