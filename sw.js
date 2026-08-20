@@ -1,4 +1,4 @@
-const CACHE_VERSION='nexora-v3.1.0';
+const CACHE_VERSION='nexora-v3.2.0';
 const STATIC_CACHE=`${CACHE_VERSION}-static`;
 const PAGE_CACHE=`${CACHE_VERSION}-pages`;
 
@@ -23,6 +23,7 @@ const STATIC_ASSETS=[
   './styles.css',
   './extras.css',
   './reference-theme.css',
+  './creator-empire.css',
   './money-auth.css',
   './home-v2.css',
   './course-library.css',
@@ -35,6 +36,7 @@ const STATIC_ASSETS=[
   './certificate-verify.js',
   './assets/logo.svg',
   './assets/money-hub-hero.svg',
+  './assets/creator-dashboard.svg',
   './site.webmanifest'
 ];
 
