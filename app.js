@@ -1,7 +1,6 @@
 const CONFIG={
   supabaseUrl:'https://lzzujiyiltwfrvcwnrlh.supabase.co',
-  supabaseKey:'sb_publishable_Ui-w7uI27X5dEybtGozMTA_kuFyfM2R',
-  googleRedirect:'https://lensbykai-bit.github.io/NexoraTikTok/learn.html'
+  supabaseKey:'sb_publishable_Ui-w7uI27X5dEybtGozMTA_kuFyfM2R'
 };
 
 const $=(s,r=document)=>r.querySelector(s);const $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -51,8 +50,6 @@ function getProfile(user){const m=user?.user_metadata||{};return{name:m.full_nam
 function storageKey(name){return`nexora_${currentUserKey}_${name}`}
 function showPortal(session){const user=session?.user;if(!authPage||!portal)return;if(user){const p=getProfile(user);currentUserKey=p.key;authPage.style.display='none';portal.classList.add('show');if(portalName)portalName.textContent=p.name;if(portalEmail)portalEmail.textContent=p.email;restorePortalState()}else{currentUserKey='guest';authPage.style.display='grid';portal.classList.remove('show')}}
 async function initAuth(){if(!sb)return;const{data}=await sb.auth.getSession();showPortal(data.session);sb.auth.onAuthStateChange((_event,session)=>showPortal(session))}initAuth();
-async function googleAuth(){if(!sb)return;const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:CONFIG.googleRedirect}});if(error)toast(error.message)}
-$('#googleLogin')?.addEventListener('click',googleAuth);$('#googleSignup')?.addEventListener('click',googleAuth);
 $('#emailLoginForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!sb)return;const email=$('#loginEmail')?.value.trim(),password=$('#loginPassword')?.value||'',msg=$('#loginMessage');if(msg)msg.textContent='Signing in…';const{error}=await sb.auth.signInWithPassword({email,password});if(msg)msg.textContent=error?error.message:'Signed in successfully.'});
 $('#emailSignupForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!sb)return;const name=$('#signupName')?.value.trim(),email=$('#signupEmail')?.value.trim(),password=$('#signupPassword')?.value||'',msg=$('#signupMessage');if(msg)msg.textContent='Creating account…';const{error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});if(msg)msg.textContent=error?error.message:''});
 $('#logoutPortal')?.addEventListener('click',async()=>{if(sb)await sb.auth.signOut();location.href='learn.html'});
