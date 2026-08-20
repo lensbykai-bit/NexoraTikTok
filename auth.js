@@ -33,11 +33,13 @@ async function handleLoginPage(){
   if(!nexoraSupabase)return;
   const form=document.getElementById('loginForm'); if(!form)return;
   const params=new URLSearchParams(location.search);
-  if(params.get('recovery')==='1')setLoginMode('reset'); else setLoginMode('login');
+  if(params.get('recovery')==='1')setLoginMode('reset');
+  else if(params.get('mode')==='signup')setLoginMode('signup');
+  else setLoginMode('login');
   const {data:{session}}=await nexoraSupabase.auth.getSession();
   if(session&&getLoginMode()==='login'){
-    setAuthMessage(`Signed in as ${session.user.email}. Continue to your dashboard.`,'success');
-    const submit=document.querySelector('.login-submit'); if(submit)submit.textContent='Continue to Dashboard'; form.dataset.session='active';
+    setAuthMessage(`Signed in as ${session.user.email}. You can continue to your private student area.`,'success');
+    const submit=document.querySelector('.login-submit'); if(submit)submit.textContent='Continue'; form.dataset.session='active';
   }
   document.getElementById('authSwitchBtn')?.addEventListener('click',()=>setLoginMode(getLoginMode()==='signup'?'login':'signup'));
   document.getElementById('forgotPasswordBtn')?.addEventListener('click',async()=>{
@@ -60,14 +62,14 @@ async function handleLoginPage(){
         const emailRedirectTo=`${location.origin}${location.pathname}`;
         const {data,error}=await nexoraSupabase.auth.signUp({email,password,options:{emailRedirectTo,data:{full_name:fullName}}});
         if(error)throw error;
-        if(data.session){setAuthMessage('Account created. Opening your dashboard…','success');setTimeout(()=>location.href='dashboard.html',650);}
+        if(data.session){setAuthMessage('Account created. Opening your private student area…','success');setTimeout(()=>location.href='dashboard.html',650);}
         else{setAuthMessage('Account created. Check your email to confirm your account, then sign in.','success');setLoginMode('login');}
       }else if(mode==='reset'){
         const {error}=await nexoraSupabase.auth.updateUser({password}); if(error)throw error;
-        setAuthMessage('Password updated. Opening your dashboard…','success'); setTimeout(()=>location.href='dashboard.html',650);
+        setAuthMessage('Password updated. Opening your private student area…','success'); setTimeout(()=>location.href='dashboard.html',650);
       }else{
         const {error}=await nexoraSupabase.auth.signInWithPassword({email,password}); if(error)throw error;
-        setAuthMessage('Signed in successfully. Opening your dashboard…','success'); setTimeout(()=>location.href='dashboard.html',500);
+        setAuthMessage('Signed in successfully. Opening your private student area…','success'); setTimeout(()=>location.href='dashboard.html',500);
       }
     }catch(err){setAuthMessage(err?.message||'Authentication failed. Please try again.','error');}
     finally{setAuthBusy(false);const submit=document.querySelector('.login-submit');if(submit&&mode==='signup')submit.textContent='Create Account';if(submit&&mode==='reset')submit.textContent='Update Password';}
@@ -76,13 +78,7 @@ async function handleLoginPage(){
 }
 
 async function updateHeaderAuth(){
-  if(!nexoraSupabase)return;
-  const loginLinks=[...document.querySelectorAll('a[href="login.html"]')]; if(!loginLinks.length)return;
-  const {data:{session}}=await nexoraSupabase.auth.getSession();
-  loginLinks.forEach(link=>{
-    if(session){link.textContent='Dashboard';link.href='dashboard.html';link.title=session.user.email||'Signed in';}
-    else{link.textContent=link.closest('.nav-actions')?'Log In':'Login';link.href='login.html';link.removeAttribute('title');}
-  });
+  document.querySelectorAll('.nav-actions a[href="dashboard.html"]').forEach(link=>link.remove());
 }
 handleLoginPage();
 updateHeaderAuth();
