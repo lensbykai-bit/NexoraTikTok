@@ -1,4 +1,4 @@
-const CACHE_VERSION='nexora-v3.3.0';
+const CACHE_VERSION='nexora-v3.4.0';
 const STATIC_CACHE=`${CACHE_VERSION}-static`;
 const PAGE_CACHE=`${CACHE_VERSION}-pages`;
 
