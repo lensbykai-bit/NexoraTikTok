@@ -1,4 +1,4 @@
-/* Nexora DIGI signup verification: email + password -> 6-digit signup code -> verified account. */
+/* Nexora DIGI signup verification: email + password -> 6-digit email OTP -> set password -> verified account. */
 (function initSignupOtp(){
   const form=document.getElementById('emailSignupForm');
   const signupBox=document.getElementById('signupBox');
@@ -6,6 +6,8 @@
   if(!form||!signupBox)return;
 
   let signupEmail='';
+  let signupName='';
+  let signupPassword='';
   const authClient=typeof sb!=='undefined'?sb:null;
   if(!authClient)return;
 
@@ -46,58 +48,77 @@
     if(verifyMsg)verifyMsg.textContent='';
   }
 
+  async function sendSignupCode(){
+    return authClient.auth.signInWithOtp({
+      email:signupEmail,
+      options:{
+        shouldCreateUser:true,
+        data:{full_name:signupName}
+      }
+    });
+  }
+
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     e.stopImmediatePropagation();
-    const name=document.getElementById('signupName')?.value.trim()||'';
-    const email=document.getElementById('signupEmail')?.value.trim()||'';
-    const password=document.getElementById('signupPassword')?.value||'';
-    if(!email||password.length<6)return;
+
+    signupName=document.getElementById('signupName')?.value.trim()||'';
+    signupEmail=document.getElementById('signupEmail')?.value.trim()||'';
+    signupPassword=document.getElementById('signupPassword')?.value||'';
+
+    if(!signupEmail||signupPassword.length<6)return;
     if(msg)msg.textContent='Sending verification code…';
 
-    const {data,error}=await authClient.auth.signUp({
-      email,
-      password,
-      options:{data:{full_name:name}}
-    });
-
+    const {error}=await sendSignupCode();
     if(error){if(msg)msg.textContent=error.message;return}
-    if(msg)msg.textContent='';
 
-    if(data?.session){
-      location.reload();
-      return;
-    }
-    showVerifyStep(email);
+    if(msg)msg.textContent='';
+    showVerifyStep(signupEmail);
   },true);
 
   document.getElementById('signupVerifyForm')?.addEventListener('submit',async e=>{
     e.preventDefault();
     const code=(document.getElementById('signupVerifyCode')?.value||'').trim();
     const verifyMsg=document.getElementById('signupVerifyMessage');
+
     if(!/^\d{6}$/.test(code)){
       if(verifyMsg)verifyMsg.textContent='Enter the 6-digit verification code.';
       return;
     }
-    if(!signupEmail)return;
+    if(!signupEmail||!signupPassword)return;
+
     if(verifyMsg)verifyMsg.textContent='Verifying code…';
     const {data,error}=await authClient.auth.verifyOtp({
       email:signupEmail,
       token:code,
-      type:'signup'
+      type:'email'
     });
+
     if(error){if(verifyMsg)verifyMsg.textContent=error.message;return}
-    if(verifyMsg)verifyMsg.textContent='Email verified ✓';
-    if(data?.session){setTimeout(()=>location.reload(),350)}
+    if(!data?.session){if(verifyMsg)verifyMsg.textContent='Verification succeeded, but no session was created.';return}
+
+    const {error:updateError}=await authClient.auth.updateUser({
+      password:signupPassword,
+      data:{full_name:signupName}
+    });
+
+    if(updateError){if(verifyMsg)verifyMsg.textContent=updateError.message;return}
+
+    signupPassword='';
+    if(verifyMsg)verifyMsg.textContent='Account verified ✓';
+    setTimeout(()=>location.reload(),350);
   });
 
   document.getElementById('signupResendCode')?.addEventListener('click',async()=>{
     const verifyMsg=document.getElementById('signupVerifyMessage');
     if(!signupEmail)return;
     if(verifyMsg)verifyMsg.textContent='Sending a new code…';
-    const {error}=await authClient.auth.resend({type:'signup',email:signupEmail});
+    const {error}=await sendSignupCode();
     if(verifyMsg)verifyMsg.textContent=error?error.message:'A new verification code was sent ✓';
   });
 
-  document.getElementById('signupChangeEmail')?.addEventListener('click',showSignupStep);
+  document.getElementById('signupChangeEmail')?.addEventListener('click',()=>{
+    signupPassword='';
+    showSignupStep();
+  });
 })();
