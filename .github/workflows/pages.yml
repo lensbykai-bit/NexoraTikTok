@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html 404.html styles.css extras.css app.js forms.js portal-extra.js portal-cloud.js portal-cloud.css prompt-library.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
+          for f in index.html free-lessons.html courses.html support-program.html curriculum.html services.html prompt-book.html results.html faq.html learn.html enroll.html contact.html legal.html admin.html 404.html styles.css extras.css admin.css app.js forms.js portal-extra.js portal-cloud.js portal-cloud.css prompt-library.js admin.js site.webmanifest robots.txt sitemap.xml assets/logo.svg VERSION; do
             test -f "$f" || { echo "Missing required file: $f"; exit 1; }
           done
           echo "Required files OK"
