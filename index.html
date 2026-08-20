@@ -3,128 +3,144 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#160d14">
-  <meta name="description" content="Nexora Digital creator academy for courses, creator systems, prompt resources and digital growth.">
+  <meta name="theme-color" content="#4313b5">
+  <meta name="description" content="Nexora Digital creator academy for courses, AI workflows, creator growth and practical learning resources.">
   <title>Nexora Digital — Creator Academy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="extras.css">
-  <link rel="stylesheet" href="reference-theme.css?v=2.9.0">
+  <link rel="stylesheet" href="reference-theme.css?v=3.0.0">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     (()=>{const params=new URLSearchParams(location.search);if(!params.has('home')) location.replace('./learn.html?login=1')})();
   </script>
 </head>
-<body class="reference-theme pink-empire">
+<body class="reference-theme purple-orbit">
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="index.html?home=1">
       <span class="brand-logo">N</span>
-      <span><b>Nexora Digital</b><small>DIGITAL CREATOR ACADEMY</small></span>
+      <span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu">☰</button>
     <nav class="nav-links" id="navLinks">
-      <a class="active" href="index.html?home=1">Home</a>
       <a href="courses.html">Courses</a>
-      <a href="support-program.html">Community</a>
-      <a href="prompt-book.html">Resources</a>
-      <a href="faq.html">About</a>
+      <a href="support-program.html">Support Program</a>
+      <a href="curriculum.html">Curriculum</a>
+      <a href="services.html">Services</a>
       <a href="enroll.html">Pricing</a>
+      <a href="prompt-book.html">Resources</a>
       <a href="learn.html?login=1">Login</a>
     </nav>
-    <a class="pill join-pill" href="enroll.html">Join Nexora</a>
+    <a class="pill nav-enroll" href="enroll.html">Enroll Now</a>
   </div>
 </header>
 
 <main>
-  <section class="empire-hero">
-    <div class="empire-glow glow-one"></div>
-    <div class="empire-glow glow-two"></div>
-    <div class="container empire-grid">
-      <div class="empire-copy">
-        <span class="empire-badge">✦ WELCOME TO NEXORA DIGITAL</span>
-        <h1>Create. Influence.<br><em>Build Your Empire.</em></h1>
-        <p>The all-in-one academy for digital creators, content entrepreneurs and brand builders — with structured courses, creator workflows and practical resources.</p>
-        <div class="empire-actions">
-          <a class="pill empire-primary" href="courses.html">Explore Courses <span>→</span></a>
-          <a class="pill empire-secondary" href="support-program.html">Join Our Community <span>♟</span></a>
-        </div>
-        <div class="creator-proof">
-          <div class="avatar-stack"><span>ND</span><span>AI</span><span>CC</span><span>+</span></div>
-          <div><strong>Creator-first learning</strong><small>Build skills, systems and confidence.</small></div>
+  <section class="orbit-hero">
+    <div class="orbit-stars" aria-hidden="true"></div>
+    <div class="orbit-wave wave-a" aria-hidden="true"></div>
+    <div class="orbit-wave wave-b" aria-hidden="true"></div>
+    <div class="container orbit-grid">
+      <div class="orbit-copy">
+        <span class="orbit-kicker">WELCOME TO NEXORA</span>
+        <h1>Everything<br>you <em>need,</em><br>in one place.</h1>
+        <p>Learn, create, grow and monetize with practical courses, creator tools, AI workflows and structured support for creators and founders.</p>
+        <div class="orbit-actions">
+          <a class="pill orbit-primary" href="courses.html">Explore Courses</a>
+          <a class="pill orbit-secondary" href="#roadmap">See Roadmap</a>
         </div>
       </div>
 
-      <div class="empire-visual">
-        <div class="hero-photo" role="img" aria-label="Pink creator workspace"></div>
-        <div class="hero-stat">
-          <span class="hero-crown">♛</span>
-          <div><small>Creator Academy</small><strong>24/7</strong><span>learn at your own pace</span></div>
-        </div>
+      <div class="orbit-stage" aria-label="Nexora Digital creator ecosystem illustration">
+        <div class="stage-ring ring-one"></div>
+        <div class="stage-ring ring-two"></div>
+        <div class="stage-ring ring-three"></div>
+        <div class="stage-platform platform-one"></div>
+        <div class="stage-platform platform-two"></div>
+        <div class="stage-n">N</div>
+        <div class="float-tile tile-user">●</div>
+        <div class="float-tile tile-video">▶</div>
+        <div class="float-tile tile-ai">Ai</div>
+        <div class="float-tile tile-chart">▥</div>
+        <div class="float-tile tile-team">◉</div>
+        <div class="float-tile tile-growth">↗</div>
       </div>
     </div>
 
-    <div class="container empire-features">
-      <article><i>✦</i><div><strong>Expert-Led Courses</strong><span>Clear learning paths and practical creator skills.</span></div></article>
-      <article><i>▷</i><div><strong>Actionable Training</strong><span>Step-by-step lessons designed to be applied.</span></div></article>
-      <article><i>◎</i><div><strong>Supportive Community</strong><span>Keep your learning and support resources together.</span></div></article>
-      <article><i>♕</i><div><strong>Build Your Brand</strong><span>Create a repeatable creator system that can grow.</span></div></article>
-    </div>
-  </section>
-
-  <section class="featured-courses">
-    <div class="container">
-      <div class="featured-head">
-        <div><span>FEATURED COURSES ✦</span><h2>Learn. Create. <em>Earn.</em></h2></div>
-        <a href="courses.html">View All Courses →</a>
-      </div>
-      <div class="featured-grid">
-        <article class="featured-card">
-          <div class="course-art art-one"><span>BESTSELLER</span><b>Creator<br>Blueprint</b></div>
-          <div class="course-copy"><h3>Content Creator Blueprint</h3><p>Plan, create and grow content with a clear repeatable workflow.</p><strong class="course-meta">FOUNDATION</strong></div>
-        </article>
-        <article class="featured-card">
-          <div class="course-art art-two"><span>BRAND</span><b>Build Your<br>Identity</b></div>
-          <div class="course-copy"><h3>Brand Your Business</h3><p>Build a magnetic personal brand that feels clear and consistent.</p><strong class="course-meta">BRANDING</strong></div>
-        </article>
-        <article class="featured-card">
-          <div class="course-art art-three"><span>GROWTH</span><b>Creator<br>Strategy</b></div>
-          <div class="course-copy"><h3>Monetize Your Influence</h3><p>Understand the systems that support long-term creator growth.</p><strong class="course-meta">GROWTH</strong></div>
-        </article>
-        <article class="featured-card">
-          <div class="course-art art-four"><span>DIGITAL</span><b>Products &<br>Systems</b></div>
-          <div class="course-copy"><h3>Digital Product Mastery</h3><p>Organize resources, offers and learning content into one system.</p><strong class="course-meta">SYSTEMS</strong></div>
-        </article>
-      </div>
+    <div class="container orbit-stats">
+      <article><span class="stat-icon">◇</span><div><strong>2026</strong><small>Modern Creator<br>Education</small></div></article>
+      <article><span class="stat-icon">◎</span><div><strong>4+</strong><small>Core Learning<br>Paths</small></div></article>
+      <article><span class="stat-icon">✦</span><div><strong>AI+</strong><small>Practical<br>Workflows</small></div></article>
+      <article><span class="stat-icon">◷</span><div><strong>24/7</strong><small>Digital Learning<br>Resources</small></div></article>
     </div>
   </section>
 
-  <section class="empire-cta">
-    <div class="container">
-      <span>READY TO START?</span>
-      <h2>Turn your creator ideas into a system you can keep building.</h2>
-      <div class="empire-actions center">
-        <a class="pill empire-primary" href="enroll.html">Join Nexora →</a>
-        <a class="pill empire-secondary" href="prompt-book.html">Browse Prompt Book</a>
+  <section class="orbit-roadmap" id="roadmap">
+    <div class="container roadmap-layout">
+      <div class="roadmap-intro">
+        <span>OUR ROADMAP</span>
+        <h2>From first idea to<br>creator business.</h2>
       </div>
+      <div class="roadmap-flow">
+        <svg class="roadmap-line" viewBox="0 0 900 150" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="roadGlow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffd62e"/><stop offset=".32" stop-color="#ff77db"/><stop offset=".7" stop-color="#b444ff"/><stop offset="1" stop-color="#ffcf22"/></linearGradient></defs>
+          <path d="M10 82 C105 10,180 112,270 55 S430 120,520 58 S680 25,770 65 S850 90,890 50" fill="none" stroke="url(#roadGlow)" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <div class="roadmap-steps">
+          <article><div class="step-orb">◈</div><b>01</b><h3>Foundation</h3><p>Learn the basics and validate your creator direction.</p></article>
+          <article><div class="step-orb">✎</div><b>02</b><h3>Build</h3><p>Create content systems that stay clear and consistent.</p></article>
+          <article><div class="step-orb">↗</div><b>03</b><h3>Expand</h3><p>Improve your content, audience and creator workflow.</p></article>
+          <article><div class="step-orb">▥</div><b>04</b><h3>Monetize</h3><p>Organize digital opportunities around useful creator skills.</p></article>
+          <article><div class="step-orb gold">$</div><b>05</b><h3>Scale</h3><p>Build repeatable systems that support long-term growth.</p></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="orbit-trust">
+    <div class="container trust-row">
+      <small>BUILT FOR MODERN CREATORS</small>
+      <span>TikTok</span><span>YouTube</span><span>Canva</span><span>AI Tools</span><span>Digital Products</span><span>Creator Systems</span>
+    </div>
+  </section>
+
+  <section class="orbit-explore">
+    <div class="container">
+      <div class="explore-head"><div><span>EXPLORE NEXORA</span><h2>One academy. Multiple creator paths.</h2></div><p>Start with the skill you need now, then connect it to the rest of your creator system.</p></div>
+      <div class="explore-grid">
+        <a class="explore-card" href="courses.html"><i>01</i><h3>Courses</h3><p>Structured learning tracks for creator growth, AI content and digital systems.</p><b>Explore →</b></a>
+        <a class="explore-card" href="curriculum.html"><i>02</i><h3>Curriculum</h3><p>Follow a clear learning order with public previews and connected modules.</p><b>View roadmap →</b></a>
+        <a class="explore-card" href="prompt-book.html"><i>03</i><h3>Prompt Book</h3><p>Open visual prompt cards, copy the full instructions and adapt them fast.</p><b>Browse prompts →</b></a>
+        <a class="explore-card" href="support-program.html"><i>04</i><h3>Support Program</h3><p>Keep learning, tasks, student resources and support in one organized place.</p><b>See program →</b></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="orbit-cta">
+    <div class="container">
+      <span>READY TO BUILD?</span>
+      <h2>Turn your next idea into a creator system.</h2>
+      <p>Explore the curriculum first or request access when you are ready to continue with the full Nexora learning path.</p>
+      <div class="orbit-actions center"><a class="pill orbit-primary" href="enroll.html">Enroll Now</a><a class="pill orbit-secondary" href="free-lessons.html">Start Free Lessons</a></div>
     </div>
   </section>
 </main>
 
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div><a class="brand" href="index.html?home=1"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></a><p>Learn. Create. Grow. Build your creator system.</p></div>
+    <div><a class="brand" href="index.html?home=1"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>CREATOR ACADEMY</small></span></a><p>Learn. Create. Grow. Build a creator system.</p></div>
     <div><small>LEARN</small><a href="courses.html">Courses</a><a href="curriculum.html">Curriculum</a><a href="free-lessons.html">Free Lessons</a></div>
-    <div><small>RESOURCES</small><a href="prompt-book.html">Prompt Book</a><a href="support-program.html">Community</a><a href="contact.html">Support</a></div>
-    <div><small>ACCOUNT</small><a href="learn.html?login=1">Student login</a><a href="enroll.html">Join Nexora</a><a href="legal.html#privacy">Privacy</a></div>
+    <div><small>RESOURCES</small><a href="prompt-book.html">Prompt Book</a><a href="support-program.html">Support Program</a><a href="contact.html">Support</a></div>
+    <div><small>ACCOUNT</small><a href="learn.html?login=1">Student Login</a><a href="enroll.html">Enroll Now</a><a href="legal.html#privacy">Privacy</a></div>
   </div>
   <div class="container copyright">© 2026 Nexora Digital. All rights reserved.</div>
 </footer>
 
 <div class="toast" id="toast"></div>
-<script src="app.js?v=2.9.0"></script>
-<script src="header-auth.js?v=2.9.0"></script>
+<script src="app.js?v=3.0.0"></script>
+<script src="header-auth.js?v=3.0.0"></script>
 </body>
 </html>
