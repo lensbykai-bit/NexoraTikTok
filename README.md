@@ -1,170 +1,143 @@
 # NexoraTikTok — Nexora Digital Creator Academy
 
-Current version: **v2.4.0**
+Current version: **v2.6.11**
 
-Production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase services.
+NexoraTikTok is a production-oriented creator-learning website deployed with GitHub Pages and connected to Supabase for authentication, content, student state, administration and protected server functions.
 
-## Public pages
+## Current architecture
 
-- `index.html` — Premium Home experience
-- `free-lessons.html` — Free starter lessons
-- `courses.html` — Live database-backed course catalog
-- `curriculum.html` — Live public curriculum previews
-- `support-program.html` — Flagship support program
-- `services.html` — Creator services
-- `prompt-book.html` — Live searchable prompt library
-- `results.html` — Results/case-study layout
+### Student authentication
+
+Student accounts use the **Nexora DIGI** Supabase Auth project (`lzzujiyiltwfrvcwnrlh`).
+
+The current student flow is intentionally **email + password only**:
+
+1. New student enters name, email and password.
+2. Nexora sends an **8-digit email verification code**.
+3. The student verifies the code and the selected password is saved.
+4. Returning students sign in with email + password.
+5. Password recovery also uses an 8-digit email code before a new password is set.
+
+Google login was intentionally removed from the current Student Portal flow.
+
+The production root currently enters through the student login screen. `index.html` redirects to `learn.html?login=1`, and the installed PWA uses the same login-first start URL.
+
+### Backend data
+
+Operational Nexora data is stored in the **Nexora SMM** Supabase project (`bcvtkdehflmqiyvloyiy`). It contains the Nexora tables for prompts, courses, lessons, student portal state, enrollments, contacts, notifications, payment-event readiness, certificates and admin activity.
+
+Student-facing Edge Functions validate the Nexora DIGI Auth session themselves before reading or writing protected backend data. This cross-project validation is why these functions use custom authorization rather than relying on the backend project's default JWT validation.
+
+## Main public pages
+
+- `index.html` — premium creator-academy Home page (currently behind login-first entry)
+- `free-lessons.html` — free starter lessons
+- `courses.html` — database-backed course catalog
+- `curriculum.html` — public curriculum previews
+- `support-program.html` — support program
+- `services.html` — creator services
+- `prompt-book.html` — searchable Supabase-backed Prompt Book
+- `results.html` — results/case-study layout
 - `faq.html` — FAQ
-- `verify-certificate.html` — Public certificate verification by certificate code
-- `learn.html` — Student login and live learning portal
-- `enroll.html` — Enrollment form
-- `contact.html` — Contact form
-- `legal.html` — Policies
-- `offline.html` — Offline fallback
-- `404.html` — Not found page
-
-`certificate.html` is a private `noindex` Student Portal companion page.
-
-## v2.4 PWA and offline foundation
-
-Nexora now includes an installable Progressive Web App foundation.
-
-- `site.webmanifest` contains the Nexora app identity, standalone display mode and shortcuts to Student Portal, Prompt Book and Free Lessons.
-- `sw.js` caches safe public pages and static same-origin assets using versioned caches.
-- public navigations use network-first behavior so fresh content is preferred whenever the connection is available.
-- static assets use cache-first/stale-while-revalidate behavior for faster repeat visits.
-- `offline.html` provides a branded recovery screen when a requested network page cannot be reached.
-- the shared `app.js` runtime registers the service worker and surfaces online/offline connection feedback.
-
-Private/account-specific routes are deliberately excluded from service-worker caching: Admin pages, `learn.html`, `certificate.html` and `enroll.html`. Protected account data and Supabase API responses are not part of the public offline cache.
-
-The GitHub Pages workflow includes PWA cache-safety checks so deployment fails if private routes are accidentally removed from the service-worker exclusion list or added to the precache.
-
-## v2.3 production polish
-
-v2.3 focuses on privacy, Prompt Book scale, mobile usability and deployment safeguards.
-
-### Admin privacy isolation
-
-The main Admin student list now requests an explicit safe field set from `nexora_portal_state` instead of `select('*')`. The Student Portal private notebook field is not selected, searched, displayed or exported by the Admin dashboard.
-
-Private admin notes remain available to authorized admins and are separate from student-authored notebook content.
-
-The GitHub Pages workflow now fails before deployment if:
-
-- `Student note preview` is reintroduced into `admin.js`
-- a wildcard Student Portal state read returns to `admin.js`
-- public/student `app.js` is loaded by `admin.html`
-- obvious service-role or client-secret references appear in browser `.js` / `.html` assets
-
-### Prompt Book image-ready workflow
-
-Prompt Book remains Supabase-backed through `public.nexora_prompts`, but the frontend is now prepared for images to be added later:
-
-- prompts without images show clean numbered image slots
-- image previews lazy-load when an image URL/path exists
-- broken images automatically fall back to the numbered placeholder
-- modal previews use the same fallback behavior
-- search includes a one-click Clear action
-- category filters expose accessible pressed-state information
-- large libraries use an 8-at-a-time **Show more** flow
-- failed library requests expose a visible Retry action
-
-The database structure is unchanged: each prompt already has `image_url`, so later image uploads only require updating that field/path.
-
-### Mobile and accessibility polish
-
-Shared UI now includes stronger `focus-visible` treatment, reduced-motion support, improved touch interaction, mobile toast sizing and a defensive `.no-floating-support` rule for private/admin pages.
+- `verify-certificate.html` — public certificate verification
+- `contact.html` — contact form
+- `legal.html` — policies
+- `offline.html` — PWA offline fallback
+- `404.html` — not-found page
 
 ## Student Portal
 
-The Student Portal Overview combines the signed-in student's main account state:
+`learn.html` provides:
 
-- Starter / Full course access
-- server-verified active lesson count and completed lesson count
-- latest linked enrollment status
-- submitted and approved dates
-- non-secret payment-status summary
-- unread notification count
-- next-step guidance
-- one-click account/status refresh
-- automatic certificate progress and Certificate Ready state
+- email/password sign-in and account creation
+- 8-digit email verification for signup
+- 8-digit email verification for password recovery
+- live database-managed lessons
+- Starter / Full access levels
+- lesson progress and practical tasks
+- private notebook with local fallback and cloud sync
+- creator profile
+- learning-time and streak tracking
+- notifications
+- enrollment/account status
+- completion certificate access
 
-`student-dashboard.js` and `student-dashboard.css` power the Overview experience. The portal also loads `student-notifications.js` automatically.
+Protected lesson content, student status, notifications and cloud state are delivered through backend Edge Functions after the student session is validated.
 
-### Student status endpoint
+## Prompt Book
 
-The `student-status` Edge Function validates the existing Student Portal Supabase Auth session against the student-auth project. It returns only the signed-in student's access, lesson totals, completion count, enrollment summary, unread notification count and active certificate summary from the backend project.
+Prompt data is stored in `public.nexora_prompts`.
 
-Students do not receive direct browser read access to private operations or certificate tables.
+The frontend supports:
 
-## Course completion certificates
+- search
+- numbered placeholders when no image exists
+- lazy-loaded images
+- image-error fallback
+- modal preview
+- Copy Prompt
+- Show more pagination
+- retry after a failed request
 
-`public.nexora_certificates` stores completion certificates. A certificate is automatically issued when a student has `full` course access and has completed every currently active lesson.
+Private admin prompt tools support batch intake and direct image upload to Supabase Storage. Real prompt images can therefore be added later without changing the public layout.
 
-`certificate.html` validates the signed-in Student Portal session through `student-status`, displays only that student's active certificate, supports browser Print / Save PDF, and links to public verification.
+## Courses and certificates
 
-### Public certificate verification
+Course metadata and lessons are stored in `public.nexora_courses` and `public.nexora_lessons`.
 
-`verify-certificate.html` calls the `certificate-verify` Edge Function. Given a well-formed certificate code, it returns only the minimal public verification fields required to confirm a certificate.
-
-### Certificate Manager
-
-`admin-certificates.html` lets authorized admins search certificates, filter active/revoked status, copy a public verification link, revoke a certificate, or reactivate it. Certificate identity fields are not browser-editable by the authenticated admin role.
-
-## Live courses and lessons
-
-Course content is stored in `public.nexora_courses` and `public.nexora_lessons`. Public visitors can read active course metadata and preview lessons. Signed-in students load account-specific protected lesson content through the `course-content` Edge Function.
-
-Student accounts support:
-
-- `starter` — preview lessons only
-- `full` — all active lessons
-
-Approved enrollment requests are automatically matched to a Student Portal account by normalized email and can grant Full access.
-
-## Enrollment operations
-
-`admin-operations.html` provides enrollment/student matching visibility, approval workflow controls, manual payment tracking, payment provider/amount/currency fields, Full-access automation, custom Student Portal notifications and operational activity history.
-
-The payment structure is provider-ready but does **not** process money. A real provider integration and secret server-side credentials are still required before automated charging or verification can be enabled.
-
-## Student notifications
-
-`public.nexora_student_notifications` stores account updates. Students read and mark them through the `student-notifications` Edge Function after their Student Portal session is validated.
+- `starter` students receive preview access.
+- `full` students receive all active lessons.
+- Approved enrollment records can be matched to student accounts and grant Full access.
+- A completion certificate can be issued after a Full-access student completes every active lesson.
+- Public certificate verification is available by certificate code.
 
 ## Administration
 
+Private noindex administration pages include:
+
 - `admin.html` — students, prompts, enrollments and contacts
 - `admin-courses.html` — courses and lessons
-- `admin-analytics.html` — live operational analytics
-- `admin-operations.html` — enrollment/payment/matching/notifications/audit history
-- `admin-certificates.html` — certificate status and verification-link management
+- `admin-analytics.html` — operational analytics
+- `admin-operations.html` — enrollment, access, payment-status readiness, notifications and audit history
+- `admin-certificates.html` — certificate management
+- `admin-prompt-intake.html` — batch prompt intake and image upload
 
-All admin pages are marked `noindex`. Supabase Row Level Security and admin authorization are the real protection layer.
+Supabase RLS and admin authorization are the protection layer. Browser code must never contain service-role keys, OAuth client secrets or payment-provider secrets.
+
+## PWA and caching
+
+`site.webmanifest` and `sw.js` provide an installable PWA foundation.
+
+Public pages and safe static assets can be cached. Private/account-specific routes such as Admin, Student Portal, enrollment and private certificate pages are excluded from service-worker page caching.
 
 ## Deployment
 
-GitHub Pages deploys from `.github/workflows/pages.yml`, which validates required files, JavaScript syntax, local HTML links, privacy regressions, PWA cache safety and obvious browser-secret mistakes before deployment.
+GitHub Pages deploys through `.github/workflows/pages.yml`.
+
+The workflow checks:
+
+- required files
+- JavaScript syntax
+- local HTML links
+- privacy regressions
+- browser-secret mistakes
+- Prompt Intake safety
+- PWA private-route cache safety
 
 Expected production URL:
 
 `https://lensbykai-bit.github.io/NexoraTikTok/`
 
-GitHub Pages must use **GitHub Actions** as its deployment source.
+GitHub Pages must use **GitHub Actions** as the deployment source.
 
-## Authentication
+## Security settings still outside repository code
 
-The Student Portal uses the existing student Supabase Auth project. Its redirect allow-list must include:
+Supabase currently reports **Leaked Password Protection Disabled** on the connected Auth projects. This must be enabled from Supabase Auth settings; it cannot be fixed only by changing the static repository files.
 
-`https://lensbykai-bit.github.io/NexoraTikTok/learn.html`
+## Payment status
 
-Private admin pages use the backend Supabase Auth project and require membership in `admin_users`.
+The backend contains payment-provider-ready fields and private payment-event storage, but **real payment processing is not active**. A real provider integration plus secret server-side merchant credentials is required before automated charging or verification can be enabled.
 
-## Secrets and security
-
-Never commit OAuth client secrets, Supabase service-role keys or payment-provider secrets. Browser files contain publishable keys only. Elevated database access and protected content delivery stay server-side.
-
-## Content policy for this project
+## Content and reference policy
 
 Nexora uses original branding, copy, assets and implementation. Public reference sites may inspire layout and user-flow ideas, but third-party proprietary source code, logos, photographs and long-form text should not be copied without permission.
