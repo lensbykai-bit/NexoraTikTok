@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Nexora Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="extras.css">
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-body no-floating-support">
+  <section class="admin-login" id="adminLogin">
+    <div class="admin-login-card">
+      <a class="brand" href="index.html"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>ADMIN CONTROL</small></span></a>
+      <div class="admin-login-copy">
+        <span class="section-kicker">PRIVATE ADMIN</span>
+        <h1>Manage Nexora requests.</h1>
+        <p>Sign in with an authorized Nexora admin account.</p>
+      </div>
+      <form class="auth-form" id="adminLoginForm">
+        <label>Email<input id="adminEmail" type="email" autocomplete="email" required placeholder="admin@example.com"></label>
+        <label>Password<input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Password"></label>
+        <button class="auth-btn" type="submit">Sign in</button>
+      </form>
+      <p class="portal-status" id="adminLoginMessage"></p>
+      <a class="admin-back-link" href="index.html">← Back to website</a>
+    </div>
+  </section>
+
+  <section class="admin-app hidden" id="adminApp">
+    <header class="admin-topbar">
+      <div class="container admin-topbar-inner">
+        <a class="brand footer-brand" href="index.html"><span class="brand-logo">N</span><span><b>Nexora Digital</b><small>ADMIN CONTROL</small></span></a>
+        <div class="admin-user-area"><span id="adminIdentity">Admin</span><button class="pill light-pill" id="adminLogout">Log out</button></div>
+      </div>
+    </header>
+
+    <main class="container admin-main">
+      <div class="admin-heading">
+        <div><span class="section-kicker">CONTROL CENTER</span><h1>Requests & support</h1><p>Review enrollment and contact requests, update status, add private notes, and export records.</p></div>
+        <button class="pill outline" id="adminRefresh">Refresh</button>
+      </div>
+
+      <div class="admin-metrics">
+        <article><strong id="metricEnrollments">0</strong><span>Total enrollments</span></article>
+        <article><strong id="metricContacts">0</strong><span>Total contacts</span></article>
+        <article><strong id="metricNew">0</strong><span>New requests</span></article>
+        <article><strong id="metricOpen">0</strong><span>Needs attention</span></article>
+      </div>
+
+      <div class="admin-toolbar">
+        <div class="admin-tabs" role="tablist">
+          <button class="admin-tab active" data-admin-tab="enrollments">Enrollments</button>
+          <button class="admin-tab" data-admin-tab="contacts">Contacts</button>
+        </div>
+        <div class="admin-tools">
+          <label class="admin-search"><span>⌕</span><input id="adminSearch" type="search" placeholder="Search name, email, message…"></label>
+          <select id="adminStatusFilter" aria-label="Filter status"><option value="all">All status</option></select>
+          <button class="pill dark" id="adminExport">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="admin-status" id="adminStatus">Loading…</div>
+      <div class="admin-list" id="adminList"></div>
+    </main>
+  </section>
+
+  <div class="admin-modal hidden" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+    <div class="admin-modal-card">
+      <button class="close-modal" id="adminModalClose" aria-label="Close">×</button>
+      <span class="section-kicker" id="adminModalKicker">REQUEST</span>
+      <h2 id="adminModalTitle">Request</h2>
+      <div class="admin-detail-grid" id="adminDetailGrid"></div>
+      <label class="admin-field">Status<select id="adminEditStatus"></select></label>
+      <label class="admin-field">Private admin note<textarea id="adminEditNote" maxlength="3000" placeholder="Only admins can read this note."></textarea></label>
+      <div class="actions"><button class="pill gradient" id="adminSave">Save changes</button><button class="pill outline" id="adminCancel">Cancel</button></div>
+      <p class="portal-status" id="adminModalMessage"></p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="app.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
