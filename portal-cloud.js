@@ -7,6 +7,9 @@ let portalCloudTimer=null;
 let portalCloudBusy=false;
 let portalCloudReady=false;
 
+const notebookHelp=document.querySelector('#notebookTab .portal-card p');
+if(notebookHelp)notebookHelp.textContent='Your notes and progress sync with your signed-in account when online. A local copy is also kept on this device as a fallback.';
+
 function ensureCloudStatus(){
   let el=document.getElementById('cloudSyncState');
   if(el)return el;
