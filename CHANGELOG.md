@@ -1,5 +1,11 @@
 # Nexora Digital Changelog
 
+## 1.3.0
+- Split the main navigation into dedicated pages for Courses, Tools, Resources, Success Stories, Pricing and About.
+- Kept Home on the main homepage and added active navigation states to each new page.
+- Added a shared page theme so every navigation page keeps the same dark pink Nexora design.
+- Connected homepage and Courses navigation to the new dedicated pages.
+
 ## 1.2.0
 - Added database-backed Prompt Book with search, categories and copy flow.
 - Added Admin Prompt Manager with create, edit, publish/hide, sort and delete controls.
