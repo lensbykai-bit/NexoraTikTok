@@ -1,5 +1,17 @@
 # NexoraTikTok Changelog
 
+## v2.1.0 — 2026-08-20
+
+- Added automatic course-completion certificates for Full-access students who complete every active lesson.
+- Added the protected `nexora_certificates` table with unique certificate codes, issued date, lesson count and admin-only database visibility.
+- Added a secure database trigger that issues or refreshes a certificate after portal progress updates meet the completion requirement.
+- Upgraded `student-status` to v2 so the signed-in student receives authoritative lesson totals, completed-lesson count and their own active certificate summary.
+- Added `certificate.html`, `certificate.js` and `certificate.css` as a private authenticated certificate viewer with Print / Save PDF support.
+- Upgraded Student Dashboard progress to use server-verified lesson counts when online, with local progress as a fallback.
+- Added Certificate Progress and Certificate Ready states directly inside the Student Portal Overview.
+- Added responsive premium polish to Student Dashboard status, receipt and certificate cards.
+- Expanded GitHub Pages required-file and JavaScript syntax checks for v2.1 certificate assets.
+
 ## v2.0.0 — 2026-08-20
 
 - Added a new Student Portal **Overview** dashboard with access, lesson progress, enrollment status and unread-notification summaries.
