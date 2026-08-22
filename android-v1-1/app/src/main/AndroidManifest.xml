@@ -4,7 +4,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="Nexora Creator"
+        android:label="Nexora Creator Test"
         android:theme="@android:style/Theme.Material.NoActionBar"
         android:usesCleartextTraffic="false">
         <activity
