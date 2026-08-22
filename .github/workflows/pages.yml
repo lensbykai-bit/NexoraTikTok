@@ -67,7 +67,7 @@ jobs:
           cat android-src/parts/part*.b64 > mobile-app-project.rebuilt.b64
           base64 --decode mobile-app-project.rebuilt.b64 > mobile-app-project.rebuilt.zip
           test "$(wc -c < mobile-app-project.rebuilt.zip)" -eq 14929
-          echo "1284e66a5af3b8a97b1fa8176c27b9d8a793bfa58211c2762d3336b20fa10e3c  mobile-app-project.rebuilt.zip" | sha256sum -c - || true
+          echo "e9fecbb0f91a7192eb2a0601d5631309cd0a96310f8ae03490c219fe3ae77e8d  mobile-app-project.rebuilt.zip" | sha256sum -c -
           unzip -t mobile-app-project.rebuilt.zip
           rm -rf mobile-app
           mkdir -p mobile-app
