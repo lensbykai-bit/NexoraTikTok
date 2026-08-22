@@ -40,8 +40,10 @@ jobs:
     if: github.event_name == 'pull_request' && github.head_ref == 'mobile-app-v1'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Android branch
+      - name: Checkout Nexora Android v1.2 source
         uses: actions/checkout@v4
+        with:
+          ref: mobile-app-v1-2
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
@@ -57,25 +59,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-      - name: Rebuild and verify Android source archive
-        run: |
-          cat android-src/parts/part*.b64 > mobile-app-project.rebuilt.b64
-          base64 --decode mobile-app-project.rebuilt.b64 > mobile-app-project.rebuilt.zip
-          test "$(wc -c < mobile-app-project.rebuilt.zip)" -eq 14929
-          echo "e9fecbb0f91a7192eb2a0601d5631309cd0a96310f8ae03490c219fe3ae77e8d  mobile-app-project.rebuilt.zip" | sha256sum -c -
-          unzip -t mobile-app-project.rebuilt.zip
-          rm -rf mobile-app
-          mkdir -p mobile-app
-          unzip -q mobile-app-project.rebuilt.zip -d mobile-app
-      - name: Build debug APK
-        run: gradle -p mobile-app assembleDebug --stacktrace
+      - name: Build Nexora Android v1.2
+        run: gradle -p android-v1-1 assembleDebug --stacktrace
       - name: Rename APK
-        run: cp mobile-app/app/build/outputs/apk/debug/app-debug.apk Nexora_Android_v1.apk
+        run: cp android-v1-1/app/build/outputs/apk/debug/app-debug.apk Nexora_Android_v1.2.apk
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: Nexora-Android-v1
-          path: Nexora_Android_v1.apk
+          name: Nexora-Android-v1.2
+          path: Nexora_Android_v1.2.apk
           if-no-files-found: error
 
   android-v1-2:
