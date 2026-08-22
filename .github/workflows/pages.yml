@@ -42,26 +42,21 @@ jobs:
     steps:
       - name: Checkout Android branch
         uses: actions/checkout@v4
-
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
       - name: Accept Android licenses and install SDK
         run: |
           yes | sdkmanager --licenses >/dev/null || true
           sdkmanager "platforms;android-35" "build-tools;35.0.0"
-
       - name: Set up Gradle 8.9
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
-
       - name: Rebuild and verify Android source archive
         run: |
           cat android-src/parts/part*.b64 > mobile-app-project.rebuilt.b64
@@ -72,16 +67,45 @@ jobs:
           rm -rf mobile-app
           mkdir -p mobile-app
           unzip -q mobile-app-project.rebuilt.zip -d mobile-app
-
       - name: Build debug APK
         run: gradle -p mobile-app assembleDebug --stacktrace
-
       - name: Rename APK
         run: cp mobile-app/app/build/outputs/apk/debug/app-debug.apk Nexora_Android_v1.apk
-
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
           name: Nexora-Android-v1
           path: Nexora_Android_v1.apk
+          if-no-files-found: error
+
+  android-v1-2:
+    if: github.event_name == 'pull_request' && github.head_ref == 'mobile-app-v1-2'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Android v1.2 branch
+        uses: actions/checkout@v4
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Accept Android licenses and install SDK
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Build Nexora Android v1.2
+        run: gradle -p android-v1-1 assembleDebug --stacktrace
+      - name: Rename APK
+        run: cp android-v1-1/app/build/outputs/apk/debug/app-debug.apk Nexora_Android_v1.2.apk
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nexora-Android-v1.2
+          path: Nexora_Android_v1.2.apk
           if-no-files-found: error
