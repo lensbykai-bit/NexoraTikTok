@@ -1,9 +1,9 @@
-# Nexora Android Demo v1
+# Nexora Android Demo Build Channel
 
-This branch contains an Android phone-app prototype packaged from the current short-video concept.
+This branch is retained as the proven Android APK build trigger.
 
-Included: vertical For You feed, Discover, local video picker, demo publish flow, Inbox, Creator Profile, Creator Levels, Gem Levels 1-3, Blue Badge demo, Admin demo, Ads/Reserve metrics, and Creator Monetization set to OFF / Coming Soon.
+The current build channel now compiles Nexora Android v1.2 source from the mobile-app-v1-2 branch.
 
-Important: this is a frontend prototype. Real accounts, cloud video storage, real ads, payments, payouts, fraud detection and production moderation are not enabled yet.
+v1.2 includes an original short-video mobile UX with a full-screen vertical feed, Following/For You tabs, right-side actions, Friends, Create, Inbox, Profile video grid, Creator Levels, Gem/Premium UI, and Creator Monetization OFF / Coming Soon.
 
-Build trigger: Android demo v1 — verified source-parts build.
+Important: this remains a frontend prototype. Real accounts, cloud video storage, real ads, payments, payouts, fraud detection and production moderation are not enabled yet.
