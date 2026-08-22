@@ -6,4 +6,4 @@ Included: vertical For You feed, Discover, local video picker, demo publish flow
 
 Important: this is a frontend prototype. Real accounts, cloud video storage, real ads, payments, payouts, fraud detection and production moderation are not enabled yet.
 
-Build trigger: Android demo v1.
+Build trigger: Android demo v1 — verified source-parts build.
