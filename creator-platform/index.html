@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nexora Creator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">N</div><span>NEXORA</span></div>
+      <nav class="nav-list">
+        <button class="nav-item active"><span>⌂</span>Home</button>
+        <button class="nav-item"><span>💬</span>Chats <b class="dot">1</b></button>
+        <button class="nav-item"><span>🔔</span>Notifications</button>
+        <button class="nav-item"><span>⌕</span>Discover</button>
+        <div class="divider"></div>
+        <button class="nav-item"><span>◉</span>Earnings & Payouts</button>
+        <button class="nav-item"><span>✦</span>Creator Tools <i>›</i></button>
+        <button class="nav-item"><span>▦</span>Apps <i>›</i></button>
+      </nav>
+
+      <button class="new-post">New Post</button>
+
+      <div class="refer-card">
+        <div>
+          <b>Refer & Earn</b>
+          <small>Grow together with your community</small>
+        </div>
+        <div class="refer-glow"></div>
+      </div>
+
+      <div class="lower-menu">
+        <button>✦ Ask Agent</button>
+        <button>⌘ Developer</button>
+      </div>
+
+      <div class="user-foot"><div class="mini-avatar">R</div><span>Rafy</span><button>⋮</button></div>
+    </aside>
+
+    <main class="content-area">
+      <header class="topbar">
+        <div class="mobile-brand"><div class="brand-mark">N</div><span>NEXORA</span></div>
+        <div class="top-actions">
+          <div class="balance">0.00 <span>◉</span></div>
+          <button class="icon-btn">💬<b>1</b></button>
+          <button class="icon-btn">🔔</button>
+          <button class="avatar-btn">R</button>
+        </div>
+      </header>
+
+      <section class="feed-wrap">
+        <article class="post-card">
+          <div class="post-head">
+            <div class="creator-avatar">S</div>
+            <div class="creator-meta">
+              <div><strong>Scarlett Lux</strong><span class="verified">◆</span></div>
+              <span>@scarlett_lux</span>
+            </div>
+            <time>1 month ago</time>
+          </div>
+          <p class="post-copy">New members get early access to selected creator content and community updates.</p>
+          <div class="post-media">
+            <div class="media-inner">
+              <div class="media-badge">NEXORA CREATOR</div>
+              <div class="media-text">Creator stories, tutorials and premium community posts.</div>
+            </div>
+          </div>
+          <div class="locked-box">
+            <div>
+              <strong>Subscriber-only post</strong>
+              <span>Start a free preview to unlock this creator's selected content.</span>
+            </div>
+            <button id="openTrial">Try free preview</button>
+          </div>
+        </article>
+
+        <article class="post-card compact">
+          <div class="post-head">
+            <div class="creator-avatar alt">N</div>
+            <div class="creator-meta"><div><strong>Nexora Studio</strong><span class="verified">◆</span></div><span>@nexora_studio</span></div>
+            <time>2 days ago</time>
+          </div>
+          <p class="post-copy">Creator dashboard v1.0 is now live. More tools are coming soon.</p>
+        </article>
+      </section>
+    </main>
+
+    <aside class="rightbar">
+      <div class="right-scroll">
+        <section class="profile-card">
+          <div class="profile-title">Complete your profile</div>
+          <div class="progress-row"><strong>0%</strong><span>0/6 steps</span></div>
+          <div class="progress-track"><i style="width:0%"></i></div>
+          <button>Complete your profile</button>
+        </section>
+
+        <section class="preview-card">
+          <div class="preview-image">
+            <div class="preview-person">N</div>
+            <button class="play-btn">▶</button>
+          </div>
+          <div class="preview-copy"><b>Featured creator</b><span>Short-form creator preview</span></div>
+        </section>
+
+        <section class="tips-card">
+          <b>Creator setup</b>
+          <div class="tip"><span>1</span><p>Upload a profile image</p></div>
+          <div class="tip"><span>2</span><p>Add bio and creator category</p></div>
+          <div class="tip"><span>3</span><p>Publish your first public post</p></div>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal-backdrop show" id="trialModal">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <button class="close" id="closeTrial">×</button>
+      <h2>How your free preview works</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-icon">✧</div>
+          <div><strong>Today</strong><p>Unlock a limited free preview and explore selected creator content.</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">🔔</div>
+          <div><strong>Reminder</strong><p>We will show a reminder before the free preview period ends.</p></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-icon">✓</div>
+          <div><strong>After preview</strong><p>Continue only if you choose to subscribe. No automatic purchase in this demo.</p></div>
+        </div>
+      </div>
+      <div class="creator-line"><div class="small-face">S</div><strong>Scarlett Lux</strong><span class="verified">◆</span></div>
+      <button class="primary-cta" id="startTrial">Start free preview</button>
+      <p class="modal-note">Demo only — real subscriptions and payments are not enabled.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Preview started</div>
+  <script src="app.js"></script>
+</body>
+</html>
