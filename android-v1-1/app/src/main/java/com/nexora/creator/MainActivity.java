@@ -48,11 +48,13 @@ public class MainActivity extends Activity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 String js = "(function(){" +
-                        "if(document.getElementById('nexora-theme-loader-v18'))return;" +
-                        "var s=document.createElement('script');" +
-                        "s.id='nexora-theme-loader-v18';" +
-                        "s.src='file:///android_asset/theme-v18.js';" +
-                        "document.head.appendChild(s);" +
+                        "function loadTouch(){if(document.getElementById('nexora-theme-touch-loader-v18'))return;" +
+                        "var t=document.createElement('script');t.id='nexora-theme-touch-loader-v18';" +
+                        "t.src='file:///android_asset/theme-touch-v18.js';document.head.appendChild(t);}" +
+                        "var existing=document.getElementById('nexora-theme-loader-v18');" +
+                        "if(existing){if(document.getElementById('nexora-khmer-theme-v18'))loadTouch();else existing.addEventListener('load',loadTouch,{once:true});return;}" +
+                        "var s=document.createElement('script');s.id='nexora-theme-loader-v18';" +
+                        "s.src='file:///android_asset/theme-v18.js';s.onload=loadTouch;document.head.appendChild(s);" +
                         "})();";
                 view.evaluateJavascript(js, null);
             }
